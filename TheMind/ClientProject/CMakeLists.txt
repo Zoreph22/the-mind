@@ -1,4 +1,4 @@
-﻿# CMakeList.txt : CMake project for Client, include source and define
+﻿# CMakeList.txt : CMake project for ClientProject, include source and define
 # project specific logic here.
 cmake_minimum_required (VERSION 3.8)
 
@@ -6,4 +6,4 @@ cmake_minimum_required (VERSION 3.8)
 add_executable (ClientProject "client.c" "client.h")
 
 # Link libraries to this project.
-target_link_libraries(ClientProject PRIVATE sds)
+target_link_libraries (ClientProject PRIVATE sds)
