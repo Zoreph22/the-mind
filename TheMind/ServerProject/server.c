@@ -1,5 +1,4 @@
 ﻿// server.c : Defines the entry point for the application.
-//
 
 #include "server.h"
 
