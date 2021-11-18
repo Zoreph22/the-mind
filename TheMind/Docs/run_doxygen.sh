@@ -1,12 +1,14 @@
-@echo off
-:loop
-	cls
-	del /s /f /q ServerProject
-	del /s /f /q ClientProject
-	del /s /f /q BotProject
+#!/bin/sh
+
+while true
+do
+	clear
+	rm -rfv ServerProject
+	rm -rfv ClientProject
+	rm -rfv BotProject
 	doxygen Doxyfile_ServerProject
 	doxygen Doxyfile_ClientProject
 	doxygen Doxyfile_BotProject
-	echo Appuyez sur une touche pour regÇnÇrer la documentation...
-	pause >NUL
-goto loop
+	echo Appuyez sur une touche pour reg√©n√©rer la documentation...
+	read NONE
+done
