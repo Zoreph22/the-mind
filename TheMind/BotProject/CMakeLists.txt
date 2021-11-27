@@ -7,3 +7,6 @@ add_executable (BotProject "bot.c" "bot.h")
 
 # Link libraries to this project.
 target_link_libraries(BotProject PRIVATE sds)
+
+# Compile options.
+target_compile_options (BotProject PRIVATE -Werror -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
