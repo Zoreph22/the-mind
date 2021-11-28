@@ -52,8 +52,7 @@ void* listenMessages(void* ptrClientId)
 
 		if ((nbRead = recv(cliSockets[clientId].fd, msg, sizeof msg - 1, 0)) == -1)
 		{
-			perror("recv()");
-			continue;
+			FATAL_ERR("recv()");
 		}
 
 		printf("Message received from client id %i (%i bytes): %s.\n", clientId, nbRead, msg);
@@ -105,11 +104,17 @@ void listenConnections()
 
 void broadcastMessage(const char* msg, size_t size)
 {
+	if (size > MAX_RECV_SIZE)
+	{
+		fprintf(stderr, "Could not broadcast message as the size %lu exceed the max. size %i.\n", size, MAX_RECV_SIZE);
+		return;
+	}
+
 	for (unsigned int i = 0; i < nbConnections; i++)
 	{
 		if (send(cliSockets[i].fd, msg, size, 0) == -1)
 		{
-			perror("send()");
+			FATAL_ERR("broadcastMessage - send()");
 		}
 	}
 
@@ -118,6 +123,12 @@ void broadcastMessage(const char* msg, size_t size)
 
 void sendMessage(unsigned int clientId, const char* msg, size_t size)
 {
+	if (size > MAX_RECV_SIZE)
+	{
+		fprintf(stderr, "Could not send message to client id %i as the size %lu exceed the max. size %i.\n", clientId, size, MAX_RECV_SIZE);
+		return;
+	}
+
 	if (clientId >= nbConnections)
 	{
 		fprintf(stderr, "Could not send message as client id %i does not exist.\n", clientId);
@@ -126,8 +137,7 @@ void sendMessage(unsigned int clientId, const char* msg, size_t size)
 
 	if (send(cliSockets[clientId].fd, msg, size, 0) == -1)
 	{
-		perror("send()");
-		return;
+		FATAL_ERR("sendMessage - send()");
 	}
 
 	printf("Sent message to client id %i (%lu bytes): %s.\n", clientId, size, msg);
@@ -140,6 +150,10 @@ void closeServer()
 	for (unsigned int i = 0; i < nbConnections; i++)
 	{
 		cliSockets[i].isOpened = false;
+
+		pthread_cancel(cliSockets[i].threadId); // TODO : attention, il faut que cette fonction soit appelée dans le main thread.
+		pthread_join(cliSockets[i].threadId, NULL);
+
 		close(cliSockets[i].fd);
 	}
 

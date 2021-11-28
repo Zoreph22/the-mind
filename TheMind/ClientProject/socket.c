@@ -35,8 +35,7 @@ void* listenMessages(void* unused)
 
 		if ((nbRead = recv(cliSocket, msg, sizeof msg - 1, 0)) == -1)
 		{
-			perror("recv()");
-			continue;
+			FATAL_ERR("recv()");
 		}
 
 		printf("Message received (%i bytes): %s.\n", nbRead, msg);
@@ -47,6 +46,12 @@ void* listenMessages(void* unused)
 
 void sendMessage(const char* msg, size_t size)
 {
+	if (size > MAX_RECV_SIZE)
+	{
+		fprintf(stderr, "Could not send message as the size %lu exceed the max. size %i.\n", size, MAX_RECV_SIZE);
+		return;
+	}
+
 	if (send(cliSocket, msg, size, 0) == -1)
 	{
 		FATAL_ERR("send()");

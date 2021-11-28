@@ -3,7 +3,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
-add_executable (ClientProject "main.c" "main.h" "socket.c" "socket.h")
+add_executable (ClientProject "main.c" "main.h" "socket.c" "socket.h" "input.h" "input.c")
 
 # Link libraries to this project.
 target_link_libraries (ClientProject PRIVATE sds)
