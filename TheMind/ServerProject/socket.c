@@ -64,7 +64,7 @@ void* listenMessages(void* ptrClientId)
 	printf("Stopped communication with client id %i.\n", clientId);
 }
 
-void* listenConnections(void* unused)
+void listenConnections()
 {
 	printf("Listening for client connections (max. %i)...\n", MAX_CONNECTIONS);
 
@@ -130,7 +130,7 @@ void sendMessage(unsigned int clientId, const char* msg, size_t size)
 		return;
 	}
 
-	printf("Sent message to client id %i (%lu bytes): \"%s\".\n", clientId, size, msg);
+	printf("Sent message to client id %i (%lu bytes): %s.\n", clientId, size, msg);
 }
 
 void closeServer()
@@ -156,8 +156,7 @@ void startServer()
 
 	if (srvSocket == -1)
 	{
-		perror("socket()");
-		exit(errno);
+		FATAL_ERR("bind()");
 	}
 
 	// Création de l'interface
@@ -169,8 +168,7 @@ void startServer()
 
 	if (bind(srvSocket, (struct sockaddr*)&address, sizeof address) == -1)
 	{
-		perror("bind()");
-		exit(errno);
+		FATAL_ERR("bind()");
 	}
 
 	isSocketOpened = true;
@@ -178,15 +176,10 @@ void startServer()
 	// Attendre et accepter les demandes de connexion.
 	if (listen(srvSocket, MAX_CONNECTIONS) == -1)
 	{
-		perror("listen()");
-		exit(errno);
+		FATAL_ERR("bind()");
 	}
 
-	pthread_t threadId;
-	if (pthread_create(&threadId, NULL, &listenConnections, NULL) == -1)
-	{
-		perror("listenConnections - pthread_create()");
-	}
+	listenConnections();
 
 	while (isSocketOpened);
 }

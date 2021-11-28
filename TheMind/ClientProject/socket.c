@@ -92,6 +92,8 @@ void connectTo(const char* ip, unsigned short port)
 		FATAL_ERR("listenMessages - pthread_create()");
 	}
 
+	sendMessage("Coucou le serveur !", 20);
+
 	while (isOpened);
 }
 
