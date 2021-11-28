@@ -7,14 +7,14 @@
 
 void quit()
 {
-	closeServer();
+	socket_close();
 	exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char* argv[])
 {
 	signal(SIGINT, &quit);
-	startServer();
+	socket_open();
 
-	return 0;
+	return EXIT_SUCCESS;
 }

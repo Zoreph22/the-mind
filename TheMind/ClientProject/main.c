@@ -13,7 +13,7 @@
 
 void quit()
 {
-	disconnect();
+	socket_disconnect();
 	exit(EXIT_SUCCESS);
 }
 
@@ -30,7 +30,7 @@ void connectMenu()
 
 	ip[strcspn(ip, "\n")] = 0;
 
-	connectTo(ip, port);
+	socket_connect(ip, port);
 }
 
 int main(int argc, char* argv[])

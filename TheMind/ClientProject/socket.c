@@ -1,32 +1,30 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <pthread.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <stdbool.h>
+#include <pthread.h>
 #include <arpa/inet.h>
-#include <netdb.h>
+#include <string.h>
 #include <errno.h>
-#include <sys/un.h>
 #include "socket.h"
-#include <sds/sds.h>
 
-#define FATAL_ERR(msg) perror(msg); disconnect(); exit(errno);
-
-#define MAX_RECV_SIZE 1024
-
+#define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
 #define SOCKET int
 
-SOCKET cliSocket;
+/// Taille maximale d'un message.
+#define MAX_MSG_SIZE 1024
 
+/// Description du socket.
+SOCKET cliSocket;
+/// Socket est-il ouvert ?
 bool isOpened = false;
 
+/**
+ * @brief [Thread] Écouter les messages du serveur et appeler le bon gestionnaire selon le message reçu.
+*/
 void* listenMessages(void* unused)
 {
-	char msg[MAX_RECV_SIZE];
+	char msg[MAX_MSG_SIZE];
 	int nbRead = 0;
 
 	while (isOpened)
@@ -44,11 +42,11 @@ void* listenMessages(void* unused)
 	printf("Stopped communication with the server.\n");
 }
 
-void sendMessage(const char* msg, size_t size)
+void socket_send(const char* msg, size_t size)
 {
-	if (size > MAX_RECV_SIZE)
+	if (size > MAX_MSG_SIZE)
 	{
-		fprintf(stderr, "Could not send message as the size %lu exceed the max. size %i.\n", size, MAX_RECV_SIZE);
+		fprintf(stderr, "Could not send message as the size %lu exceed the max. size %i.\n", size, MAX_MSG_SIZE);
 		return;
 	}
 
@@ -60,7 +58,7 @@ void sendMessage(const char* msg, size_t size)
 	printf("Sent message (%li bytes): %s.\n", size, msg);
 }
 
-void connectTo(const char* ip, unsigned short port)
+void socket_connect(const char* ip, unsigned short port)
 {
 	printf("Connecting to the server...\n");
 
@@ -97,12 +95,12 @@ void connectTo(const char* ip, unsigned short port)
 		FATAL_ERR("listenMessages - pthread_create()");
 	}
 
-	sendMessage("Coucou le serveur !", 20);
+	socket_send("Coucou le serveur !", 20);
 
 	while (isOpened);
 }
 
-void disconnect()
+void socket_disconnect()
 {
 	isOpened = false;
 	close(cliSocket);

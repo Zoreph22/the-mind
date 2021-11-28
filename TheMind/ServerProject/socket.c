@@ -1,49 +1,55 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <errno.h>
-#include <sys/un.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <arpa/inet.h>
-#include <sds/sds.h>
+#include <string.h>
+#include <errno.h>
 #include "socket.h"
 
-#define FATAL_ERR(msg) perror(msg); closeServer(); exit(errno);
-
+#define FATAL_ERR(msg) perror(msg); socket_close(); exit(errno);
 #define SOCKET int
+
+/// Port du serveur.
+#define SERVER_PORT 25565
 /// Nombre maximal de connexions au socket.
 #define MAX_CONNECTIONS 2
-#define MAX_RECV_SIZE 1024
-#define SERVER_PORT 25565
+/// Taille maximale d'un message.
+#define MAX_MSG_SIZE 1024
 
+/// Structure stockant les informations de la connexion d'un client.
+struct ClientCon
+{
+	/// Descripteur du socket.
+	SOCKET fd;
+	/// Socket ouvert ?
+	bool isOpened;
+	/// Adresse IP et port.
+	struct sockaddr_in address;
+	/// Thread associé à la connexion et gérant la communication de ce client.
+	pthread_t threadId;
+};
+
+/// Liste des connexions ouvertes (identifiant d'un client = index dans la liste).
+struct ClientCon cliSockets[MAX_CONNECTIONS];
 /// Nombre de clients connectés.
 unsigned int nbConnections = 0;
 
-struct ClientCon
-{
-	SOCKET fd;
-	struct sockaddr_in address;
-	pthread_t threadId;
-	bool isOpened;
-};
-
-struct ClientCon cliSockets[MAX_CONNECTIONS];
-
+/// Descripteur de socket du serveur.
 SOCKET srvSocket;
-
-/// Le socket est-il ouvert ?
+/// Socket du serveur est-il ouvert ?
 bool isSocketOpened = false;
 
+/**
+ * @brief [Thread] Écouter les messages d'un client et appeler le bon gestionnaire selon le message reçu.
+ * @param ptrClientId Identifiant client.
+*/
 void* listenMessages(void* ptrClientId)
 {
 	unsigned int clientId = *(unsigned int*)ptrClientId;
 
-	char msg[MAX_RECV_SIZE];
+	char msg[MAX_MSG_SIZE];
 	int nbRead = 0;
 
 	while (cliSockets[clientId].isOpened)
@@ -57,12 +63,15 @@ void* listenMessages(void* ptrClientId)
 
 		printf("Message received from client id %i (%i bytes): %s.\n", clientId, nbRead, msg);
 
-		sendMessage(clientId, "Hey merci !", 12);
+		socket_send(clientId, "Hey merci !", 12);
 	}
 
 	printf("Stopped communication with client id %i.\n", clientId);
 }
 
+/**
+ * @brief Écouter les demandes de connexion et les accepter si possible.
+*/
 void listenConnections()
 {
 	printf("Listening for client connections (max. %i)...\n", MAX_CONNECTIONS);
@@ -102,11 +111,11 @@ void listenConnections()
 	printf("Stopped listening client connections. Total of clients connected: %i.\n", nbConnections);
 }
 
-void broadcastMessage(const char* msg, size_t size)
+void socket_broadcast(const char* msg, size_t size)
 {
-	if (size > MAX_RECV_SIZE)
+	if (size > MAX_MSG_SIZE)
 	{
-		fprintf(stderr, "Could not broadcast message as the size %lu exceed the max. size %i.\n", size, MAX_RECV_SIZE);
+		fprintf(stderr, "Could not broadcast message as the size %lu exceed the max. size %i.\n", size, MAX_MSG_SIZE);
 		return;
 	}
 
@@ -121,11 +130,11 @@ void broadcastMessage(const char* msg, size_t size)
 	printf("Broadcasted message (%lu bytes): \"%s\".\n", size, msg);
 }
 
-void sendMessage(unsigned int clientId, const char* msg, size_t size)
+void socket_send(unsigned int clientId, const char* msg, size_t size)
 {
-	if (size > MAX_RECV_SIZE)
+	if (size > MAX_MSG_SIZE)
 	{
-		fprintf(stderr, "Could not send message to client id %i as the size %lu exceed the max. size %i.\n", clientId, size, MAX_RECV_SIZE);
+		fprintf(stderr, "Could not send message to client id %i as the size %lu exceed the max. size %i.\n", clientId, size, MAX_MSG_SIZE);
 		return;
 	}
 
@@ -143,7 +152,7 @@ void sendMessage(unsigned int clientId, const char* msg, size_t size)
 	printf("Sent message to client id %i (%lu bytes): %s.\n", clientId, size, msg);
 }
 
-void closeServer()
+void socket_close()
 {
 	printf("Closing server...\n");
 
@@ -159,9 +168,11 @@ void closeServer()
 
 	isSocketOpened = false;
 	close(srvSocket);
+
+	printf("Server closed.\n");
 }
 
-void startServer()
+void socket_open()
 {
 	printf("Starting server...\n");
 
