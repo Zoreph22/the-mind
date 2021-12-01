@@ -10,11 +10,14 @@ add_executable (ServerProject
 	"lobby.c" "lobby.h"
 	"mind.c" "mind.h"
 	"partie.c" "partie.h"
-)
+	"handlers.c")
 
 # Link libraries to this project.
 target_link_libraries (ServerProject PRIVATE sds)
 target_link_libraries (ServerProject PRIVATE pthread)
 
+# Link shared source files to this project.
+target_link_libraries(ServerProject PRIVATE shared_socket)
+
 # Compile options.
-target_compile_options (ServerProject PRIVATE -Werror -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+target_compile_options (ServerProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)

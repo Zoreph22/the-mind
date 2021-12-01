@@ -9,4 +9,4 @@ add_executable (BotProject "main.c" "main.h")
 target_link_libraries(BotProject PRIVATE sds)
 
 # Compile options.
-target_compile_options (BotProject PRIVATE -Werror -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+target_compile_options (BotProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)

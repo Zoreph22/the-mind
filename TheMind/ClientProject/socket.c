@@ -6,15 +6,14 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <errno.h>
+#include "socket/consts.h"
+#include "socket/utils_io.h"
+#include "messaging/srv_handlers.h"
 #include "socket.h"
 
 #define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
-#define SOCKET int
 
-/// Taille maximale d'un message.
-#define MAX_MSG_SIZE 1024
-
-/// Description du socket.
+/// Descripteur du socket.
 SOCKET cliSocket;
 /// Socket est-il ouvert ?
 bool isOpened = false;
@@ -24,38 +23,49 @@ bool isOpened = false;
 */
 void* listenMessages(void* unused)
 {
-	char msg[MAX_MSG_SIZE];
-	int nbRead = 0;
-
 	while (isOpened)
 	{
-		bzero(msg, sizeof msg);
+		struct MsgHeader header;
+		char data[MAX_MSG_SIZE];
 
-		if ((nbRead = recv(cliSocket, msg, sizeof msg - 1, 0)) == -1)
+		// Lecture en-tête message : taille contenu du message & type du message.
+		if (recvn(cliSocket, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("recv()");
-		}
+			FATAL_ERR("recvn()");
+		};
 
-		printf("Message received (%i bytes): %s.\n", nbRead, msg);
+		// Lecture contenu message.
+		if (recvn(cliSocket, data, header.dataLen) == -1)
+		{
+			FATAL_ERR("recvn()");
+		};
+
+		// Appel du gestionnaire correspondant au type du message.
+		srvMsgHandler[header.msgType](data);
+
+		printf("Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
 	}
 
 	printf("Stopped communication with the server.\n");
 }
 
-void socket_send(const char* msg, size_t size)
+void socket_send(enum CliMsg type, const void* msg, size_t size)
 {
-	if (size > MAX_MSG_SIZE)
-	{
-		fprintf(stderr, "Could not send message as the size %lu exceed the max. size %i.\n", size, MAX_MSG_SIZE);
-		return;
-	}
+	struct MsgHeader header = { size, type };
 
-	if (send(cliSocket, msg, size, 0) == -1)
+	// Envoyer l'en-tête du message.
+	if (sendn(cliSocket, &header, sizeof(header)) == -1)
 	{
-		FATAL_ERR("send()");
-	}
+		FATAL_ERR("sendn()");
+	};
 
-	printf("Sent message (%li bytes): %s.\n", size, msg);
+	// Envoyer le contenu du message.
+	if (sendn(cliSocket, msg, size) == -1)
+	{
+		FATAL_ERR("sendn()");
+	};
+
+	printf("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_connect(const char* ip, unsigned short port)
@@ -88,6 +98,8 @@ void socket_connect(const char* ip, unsigned short port)
 
 	isOpened = true;
 
+	printf("Connected to the server.\n");
+
 	// Démarrer l'écoute des messages reçus.
 	pthread_t threadId;
 	if (pthread_create(&threadId, NULL, &listenMessages, NULL) == -1)
@@ -95,7 +107,29 @@ void socket_connect(const char* ip, unsigned short port)
 		FATAL_ERR("listenMessages - pthread_create()");
 	}
 
-	socket_send("Coucou le serveur !", 20);
+	/*socket_send(CLI_MSG_NONE, NULL, 0);
+	//sleep(1);
+
+	struct CliMsg_SetName clsn = { "Kévin" };
+	socket_send(CLI_MSG_SET_NAME, &clsn, sizeof clsn);
+	//sleep(1);
+
+	socket_send(CLI_MSG_SET_READY, NULL, 0);
+	//sleep(1);
+
+	struct CliMsg_SetNumBot cmsnb = { 5 };
+	socket_send(CLI_MSG_SET_NUM_BOT, &cmsnb, sizeof cmsnb);
+	//sleep(1);
+
+	struct CliMsg_PlayCard cmpc = { 1 };
+	socket_send(CLI_MSG_PLAY_CARD, &cmpc, sizeof cmpc);
+	//sleep(1);
+
+	socket_send(CLI_MSG_REPLAY_GAME, NULL, 0);
+	//sleep(1);
+
+	socket_send(CLI_MSG_MAX, NULL, 0);
+	//sleep(1);*/
 
 	while (isOpened);
 }

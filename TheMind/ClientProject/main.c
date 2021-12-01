@@ -22,15 +22,15 @@ void connectMenu()
 	char ip[15];
 	unsigned short port;
 
-	printf("Server IP address: ");
+	/*printf("Server IP address: ");
 	fgets(ip, sizeof ip, stdin);
 
 	printf("Server port: ");
 	scanf("%hu", &port);
 
-	ip[strcspn(ip, "\n")] = 0;
+	ip[strcspn(ip, "\n")] = 0;*/
 
-	socket_connect(ip, port);
+	socket_connect("127.0.0.1", 25565);
 }
 
 int main(int argc, char* argv[])

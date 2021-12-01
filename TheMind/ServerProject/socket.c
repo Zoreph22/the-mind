@@ -6,17 +6,18 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <errno.h>
+#include "socket/consts.h"
+#include "socket/utils_io.h"
+#include "socket/utils_io.h"
+#include "messaging/cli_handlers.h"
 #include "socket.h"
 
 #define FATAL_ERR(msg) perror(msg); socket_close(); exit(errno);
-#define SOCKET int
 
 /// Port du serveur.
 #define SERVER_PORT 25565
 /// Nombre maximal de connexions au socket.
 #define MAX_CONNECTIONS 2
-/// Taille maximale d'un message.
-#define MAX_MSG_SIZE 1024
 
 /// Structure stockant les informations de la connexion d'un client.
 struct ClientCon
@@ -49,21 +50,27 @@ void* listenMessages(void* ptrClientId)
 {
 	unsigned int clientId = *(unsigned int*)ptrClientId;
 
-	char msg[MAX_MSG_SIZE];
-	int nbRead = 0;
-
 	while (cliSockets[clientId].isOpened)
 	{
-		bzero(msg, sizeof msg);
+		struct MsgHeader header;
+		char data[MAX_MSG_SIZE];
 
-		if ((nbRead = recv(cliSockets[clientId].fd, msg, sizeof msg - 1, 0)) == -1)
+		// Lecture en-tête message : taille contenu du message & type du message.
+		if (recvn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("recv()");
-		}
+			FATAL_ERR("recvn()");
+		};
 
-		printf("Message received from client id %i (%i bytes): %s.\n", clientId, nbRead, msg);
+		// Lecture contenu message.
+		if (recvn(cliSockets[clientId].fd, data, header.dataLen) == -1)
+		{
+			FATAL_ERR("recvn()");
+		};
 
-		socket_send(clientId, "Hey merci !", 12);
+		// Appel du gestionnaire correspondant au type du message.
+		cliMsgHandler[header.msgType](clientId, data);
+
+		printf("Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
 	}
 
 	printf("Stopped communication with client id %i.\n", clientId);
@@ -98,7 +105,6 @@ void listenConnections()
 		cliSockets[clientId].address = cliAddress;
 		cliSockets[clientId].isOpened = true;
 
-
 		// Création du thread gérant la communication de ce client.
 		if (pthread_create(&cliSockets[clientId].threadId, NULL, &listenMessages, &clientId) == -1)
 		{
@@ -106,50 +112,88 @@ void listenConnections()
 		}
 
 		printf("Connection from %s accepted.\n", inet_ntoa(cliAddress.sin_addr));
+
+		/*sleep(1);
+
+		socket_send(clientId, SRV_MSG_NONE, NULL, 0);
+		socket_send(clientId, SRV_MSG_MAX, NULL, 0);
+
+		struct SrvMsg_InfoLobby smil = { 5, 6, 7 };
+		socket_send(clientId, SRV_MSG_INFO_LOBBY, &smil, sizeof smil);
+
+		struct SrvMsg_PlayerConnected smpc = { 2, "Ducon" };
+		socket_send(clientId, SRV_MSG_PLAYER_CONNECTED, &smpc, sizeof smpc);
+
+		struct SrvMsg_CardPlayed smcp = { 2, 256 };
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &smcp, sizeof smcp);
+
+		struct SrvMsg_NextRound smnr = { 2, 3, 1, {22, 33, 44} };
+		socket_send(clientId, SRV_MSG_NEXT_ROUND, &smnr, sizeof smnr);
+
+		struct SrvMsg_GameEnd smge = { 1 };
+		socket_send(clientId, SRV_MSG_GAME_END, &smge, sizeof smge);*/
 	}
 
 	printf("Stopped listening client connections. Total of clients connected: %i.\n", nbConnections);
 }
 
-void socket_broadcast(const char* msg, size_t size)
+void socket_broadcast(enum SrvMsg type, const void* msg, size_t size)
 {
 	if (size > MAX_MSG_SIZE)
 	{
-		fprintf(stderr, "Could not broadcast message as the size %lu exceed the max. size %i.\n", size, MAX_MSG_SIZE);
+		fprintf(stderr, "Could not broadcast message (type %i) as the size %lu exceed the max. size %i.\n", type, size, MAX_MSG_SIZE);
 		return;
 	}
 
+	struct MsgHeader header = { size, type };
+
 	for (unsigned int i = 0; i < nbConnections; i++)
 	{
-		if (send(cliSockets[i].fd, msg, size, 0) == -1)
+		// Envoyer l'en-tête du message.
+		if (sendn(cliSockets[i].fd, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("broadcastMessage - send()");
+			FATAL_ERR("socket_broadcast - sendn()");
+		}
+
+		// Envoyer le contenu du message.
+		if (sendn(cliSockets[i].fd, msg, size) == -1)
+		{
+			FATAL_ERR("socket_broadcast - sendn()");
 		}
 	}
 
-	printf("Broadcasted message (%lu bytes): \"%s\".\n", size, msg);
+	printf("Broadcasted message (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
-void socket_send(unsigned int clientId, const char* msg, size_t size)
+void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_t size)
 {
 	if (size > MAX_MSG_SIZE)
 	{
-		fprintf(stderr, "Could not send message to client id %i as the size %lu exceed the max. size %i.\n", clientId, size, MAX_MSG_SIZE);
+		fprintf(stderr, "Could not send message (type %i) to client id %i as the size %lu exceed the max. size %i.\n", type, clientId, size, MAX_MSG_SIZE);
 		return;
 	}
 
 	if (clientId >= nbConnections)
 	{
-		fprintf(stderr, "Could not send message as client id %i does not exist.\n", clientId);
+		fprintf(stderr, "Could not send message (type %i) as client id %i does not exist.\n", type, clientId);
 		return;
 	}
 
-	if (send(cliSockets[clientId].fd, msg, size, 0) == -1)
+	struct MsgHeader header = { size, type };
+
+	// Envoyer l'en-tête du message.
+	if (sendn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 	{
-		FATAL_ERR("sendMessage - send()");
+		FATAL_ERR("socket_send - sendn()");
 	}
 
-	printf("Sent message to client id %i (%lu bytes): %s.\n", clientId, size, msg);
+	// Envoyer le contenu du message.
+	if (sendn(cliSockets[clientId].fd, msg, size) == -1)
+	{
+		FATAL_ERR("socket_send - sendn()");
+	}
+
+	printf("Sent message to client id %i (type %i) (%lu bytes).\n", clientId, header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_close()
@@ -181,8 +225,13 @@ void socket_open()
 
 	if (srvSocket == -1)
 	{
-		FATAL_ERR("bind()");
+		FATAL_ERR("socket()");
 	}
+
+	// Autoriser la réutilisation du port pour pouvoir immédiatement réouvrir un serveur,
+	// quand un vient d'être fermé.
+	int reuseAddr = 1;
+	setsockopt(srvSocket, SOL_SOCKET, SO_REUSEADDR, &reuseAddr, sizeof(int));
 
 	// Création de l'interface
 	// et attribution de celle-ci au socket créé.
@@ -201,7 +250,7 @@ void socket_open()
 	// Attendre et accepter les demandes de connexion.
 	if (listen(srvSocket, MAX_CONNECTIONS) == -1)
 	{
-		FATAL_ERR("bind()");
+		FATAL_ERR("listen()");
 	}
 
 	listenConnections();
