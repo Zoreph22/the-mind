@@ -6,10 +6,10 @@ cmake_minimum_required (VERSION 3.8)
 add_executable (ServerProject
 	"main.c" "main.h"
 	"socket.c" "socket.h"
-	"joueur.c" "joueur.h"
-	"lobby.c" "lobby.h"
-	"mind.c" "mind.h"
-	"partie.c" "partie.h"
+	"Logic/joueur.c" "Logic/joueur.h"
+	"Logic/lobby.c" "Logic/lobby.h"
+	"Logic/mind.c" "Logic/mind.h"
+	"Logic/partie.c" "Logic/partie.h"
 	"handlers.c")
 
 # Link libraries to this project.
