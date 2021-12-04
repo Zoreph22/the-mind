@@ -67,10 +67,10 @@ void* listenMessages(void* ptrClientId)
 			FATAL_ERR("recvn()");
 		};
 
+		printf("Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
+
 		// Appel du gestionnaire correspondant au type du message.
 		cliMsgHandler[header.msgType](clientId, data);
-
-		printf("Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
 	}
 
 	printf("Stopped communication with client id %i.\n", clientId);
@@ -132,6 +132,51 @@ void listenConnections()
 
 		struct SrvMsg_GameEnd smge = { 1 };
 		socket_send(clientId, SRV_MSG_GAME_END, &smge, sizeof smge);*/
+
+		// TEST BOT //
+		// round 1
+		/*sleep(1);
+		struct SrvMsg_NextRound msgData = { 3, 3, 1, {21, 5, 36} };
+		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
+
+		sleep(3);
+		struct SrvMsg_CardPlayed msgData2 = { .cardNumber = 5, .playerId = 1 };
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		// round 2
+		//sleep(3);
+		struct SrvMsg_NextRound msgData3 = { 4, 3, 1, {1, 4, 8, 9} };
+		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData3, sizeof(msgData3));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		// round 3
+		//sleep(3);
+		struct SrvMsg_NextRound msgData4 = { 1, 3, 1, {2} };
+		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData4, sizeof(msgData4));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
+
+		sleep(3);
+		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));*/
+
+		/*sleep(1);
+		struct SrvMsg_PlayerInfo msgData = { .playerId = 1 };
+		socket_send(clientId, SRV_MSG_PLAYER_INFO, &msgData, sizeof(msgData));*/
 	}
 
 	printf("Stopped listening client connections. Total of clients connected: %i.\n", nbConnections);

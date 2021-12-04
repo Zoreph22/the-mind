@@ -70,3 +70,9 @@ struct SrvMsg_GameEnd
 {
 	unsigned int isGameWon;
 };
+
+/// Message d'information à destination du joueur qui vient de se connecter.
+struct SrvMsg_PlayerInfo
+{
+	unsigned int playerId;
+};

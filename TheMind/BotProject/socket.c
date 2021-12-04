@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <pthread.h>
 #include <arpa/inet.h>
 #include <string.h>
 #include <errno.h>
@@ -13,15 +12,28 @@
 
 #define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
 
+/// Adresse IP du serveur.
+char* serverIp;
+/// Port du serveur.
+unsigned short serverPort;
+
 /// Descripteur du socket.
 SOCKET cliSocket;
 /// Socket est-il ouvert ?
 bool isOpened = false;
 
-/**
- * @brief [Thread] Écouter les messages du serveur et appeler le bon gestionnaire selon le message reçu.
-*/
-void* listenMessages(void* unused)
+void socket_setIp(char* ip)
+{
+	serverIp = ip;
+}
+
+void socket_setPort(unsigned short port)
+{
+	serverPort = port;
+}
+
+/// Écouter les messages du serveur et appeler le bon gestionnaire selon le message reçu.
+void listenMessages()
 {
 	while (isOpened)
 	{
@@ -68,7 +80,7 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 	printf("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
-void socket_connect(const char* ip, unsigned short port)
+void socket_connect()
 {
 	printf("Connecting to the server...\n");
 
@@ -83,9 +95,9 @@ void socket_connect(const char* ip, unsigned short port)
 	// Spécifier l'adresse IP et le port du serveur.
 	struct sockaddr_in sin;
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(port);
+	sin.sin_port = htons(serverPort);
 
-	if (inet_aton(ip, &sin.sin_addr) == -1)
+	if (inet_aton(serverIp, &sin.sin_addr) == -1)
 	{
 		FATAL_ERR("inet_aton()");
 	}
@@ -100,36 +112,7 @@ void socket_connect(const char* ip, unsigned short port)
 
 	printf("Connected to the server.\n");
 
-	// Démarrer l'écoute des messages reçus.
-	pthread_t threadId;
-	if (pthread_create(&threadId, NULL, &listenMessages, NULL) == -1)
-	{
-		FATAL_ERR("listenMessages - pthread_create()");
-	}
-
-	/*socket_send(CLI_MSG_NONE, NULL, 0);
-	//sleep(1);
-
-	struct CliMsg_SetName clsn = { "Kévin" };
-	socket_send(CLI_MSG_SET_NAME, &clsn, sizeof clsn);
-	//sleep(1);
-
-	socket_send(CLI_MSG_SET_READY, NULL, 0);
-	//sleep(1);
-
-	struct CliMsg_SetNumBot cmsnb = { 5 };
-	socket_send(CLI_MSG_SET_NUM_BOT, &cmsnb, sizeof cmsnb);
-	//sleep(1);
-
-	struct CliMsg_PlayCard cmpc = { 1 };
-	socket_send(CLI_MSG_PLAY_CARD, &cmpc, sizeof cmpc);
-	//sleep(1);
-
-	socket_send(CLI_MSG_REPLAY_GAME, NULL, 0);
-	//sleep(1);
-
-	socket_send(CLI_MSG_MAX, NULL, 0);
-	//sleep(1);*/
+	listenMessages();
 
 	while (isOpened);
 }
