@@ -2,11 +2,10 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <sds/sds.h>
 
 typedef struct {
 	bool ready;
-	sds nom;
+	char* nom;
 	int id;
 	int nbCartes;
 	int cartes[50];

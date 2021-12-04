@@ -2,6 +2,11 @@
 
 #include "messaging/enums.h"
 
+/// Port du serveur.
+#define SERVER_PORT 25565
+/// Nombre maximal de connexions au socket.
+#define MAX_CONNECTIONS 2
+
 /**
  * @brief Démarrer le serveur.
  * Démarrer le socket, écouter les demandes de connexion, et gérer la communication avec les clients.

@@ -1,5 +1,6 @@
 #include "joueur.h"
 #include <stdbool.h>
+#include "partie.h"
 
 joueur j;
 
@@ -8,6 +9,7 @@ char setName(char nom)
 	j.nom = nom;
 	return nom;
 }
+
 int jouerCarte(int carte)
 {
 	int carteIndex = 0;

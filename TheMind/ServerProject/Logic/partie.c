@@ -1,8 +1,13 @@
-#include "partie.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
+#include "messaging/structs.h"
+#include "messaging/enums.h"
+#include "../socket.h"
+#include "partie.h"
+
 
 partie p;
 
@@ -42,37 +47,45 @@ void distribuerCartes()
 	}
 }
 
-void gestionCarteJouer(int idJoueur, int idCarte)
+bool gestionCarteJouer(int idJoueur, int idCarte)
 {
 	if (verifCarte(idJoueur, idCarte)) {
 		p.terrainJeu[p.currentIDTerrain] = p.joueurs[idJoueur].cartes[idCarte];
+		p.joueurs[idJoueur].cartes[idCarte] = 0;
 		mancheGagner();
+		return true;
 	}
 	else {
 		manchePerdu();
+		return false;
 	}
 }
 
 bool partiePerdu()
 {
-	if (p.vie = 0) {
-
-	}
+	struct SrvMsg_GameEnd msgData = { .isGameWon = false };
+	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
 }
 
 bool partieGagner()
 {
-	return false;
+	struct SrvMsg_GameEnd msgData = { .isGameWon = true };
+	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
 }
 
 void manchePerdu()
 {
-	if (p.vie > 1) {
-		p.vie = p.vie - 1;
-	}
-	else {
-		p.vie = p.vie - 1;
+	p.vie = p.vie - 1;
+
+	if (p.vie = 0) {
 		partiePerdu();
+		return;
+	}
+
+	for (int i = 0; i < p.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = false };
+		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
 	}
 }
 
@@ -80,6 +93,12 @@ void mancheGagner()
 {
 	p.manche = p.manche + 1;
 	distribuerCartes();
+
+	for (int i = 0; i < p.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = true };
+		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
+	}
 }
 
 bool verifCarte(int idJoueur, int idCarte)
@@ -88,6 +107,10 @@ bool verifCarte(int idJoueur, int idCarte)
 		return true;
 	}
 	return false;
+}
+
+void setCartePose(int carte, int idJCarte)
+{
 }
 
 void ResetPartie()

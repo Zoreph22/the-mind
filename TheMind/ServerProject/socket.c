@@ -14,11 +14,6 @@
 
 #define FATAL_ERR(msg) perror(msg); socket_close(); exit(errno);
 
-/// Port du serveur.
-#define SERVER_PORT 25565
-/// Nombre maximal de connexions au socket.
-#define MAX_CONNECTIONS 2
-
 /// Structure stockant les informations de la connexion d'un client.
 struct ClientCon
 {

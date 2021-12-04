@@ -41,10 +41,18 @@ void setNumBot(int nb)
 	l.nbBots = nb;
 }
 
-void addPlayerToLobby(int id)
+void setInfoLobby(int roundCount, int bCount, int readyCount)
+{
+	l.nbManches = roundCount;
+	l.nbBots = bCount;
+	l.nbPrets = readyCount;
+}
+
+void addPlayerToLobby(int id, char* name)
 {
 	l.joueurs[id].id = id;
 	l.joueurs[id].ready = false;
+	l.joueurs[id].nom = name;
 }
 
 

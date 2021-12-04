@@ -9,7 +9,10 @@ typedef struct {
 	int currentIDTerrain;
 	int nbJoueurs;
 	int vie;
-	int terrainJeu[100];
+	int cartePose;
+	int idJCartePose;
+	bool lastRoundWon;
+	joueur jClient;
 	joueur joueurs[];
 }partie;
 
@@ -17,7 +20,7 @@ extern partie p;
 
 void initPartie(joueur tab[], int n);
 void gestionPartie();
-void distribuerCartes();
+void distribuerCartes(int *playercard);
 bool gestionCarteJouer(int idJoueur, int idCarte);
 
 bool partiePerdu();
@@ -25,6 +28,9 @@ bool partieGagner();
 void manchePerdu();
 void mancheGagner();
 bool verifCarte(int idJoueur, int idCarte);
+
+void setCartePose(int carte, int idJCarte);
+void setNextRound(int roundNumber, int lifeRemaining, int isLastRoundWon);
 
 void ResetPartie();
 
