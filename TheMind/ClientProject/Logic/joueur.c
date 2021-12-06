@@ -15,13 +15,19 @@ void setName(char * nom)
 
 void jouerCarte(int carte)
 {
-	int carteIndex = 0;
+	int carteIndex = -1;
 
 	// Récupérer l'index de la carte à partir de son numéro.
 	for (int i = 0; i < j.nbCartes; i++) {
 		if (j.cartes[i] == carte) {
 			carteIndex = i;
 		}
+	}
+
+	// Carte non présente dans la main, ou déjà jouée.
+	if (carteIndex == -1)
+	{
+		return;
 	}
 
 	j.cartes[carteIndex] = 0;

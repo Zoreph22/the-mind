@@ -39,6 +39,8 @@ void SrvMsg_CardPlayedHandler(void* data)
 	printf("Message Handler: SRV_MSG_CARD_PLAYED - Player id: %i - Card number: %i.\n", msg->playerId, msg->cardNumber);
 
 	setCartePose(msg->cardNumber, msg->playerId);
+	printManche();
+	setInputCallback(&gestionInputCarteJouer);
 }
 
 void SrvMsg_NextRoundHandler(void* data)
@@ -49,8 +51,11 @@ void SrvMsg_NextRoundHandler(void* data)
 	for (unsigned int i = 0; i < msg->roundNumber; i++) printf("[%i] = %i, ", i, msg->playerCards[i]);
 	printf(".\n");
 
+	l.inLobby = false;
 	setNextRound(msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
 	distribuerCartes((int *) msg->playerCards);
+	printManche();
+	setInputCallback(&gestionInputCarteJouer);
 }
 
 void SrvMsg_GameEndHandler(void* data)
@@ -58,12 +63,8 @@ void SrvMsg_GameEndHandler(void* data)
 	struct SrvMsg_GameEnd* msg = (struct SrvMsg_GameEnd*)data;
 	printf("Message Handler: SRV_MSG_GAME_END - Is game won: %i.\n", msg->isGameWon);
 
-	if (msg->isGameWon) {
-		partieGagner();
-	}
-	else {
-		partiePerdu();
-	}
+	setInputCallback(&gestionInputFinPartie);
+	finPartie();
 }
 
 void SrvMsg_PlayerInfo(void* data)

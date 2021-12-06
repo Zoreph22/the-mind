@@ -112,6 +112,9 @@ void socket_connect()
 
 	printf("Connected to the server.\n");
 
+	struct CliMsg_SetName msgData = { .name = "Bot" };
+	socket_send(CLI_MSG_SET_NAME, &msgData, sizeof(msgData));
+
 	listenMessages();
 
 	while (isOpened);

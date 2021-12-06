@@ -11,40 +11,14 @@
 
 lobby l;
 
-void startGame()
-{
-	if (l.nbPrets == l.nbJoueurs) {
-		initPartie(l.joueurs, l.nbJoueurs);
-	}
-}
-
 void initLobby()
 {
+	l.inLobby = true;
 	l.nbBots = 0;
 	l.nbJoueurs = 1;
 	l.nbManches = 0;
 	l.nbPrets = 0;
 	bzero(l.joueurs, sizeof(l.joueurs));
-}
-
-void setPlayerName(int id, char* name)
-{
-	strcpy(l.joueurs[id].nom, name);
-}
-
-void setReady(int id)
-{
-	l.joueurs[id].ready = true;
-	l.nbPrets++;
-
-	startGame();
-}
-
-void setNumBot(int nb)
-{
-	if (nb < 0)
-		return;
-	l.nbBots = nb;
 }
 
 void setInfoLobby(int roundCount, int bCount, int readyCount)
@@ -56,6 +30,11 @@ void setInfoLobby(int roundCount, int bCount, int readyCount)
 
 void printLobby()
 {
+	if (!l.inLobby)
+	{
+		return;
+	}
+
 	// system("clear");
 	printf("-----------------------------------\n");
 

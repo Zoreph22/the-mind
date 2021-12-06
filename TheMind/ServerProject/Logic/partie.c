@@ -14,18 +14,14 @@ partie p = {0};
 void initPartie(joueur tab[], int n)
 {
 	p.nbJoueurs = n;
-	p.manche = 1;
+	p.manche = 0;
 	p.currentIDTerrain = 0;
 	p.vie = 3;
 	for (int i = 0; i < n; i++) {
 		p.joueurs[i] = tab[i];
 	}
-	gestionPartie();
-}
 
-void gestionPartie()
-{
-
+	mancheGagner(); // Débuter le 1ère manche.
 }
 
 void distribuerCartes()
@@ -35,7 +31,7 @@ void distribuerCartes()
 	for (int i = 0; i < p.nbJoueurs; i++) {
 		for (int j = 0; j < p.manche; j++) {
 			do {
-				carte = rand() % 101;
+				carte = rand() % (101 - 1) + 1;
 				if (!tmp[carte]) {
 					p.joueurs[i].cartes[j] = carte;
 					tmp[carte] = true;
@@ -48,16 +44,25 @@ void distribuerCartes()
 
 bool gestionCarteJouer(int idJoueur, int idCarte)
 {
-	if (verifCarte(idJoueur, idCarte)) {
-		p.terrainJeu[p.currentIDTerrain] = p.joueurs[idJoueur].cartes[idCarte];
-		p.joueurs[idJoueur].cartes[idCarte] = 0;
+	int numCarte = p.joueurs[idJoueur].cartes[idCarte];
+
+	p.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
+
+	// La carte posée fait gagner la manche et toutes les cartes ont été posées.
+	if (isCardWinner(numCarte) && areAllCardsPlayed()) {
 		mancheGagner();
-		return true;
+		return false;
 	}
-	else {
+
+	// La carte posée fait perdre la manche.
+	if (!isCardWinner(numCarte)) {
 		manchePerdu();
 		return false;
 	}
+
+	// Continuer la manche.
+	p.terrainJeu[p.currentIDTerrain] = numCarte; // Poser la carte.
+	return true;
 }
 
 bool partiePerdu()
@@ -81,6 +86,9 @@ void manchePerdu()
 		return;
 	}
 
+	p.terrainJeu[p.currentIDTerrain] = 0;
+	distribuerCartes();
+
 	for (int i = 0; i < p.nbJoueurs; i++) {
 		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = false };
 		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
@@ -91,6 +99,7 @@ void manchePerdu()
 void mancheGagner()
 {
 	p.manche = p.manche + 1;
+	p.terrainJeu[p.currentIDTerrain] = 0;
 	distribuerCartes();
 
 	for (int i = 0; i < p.nbJoueurs; i++) {
@@ -100,12 +109,33 @@ void mancheGagner()
 	}
 }
 
-bool verifCarte(int idJoueur, int idCarte)
+/// Vérifier si la carte posée fait perdre ou continuer/gagner la manche.
+bool isCardWinner(int numCarte)
 {
-	if (p.terrainJeu[p.currentIDTerrain] < p.joueurs[idJoueur].cartes[idCarte]) {
+	if (p.terrainJeu[p.currentIDTerrain] < numCarte) {
 		return true;
 	}
 	return false;
+}
+
+/// Vérifier si tous les joueurs ont joués toutes leurs cartes.
+bool areAllCardsPlayed()
+{
+	bool allCardsPlayed = true;
+
+	for (int i = 0; i < p.nbJoueurs; i++)
+	{
+		for (int j = 0; j < p.manche; j++)
+		{
+			if (p.joueurs[i].cartes[j] != 0)
+			{
+				allCardsPlayed = false;
+				break;
+			}
+		}
+	}
+
+	return allCardsPlayed;
 }
 
 void setCartePose(int carte, int idJCarte)

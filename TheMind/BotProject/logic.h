@@ -5,8 +5,8 @@
 
 #define FATAL_ERR(msg) { perror(msg); exit(errno); }
 
-#define MIN_PLAYING_INTERVAL 1
-#define MAX_PLAYING_INTERVAL 1
+#define MIN_PLAYING_INTERVAL 15
+#define MAX_PLAYING_INTERVAL 25
 
 /// Structure stockant les informations du joueur.
 typedef struct {

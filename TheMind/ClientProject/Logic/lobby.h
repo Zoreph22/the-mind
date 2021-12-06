@@ -5,6 +5,7 @@
 #include "../socket.h"
 
 typedef struct {
+	bool inLobby;
 	int nbManches;
 	int nbBots;
 	int nbPrets;
@@ -14,13 +15,9 @@ typedef struct {
 
 extern lobby l;
 
-void startGame();
 void initLobby();
 void addPlayerToLobby(int id, char* name);
 
-void setPlayerName(int id, char* name);
-void setReady(int id);
-void setNumBot(int nb);
 void setInfoLobby(int roundCount, int bCount, int readyCount);
 
 void printLobby();

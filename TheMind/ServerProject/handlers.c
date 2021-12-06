@@ -63,10 +63,11 @@ void CliMsg_PlayCardHandler(unsigned int senderId, void* data)
 	struct CliMsg_PlayCard* msg = (struct CliMsg_PlayCard*)data;
 	printf("Message Handler: CLI_MSG_PLAY_CARD - Client: %i - Play card index: %i.\n", senderId, msg->cardIndex);
 
-	bool ok = gestionCarteJouer(senderId, msg->cardIndex);
+	int numCarte = p.joueurs[senderId].cartes[msg->cardIndex];
+	bool continuer = gestionCarteJouer(senderId, msg->cardIndex);
 
-	if (ok) {
-		struct SrvMsg_CardPlayed msgData = {.playerId =senderId, .cardNumber = msg->cardIndex};
+	if (continuer) {
+		struct SrvMsg_CardPlayed msgData = {.playerId =senderId, .cardNumber = numCarte };
 		socket_broadcast(SRV_MSG_CARD_PLAYED, &msgData, sizeof(msgData));
 	}
 }
@@ -74,6 +75,8 @@ void CliMsg_PlayCardHandler(unsigned int senderId, void* data)
 void CliMsg_ReplayGameHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_REPLAY_GAME - Client: %i - Want to replay a game.\n", senderId);
+
+	startGame();
 }
 
 void CliMsg_MaxHandler(unsigned int senderId, void* data)

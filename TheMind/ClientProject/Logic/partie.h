@@ -18,19 +18,12 @@ typedef struct {
 
 extern partie p;
 
-void initPartie(joueur tab[], int n);
-void gestionPartie();
 void distribuerCartes(int *playercard);
-bool gestionCarteJouer(int idJoueur, int idCarte);
-
-bool partiePerdu();
-bool partieGagner();
-void manchePerdu();
-void mancheGagner();
-bool verifCarte(int idJoueur, int idCarte);
 
 void setCartePose(int carte, int idJCarte);
 void setNextRound(int roundNumber, int lifeRemaining, int isLastRoundWon);
+void finPartie();
 
-void ResetPartie();
-
+void printManche();
+void gestionInputCarteJouer();
+void gestionInputFinPartie();

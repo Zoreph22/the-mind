@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <stdlib.h>
+#include <time.h>
 #include "main.h"
 #include "socket.h"
 
@@ -13,6 +14,7 @@ void quit()
 
 int main(int argc, char* argv[])
 {
+	srand(time(NULL));
 	signal(SIGINT, &quit);
 	socket_open();
 

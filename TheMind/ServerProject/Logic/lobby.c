@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
+#include "messaging/structs.h"
+#include "messaging/enums.h"
 
 lobby l;
 

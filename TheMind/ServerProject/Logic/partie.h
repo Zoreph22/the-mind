@@ -16,7 +16,6 @@ typedef struct {
 extern partie p;
 
 void initPartie(joueur tab[], int n);
-void gestionPartie();
 void distribuerCartes();
 bool gestionCarteJouer(int idJoueur, int idCarte);
 
@@ -24,7 +23,8 @@ bool partiePerdu();
 bool partieGagner();
 void manchePerdu();
 void mancheGagner();
-bool verifCarte(int idJoueur, int idCarte);
+bool isCardWinner(int numCarte);
+bool areAllCardsPlayed();
 
 void ResetPartie();
 
