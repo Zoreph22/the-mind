@@ -16,6 +16,7 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 	printf("Message Handler: CLI_MSG_SET_NAME - Client: %i - New name: %s.\n", senderId, msg->name);
 
 	setPlayerName(senderId, msg->name);
+	addPlayerToLobby(senderId);
 
 	struct SrvMsg_PlayerInfo msgData1 = {.playerId = senderId};
 	socket_send(senderId, SRV_MSG_PLAYER_INFO, &msgData1, sizeof(msgData1));
@@ -25,8 +26,12 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 	msgData2.playerId = senderId;
 	socket_broadcast(SRV_MSG_PLAYER_CONNECTED, &msgData2, sizeof(msgData2));
 
-	// TODO : ajouter message InfoLobby : liste des joueurs présents dans le lobby
-	// et l'envoyer au joueur qui vient de se co.
+	for (int i = 0; i < l.nbJoueurs; i++) {
+		struct SrvMsg_PlayerConnected msgData3 = { 0 };
+		strcpy(msgData3.name, l.joueurs[i].nom);
+		msgData3.playerId = i;
+		socket_send(senderId, SRV_MSG_PLAYER_CONNECTED, &msgData3, sizeof(msgData3));
+	}
 }
 
 void CliMsg_SetReadyHandler(unsigned int senderId, void* data)

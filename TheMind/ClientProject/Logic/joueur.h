@@ -14,6 +14,6 @@ typedef struct {
 extern joueur j;
 
 void setName(char * nom);
-int jouerCarte(int carte);
+void jouerCarte(int carte);
 
 void setId(int id);

@@ -45,6 +45,7 @@ void addPlayerToLobby(int id)
 {
 	l.joueurs[id].id = id;
 	l.joueurs[id].ready = false;
+	l.nbJoueurs++;
 }
 
 

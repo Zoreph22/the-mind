@@ -65,8 +65,9 @@ void printLobby()
 	printf("\n");
 	printf("Votre pseudo : %s\n", j.nom);
 	printf("Les autres joueurs :\n");
-	for (int i = 1; i < l.nbJoueurs; i++) {
-		printf("\t- %s\n", l.joueurs[i].nom);
+	for (int i = 0; i < l.nbJoueurs; i++) {
+		if(i != j.id)
+			printf("\t- %s\n", l.joueurs[i].nom);
 	}
 	printf("\n");
 	if (j.ready)
