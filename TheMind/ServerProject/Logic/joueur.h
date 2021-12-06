@@ -6,7 +6,7 @@
 
 typedef struct {
 	bool ready;
-	sds nom;
+	char nom[20];
 	int id;
 	int cartes[50];
 }joueur;

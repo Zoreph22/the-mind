@@ -31,6 +31,9 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 		strcpy(msgData3.name, l.joueurs[i].nom);
 		msgData3.playerId = i;
 		socket_send(senderId, SRV_MSG_PLAYER_CONNECTED, &msgData3, sizeof(msgData3));
+
+		struct SrvMsg_InfoLobby msgData4 = { .botCount = l.nbBots, .roundCount = l.nbManches, .readyCount = l.nbPrets };
+		socket_send(senderId, SRV_MSG_INFO_LOBBY, &msgData4, sizeof(msgData4));
 	}
 }
 

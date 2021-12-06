@@ -2,6 +2,7 @@
 #include "partie.h"
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 
 lobby l;
 
@@ -23,7 +24,7 @@ void initLobby()
 
 void setPlayerName(int id, char* name)
 {
-	l.joueurs[id].nom = name;
+	strcpy(l.joueurs[id].nom, name);
 }
 
 void setReady(int id)
