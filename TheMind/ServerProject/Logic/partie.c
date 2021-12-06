@@ -9,11 +9,10 @@
 #include "partie.h"
 
 
-partie p;
+partie p = {0};
 
 void initPartie(joueur tab[], int n)
 {
-	p.joueurs[n];
 	p.nbJoueurs = n;
 	p.manche = 1;
 	p.currentIDTerrain = 0;
@@ -77,7 +76,7 @@ void manchePerdu()
 {
 	p.vie = p.vie - 1;
 
-	if (p.vie = 0) {
+	if (p.vie == 0) {
 		partiePerdu();
 		return;
 	}

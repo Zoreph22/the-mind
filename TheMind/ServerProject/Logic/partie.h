@@ -10,7 +10,7 @@ typedef struct {
 	int nbJoueurs;
 	int vie;
 	int terrainJeu[100];
-	joueur joueurs[];
+	joueur joueurs[50];
 }partie;
 
 extern partie p;

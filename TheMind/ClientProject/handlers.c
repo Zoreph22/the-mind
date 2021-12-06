@@ -2,6 +2,8 @@
 #include "messaging/srv_handlers.h"
 #include "Logic/lobby.h"
 #include "Logic/partie.h"
+#include "Logic/joueur.h"
+#include "input.h"
 
 void SrvMsg_NoneHandler(void* data)
 {
@@ -14,6 +16,7 @@ void SrvMsg_InfoLobbyHandler(void* data)
 	printf("Message Handler: SRV_MSG_INFO_LOBBY - Round count: %i - Bot count: %i - Ready count: %i.\n", msg->roundCount, msg->botCount, msg->readyCount);
 
 	setInfoLobby(msg->roundCount, msg->botCount, msg->readyCount);
+	printLobby();
 }
 
 void SrvMsg_PlayerConnectedHandler(void* data)
@@ -21,7 +24,13 @@ void SrvMsg_PlayerConnectedHandler(void* data)
 	struct SrvMsg_PlayerConnected* msg = (struct SrvMsg_PlayerConnected*)data;
 	printf("Message Handler: SRV_MSG_PLAYER_CONNECTED - Player id: %i - Player name: %s.\n", msg->playerId, msg->name);
 
+	if (msg->playerId == (unsigned int) j.id)
+	{
+		return;
+	}
+
 	addPlayerToLobby(msg->playerId, msg->name);
+	printLobby();
 }
 
 void SrvMsg_CardPlayedHandler(void* data)
@@ -41,7 +50,7 @@ void SrvMsg_NextRoundHandler(void* data)
 	printf(".\n");
 
 	setNextRound(msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
-	distribuerCartes(msg->playerCards);
+	distribuerCartes((int *) msg->playerCards);
 }
 
 void SrvMsg_GameEndHandler(void* data)
@@ -61,6 +70,12 @@ void SrvMsg_PlayerInfo(void* data)
 {
 	struct SrvMsg_PlayerInfo* msg = (struct SrvMsg_PlayerInfo*)data;
 	printf("Message Handler: SRV_MSG_PLAYER_INFO - Player id: %i.\n", msg->playerId);
+
+	setId(msg->playerId);
+	initLobby();
+
+	setInputCallback(&gestionInputLobby);
+	printLobby();
 }
 
 void SrvMsg_MaxHandler(void* data)

@@ -5,7 +5,7 @@
 
 typedef struct {
 	bool ready;
-	char* nom;
+	char nom[20];
 	int id;
 	int nbCartes;
 	int cartes[50];
@@ -13,5 +13,7 @@ typedef struct {
 
 extern joueur j;
 
-char setName(char nom);
+void setName(char * nom);
 int jouerCarte(int carte);
+
+void setId(int id);

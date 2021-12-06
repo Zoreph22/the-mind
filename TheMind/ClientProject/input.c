@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "input.h"
 
 /// Fonction de rappel appelée après une saisie.
@@ -22,6 +23,7 @@ void beginInputLoop()
 	while (1)
 	{
 		fgets(buffer, sizeof buffer, stdin);
+		buffer[strcspn(buffer, "\n")] = 0; // Enlever retour ligne.
 
 		if (ptrCallback)
 		{

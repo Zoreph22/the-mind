@@ -5,7 +5,7 @@
 /// Port du serveur.
 #define SERVER_PORT 25565
 /// Nombre maximal de connexions au socket.
-#define MAX_CONNECTIONS 2
+#define MAX_CONNECTIONS 10
 
 /**
  * @brief Démarrer le serveur.

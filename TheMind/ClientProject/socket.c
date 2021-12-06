@@ -4,11 +4,13 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <arpa/inet.h>
+#include <strings.h>
 #include <string.h>
 #include <errno.h>
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "messaging/srv_handlers.h"
+#include "Logic/joueur.h"
 #include "socket.h"
 
 #define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
@@ -107,6 +109,11 @@ void socket_connect(const char* ip, unsigned short port)
 		FATAL_ERR("listenMessages - pthread_create()");
 	}
 
+	// Envoyer le nom du joueur au serveur.
+	struct CliMsg_SetName msgData;
+	strcpy(msgData.name, j.nom);
+	socket_send(CLI_MSG_SET_NAME, &msgData, sizeof(msgData));
+
 	/*socket_send(CLI_MSG_NONE, NULL, 0);
 	//sleep(1);
 
@@ -130,8 +137,6 @@ void socket_connect(const char* ip, unsigned short port)
 
 	socket_send(CLI_MSG_MAX, NULL, 0);
 	//sleep(1);*/
-
-	while (isOpened);
 }
 
 void socket_disconnect()

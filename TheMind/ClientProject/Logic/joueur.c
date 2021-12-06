@@ -1,27 +1,36 @@
-#include "joueur.h"
 #include <stdbool.h>
+#include <string.h>
 #include "partie.h"
+#include "joueur.h"
 
-joueur j;
+joueur j = {0};
 
-char setName(char nom)
+void setName(char * nom)
 {
-	j.nom = nom;
-	return nom;
+	strcpy(j.nom, nom);
 }
 
 int jouerCarte(int carte)
 {
 	int carteIndex = 0;
+
+	// Récupérer l'index de la carte à partir de son numéro.
 	for (int i = 0; i < j.nbCartes; i++) {
-		if (j.cartes[i] = carte) {
+		if (j.cartes[i] == carte) {
 			carteIndex = i;
 		}
 	}
-	j.cartes[i] = 0;
+
+	j.cartes[carteIndex] = 0;
+
 	return carteIndex;
 }
 
+void setId(int id)
+{
+	j.id = id;
+}
+
 int changeNbBot(int nbBot) {
-	return nbBot
+	return nbBot;
 }

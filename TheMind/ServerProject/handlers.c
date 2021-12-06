@@ -24,6 +24,9 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 	strcpy(msgData2.name, msg->name);
 	msgData2.playerId = senderId;
 	socket_broadcast(SRV_MSG_PLAYER_CONNECTED, &msgData2, sizeof(msgData2));
+
+	// TODO : ajouter message InfoLobby : liste des joueurs présents dans le lobby
+	// et l'envoyer au joueur qui vient de se co.
 }
 
 void CliMsg_SetReadyHandler(unsigned int senderId, void* data)

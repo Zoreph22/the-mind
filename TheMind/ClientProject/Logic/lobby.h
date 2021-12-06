@@ -22,3 +22,6 @@ void setPlayerName(int id, char* name);
 void setReady(int id);
 void setNumBot(int nb);
 void setInfoLobby(int roundCount, int bCount, int readyCount);
+
+void printLobby();
+void gestionInputLobby();

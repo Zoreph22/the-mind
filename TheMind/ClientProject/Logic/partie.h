@@ -13,7 +13,7 @@ typedef struct {
 	int idJCartePose;
 	bool lastRoundWon;
 	joueur jClient;
-	joueur joueurs[];
+	joueur joueurs[50];
 }partie;
 
 extern partie p;
