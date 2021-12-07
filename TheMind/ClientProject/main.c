@@ -11,6 +11,7 @@
 #include "socket.h"
 #include "Logic/joueur.h"
 #include "input.h"
+#include "utils.h"
 
 void quit()
 {

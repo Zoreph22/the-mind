@@ -12,6 +12,7 @@
 #include "messaging/srv_handlers.h"
 #include "Logic/joueur.h"
 #include "socket.h"
+#include "utils.h"
 
 #define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
 
@@ -42,7 +43,7 @@ void* listenMessages(void* unused)
 			FATAL_ERR("recvn()");
 		};
 
-		printf("Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
+		pDebug("Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
 
 		// Appel du gestionnaire correspondant au type du message.
 		srvMsgHandler[header.msgType](data);
@@ -67,7 +68,7 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 		FATAL_ERR("sendn()");
 	};
 
-	printf("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
+	pDebug("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_connect(const char* ip, unsigned short port)

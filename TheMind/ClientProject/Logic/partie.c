@@ -10,6 +10,7 @@
 #include "partie.h"
 #include "lobby.h"
 #include "joueur.h"
+#include "../utils.h"
 
 partie p = { 0 };
 
@@ -44,6 +45,7 @@ void setNextRound(int roundNumber, int lifeRemaining, int isLastRoundWon)
 
 void finPartie()
 {
+	clear();
 	printf("-------------------\n");
 
 	printf("Game Over !\n");
@@ -54,7 +56,7 @@ void finPartie()
 	printf("Nombre de manches gagnées : %i.\n", p.manche - 1);
 
 	printf("\n\n");
-	
+
 	printf("Saisir la touche R pour recommencer une partie.\n");
 
 	printf("-------------------\n");
@@ -66,6 +68,8 @@ void printManche()
 	{
 		return;
 	}
+
+	clear();
 
 	printf("--------------------\n");
 
@@ -89,7 +93,7 @@ void printManche()
 
 
 	printf("\n\n");
-	
+
 	printf("Nombre restant de cartes des autres joueurs :\n");
 
 	for (int i = 0; i < l.nbJoueurs; i++)

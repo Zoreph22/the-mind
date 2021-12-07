@@ -8,6 +8,7 @@
 #include "messaging/structs.h"
 #include "messaging/enums.h"
 #include "../socket.h"
+#include "../utils.h"
 
 lobby l;
 
@@ -35,7 +36,7 @@ void printLobby()
 		return;
 	}
 
-	// system("clear");
+	clear();
 	printf("-----------------------------------\n");
 
 	printf("Lobby : En attente des autres joueurs ... \n");
@@ -45,7 +46,7 @@ void printLobby()
 	printf("Votre pseudo : %s\n", j.nom);
 	printf("Les autres joueurs :\n");
 	for (int i = 0; i < l.nbJoueurs; i++) {
-		if(i != j.id)
+		if (i != j.id)
 			printf("\t- %s\n", l.joueurs[i].nom);
 	}
 	printf("\n");
