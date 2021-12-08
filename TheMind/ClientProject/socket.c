@@ -14,7 +14,7 @@
 #include "socket.h"
 #include "utils.h"
 
-#define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
+#define FATAL_ERR(msg) { perror(msg); socket_disconnect(); exit(errno); }
 
 /// Descripteur du socket.
 SOCKET cliSocket;
@@ -43,13 +43,13 @@ void* listenMessages(void* unused)
 			FATAL_ERR("recvn()");
 		};
 
-		pDebug("Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
+		pDebug("%sMessage received (type %i) (%lu bytes).\n", TERM_BLUE, header.msgType, header.dataLen + sizeof(header));
 
 		// Appel du gestionnaire correspondant au type du message.
 		srvMsgHandler[header.msgType](data);
 	}
 
-	printf("Stopped communication with the server.\n");
+	pDebug("Stopped communication with the server.\n");
 }
 
 void socket_send(enum CliMsg type, const void* msg, size_t size)
@@ -68,12 +68,12 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 		FATAL_ERR("sendn()");
 	};
 
-	pDebug("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
+	pDebug("%sSent message (type %i) (%li bytes).\n", TERM_GREEN, header.msgType, header.dataLen + sizeof(header));
 }
 
-void socket_connect(const char* ip, unsigned short port)
+bool socket_connect(const char* ip, unsigned short port)
 {
-	printf("Connecting to the server...\n");
+	pDebug("Connecting to the server...\n");
 
 	// Création du socket.
 	cliSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -96,12 +96,14 @@ void socket_connect(const char* ip, unsigned short port)
 	// Connexion au serveur.
 	if (connect(cliSocket, (struct sockaddr*)&sin, sizeof sin) == -1)
 	{
-		FATAL_ERR("connect()");
+		fprintf(stderr, "Erreur de connexion au serveur : %s.\nRéessayez dans 5 secondes...\n", strerror(errno));
+		sleep(5);
+		return false;
 	}
 
 	isOpened = true;
 
-	printf("Connected to the server.\n");
+	pDebug("Connected to the server.\n");
 
 	// Démarrer l'écoute des messages reçus.
 	pthread_t threadId;
@@ -115,29 +117,7 @@ void socket_connect(const char* ip, unsigned short port)
 	strcpy(msgData.name, j.nom);
 	socket_send(CLI_MSG_SET_NAME, &msgData, sizeof(msgData));
 
-	/*socket_send(CLI_MSG_NONE, NULL, 0);
-	//sleep(1);
-
-	struct CliMsg_SetName clsn = { "Kévin" };
-	socket_send(CLI_MSG_SET_NAME, &clsn, sizeof clsn);
-	//sleep(1);
-
-	socket_send(CLI_MSG_SET_READY, NULL, 0);
-	//sleep(1);
-
-	struct CliMsg_SetNumBot cmsnb = { 5 };
-	socket_send(CLI_MSG_SET_NUM_BOT, &cmsnb, sizeof cmsnb);
-	//sleep(1);
-
-	struct CliMsg_PlayCard cmpc = { 1 };
-	socket_send(CLI_MSG_PLAY_CARD, &cmpc, sizeof cmpc);
-	//sleep(1);
-
-	socket_send(CLI_MSG_REPLAY_GAME, NULL, 0);
-	//sleep(1);
-
-	socket_send(CLI_MSG_MAX, NULL, 0);
-	//sleep(1);*/
+	return true;
 }
 
 void socket_disconnect()
@@ -145,5 +125,5 @@ void socket_disconnect()
 	isOpened = false;
 	close(cliSocket);
 
-	printf("Disconnected from the server.\n");
+	pDebug("Disconnected from the server.\n");
 }

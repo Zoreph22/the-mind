@@ -10,7 +10,7 @@
 #include "partie.h"
 #include "lobby.h"
 #include "joueur.h"
-#include "../utils.h"
+#include "utils.h"
 
 partie p = { 0 };
 
@@ -43,10 +43,26 @@ void setNextRound(int roundNumber, int lifeRemaining, int isLastRoundWon)
 	}
 }
 
+bool areAllCardsPlayed()
+{
+	bool areAllPlayed = true;
+
+	for (int i = 0; i < j.nbCartes; i++)
+	{
+		if (j.cartes[i] != 0)
+		{
+			areAllPlayed = false;
+			break;
+		}
+	}
+
+	return areAllPlayed;
+}
+
 void finPartie()
 {
 	clear();
-	printf("-------------------\n");
+	printf("-- Fin de partie --\n");
 
 	printf("Game Over !\n");
 	printf("Vous avez perdu toutes vos vies.\n");
@@ -57,9 +73,7 @@ void finPartie()
 
 	printf("\n\n");
 
-	printf("Saisir la touche R pour recommencer une partie.\n");
-
-	printf("-------------------\n");
+	printfc(TERM_PURPLE, "Saisir la touche R pour recommencer une partie.\n");
 }
 
 void printManche()
@@ -71,55 +85,75 @@ void printManche()
 
 	clear();
 
-	printf("--------------------\n");
+	printf("-- Partie en cours --\n");
 
 	printf("Numéro de la manche : %i.\n", p.manche);
-	printf(p.lastRoundWon ? "La manche précédente a été gagnée.\n" : "La manche précédente a été perdue.\n");
-
-	printf("\n");
-
 	printf("Nombre restant de vie(s) : %i.\n", p.vie);
+
+	if (p.lastRoundWon)
+	{
+		printfc(TERM_GREEN, "La manche précédente a été gagnée.\n");
+	}
+	else
+	{
+		printfc(TERM_RED, "La manche précédente a été perdue.\n");
+	}
 
 	printf("\n");
 
 	if (!p.cartePose)
 	{
-		printf("Aucune carte n'a été jouée.\n");
+		printfc(TERM_YELLOW, "-> Aucune carte n'a été jouée.\n");
 	}
 	else
 	{
-		printf("Carte posée par le joueur %s : %i.\n", p.idJCartePose == j.id ? j.nom : l.joueurs[p.idJCartePose].nom, p.cartePose);
+		printfc(TERM_YELLOW, "-> Carte posée par le joueur %s : %i.\n", p.idJCartePose == j.id ? j.nom : l.joueurs[p.idJCartePose].nom, p.cartePose);
 	}
 
-
-	printf("\n\n");
+	printf("\n");
 
 	printf("Nombre restant de cartes des autres joueurs :\n");
 
 	for (int i = 0; i < l.nbJoueurs; i++)
 	{
 		if (i == j.id) continue;
-		printf("\t%s : %i / %i\n", l.joueurs[i].nom, l.joueurs[i].nbCartes, p.manche);
+
+		int nbCartes = l.joueurs[i].nbCartes;
+
+		if (nbCartes == 0)
+		{
+			printfc(TERM_GREY, "\t- %s : %i / %i\n", l.joueurs[i].nom, nbCartes, p.manche);
+		}
+		else
+		{
+			printfc(TERM_DEFAULT, "\t- %s : %i / %i\n", l.joueurs[i].nom, nbCartes, p.manche);
+		}
 	}
 
 	printf("\n\n");
 
-	printf("Votre main :");
-	for (int i = 0; i < p.manche; i++)
+	if (areAllCardsPlayed())
 	{
-		int numCarte = j.cartes[i];
-
-		if (numCarte > 0)
-		{
-			printf(" %i", numCarte);
-		}
+		printf("Vous avez joué toutes vos cartes.\n");
 	}
+	else
+	{
+		printf("Votre main :");
 
-	printf("\n");
+		for (int i = 0; i < p.manche; i++)
+		{
+			int numCarte = j.cartes[i];
 
-	printf("Saisir le numéro de la carte que vous voulez poser.\n");
+			if (numCarte > 0)
+			{
+				printf(" %i", numCarte);
+			}
+		}
 
-	printf("--------------------\n");
+		printf("\n");
+
+		printfc(TERM_PURPLE, "Saisir le numéro de la carte que vous voulez poser.\n");
+	}
 }
 
 void gestionInputCarteJouer()

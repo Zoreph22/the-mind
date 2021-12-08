@@ -1,13 +1,15 @@
 #pragma once
 
+#include <stdbool.h>
 #include "messaging/enums.h"
 
 /**
  * @brief Se connecter à un serveur distant.
  * @param ip Adresse IP du serveur.
  * @param port Port du serveur.
+ * @return @a true si connexion réussie, sinon @a false.
 */
-void socket_connect(const char* ip, unsigned short port);
+bool socket_connect(const char* ip, unsigned short port);
 
 /**
  * @brief Se déconnecter du serveur actuel.

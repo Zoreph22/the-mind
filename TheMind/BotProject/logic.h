@@ -12,6 +12,8 @@
 typedef struct {
 	/// Identifiant du joueur attribué par le serveur.
 	unsigned int playerId;
+	/// Nom du robot.
+	char playerName[8];
 	/// Nombre de cartes dans la main du joueur.
 	unsigned int nbCards;
 	/// Nombre de cartes jouées par le joueur dans la manche.

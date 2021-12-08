@@ -25,22 +25,30 @@ void connectMenu()
 	unsigned short port;
 	char name[20];
 
-	printf("Server IP address: ");
-	fgets(ip, sizeof ip, stdin);
+	do
+	{
+		clear();
 
-	printf("Server port: ");
-	scanf("%hu", &port);
-	fgetc(stdin);
+		printf("-- Connexion à un serveur de jeu --\n");
+		printf("Entrez les informations de connexion pour vous connecter à un serveur.\n\n");
 
-	printf("Type your name: ");
-	fgets(name, sizeof name, stdin);
+		printf("Adresse IP du serveur : ");
+		fgets(ip, sizeof(ip), stdin);
 
-	ip[strcspn(ip, "\n")] = 0;
-	name[strcspn(name, "\n")] = 0;
+		printf("Port du serveur: ");
+		scanf("%hu", &port);
+		fgetc(stdin);
 
-	setName(name);
+		printf("Tapez votre pseudo : ");
+		fgets(name, sizeof(name), stdin);
+		
+		printf("\nConnexion au serveur...\n");
 
-	socket_connect("127.0.0.1", 25565);
+		ip[strcspn(ip, "\n")] = 0;
+		name[strcspn(name, "\n")] = 0;
+
+		setName(name);
+	} while (!socket_connect(ip, port));
 }
 
 int main(int argc, char* argv[])

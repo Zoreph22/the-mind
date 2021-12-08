@@ -8,7 +8,7 @@
 #include "messaging/structs.h"
 #include "messaging/enums.h"
 #include "../socket.h"
-#include "../utils.h"
+#include "utils.h"
 
 lobby l;
 
@@ -37,13 +37,12 @@ void printLobby()
 	}
 
 	clear();
-	printf("-----------------------------------\n");
+	printf("-- Lobby : en attente des autres joueurs --\n");
 
-	printf("Lobby : En attente des autres joueurs ... \n");
-	printf("Nombres de joueurs prêts : %i / %i\n", l.nbPrets, l.nbJoueurs);
-	printf("Nombres de bot : %i\n", l.nbBots);
+	printf("Nombre de joueurs prêts : %i / %i.\n", l.nbPrets, l.nbJoueurs);
+	printf("Nombre de bots : %i.\n", l.nbBots);
 	printf("\n");
-	printf("Votre pseudo : %s\n", j.nom);
+	printf("Votre pseudo : %s.\n", j.nom);
 	printf("Les autres joueurs :\n");
 	for (int i = 0; i < l.nbJoueurs; i++) {
 		if (i != j.id)
@@ -52,15 +51,13 @@ void printLobby()
 	printf("\n");
 	if (j.ready)
 	{
-		printf("Vous êtes prêts.\n");
+		printf("Vous êtes prêt.\n");
 	}
 	else
 	{
-		printf("Appuyer sur p pour devenir prêt.\n");
+		printfc(TERM_PURPLE, "Appuyer sur P pour devenir prêt.\n");
 	}
-	printf("Saisir un nombre pour changer le nombre de bot dans la partie.\n");
-
-	printf("-----------------------------------\n");
+	printfc(TERM_PURPLE, "Saisir un nombre pour changer le nombre de bots dans la partie.\n");
 }
 
 void gestionInputLobby()
@@ -68,9 +65,9 @@ void gestionInputLobby()
 	char* str = getUserInput();
 	int nbBot = atoi(str);
 
-	if (strcmp(str, "p") == 0)
+	if (strcmp(str, "P") == 0 || strcmp(str, "p") == 0)
 	{
-		if (!j.ready)
+		if (l.nbBots > 0 && !j.ready)
 		{
 			j.ready = true;
 			socket_send(CLI_MSG_SET_READY, NULL, 0);

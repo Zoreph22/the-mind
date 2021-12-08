@@ -43,6 +43,9 @@ void CliMsg_SetReadyHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_SET_READY - Client: %i - Is now ready to play.\n", senderId);
 
+	// Le joueur est tout seul dans le lobby.
+	if (l.nbJoueurs == 1 && l.nbBots == 0) return;
+
 	setReady(senderId);
 
 	// Avertir les autres clients qu'un joueur est prêt.

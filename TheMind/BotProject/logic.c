@@ -6,17 +6,39 @@
 #include "messaging/enums.h"
 #include "messaging/structs.h"
 #include "socket.h"
+#include "utils.h"
 #include "logic.h"
 
-Player player;
+Player player = { 0 };
 
 void logic_initPlayer(unsigned int playerId)
 {
 	player.playerId = playerId;
+	sprintf(player.playerName, "Bot %c", 'A' + playerId);
 	player.nbCards = 0;
 	player.nbPlayedCards = 0;
 	player.cards = NULL;
 	player.canPlay = false;
+}
+
+void logic_printCards()
+{
+	if (player.nbPlayedCards == player.nbCards) return;
+
+	printfc(TERM_PURPLE, "%s cards :", player.playerName);
+
+	for (unsigned int i = 0; i < player.nbCards; i++)
+	{
+		unsigned int cardNumber = player.cards[i];
+
+		// N'afficher que les cartes non jouées.
+		if (cardNumber > 0)
+		{
+			printfc(TERM_PURPLE, " %i", cardNumber);
+		}
+	}
+
+	printfc(TERM_PURPLE, ".\n");
 }
 
 void logic_endGame()
@@ -56,6 +78,8 @@ void logic_setPlayerCards(unsigned int nbCards, const unsigned int* cards)
 	}
 
 	memcpy(player.cards, cards, nbCards * sizeof(unsigned int));
+
+	logic_printCards();
 }
 
 unsigned int logic_getLowestCardIndex()
@@ -94,7 +118,8 @@ void logic_playCard()
 
 	logic_removePlayerCard(cardIndex);
 
-	printf("Bot played card number %i.\n", cardNumber);
+	printfc(TERM_PURPLE, "%s played card number %i.\n", player.playerName, cardNumber);
+	logic_printCards();
 }
 
 void logic_schedulePlayCard()
@@ -110,5 +135,5 @@ void logic_schedulePlayCard()
 	unsigned int delayToPlay = rand() % (MAX_PLAYING_INTERVAL - MIN_PLAYING_INTERVAL + 1) + MIN_PLAYING_INTERVAL;
 	alarm(delayToPlay);
 
-	printf("Bot will play a card in %i seconds if no one plays before.\n", delayToPlay);
+	printfc(TERM_PURPLE, "%s will play a card in %i seconds if no one plays before.\n", player.playerName, delayToPlay);
 }

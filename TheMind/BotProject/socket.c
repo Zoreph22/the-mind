@@ -9,6 +9,7 @@
 #include "socket/utils_io.h"
 #include "messaging/srv_handlers.h"
 #include "socket.h"
+#include "utils.h"
 
 #define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
 
@@ -52,13 +53,13 @@ void listenMessages()
 			FATAL_ERR("recvn()");
 		};
 
-		printf("Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
+		pDebug("[BOT] Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
 
 		// Appel du gestionnaire correspondant au type du message.
 		srvMsgHandler[header.msgType](data);
 	}
 
-	printf("Stopped communication with the server.\n");
+	pDebug("[BOT] Stopped communication with the server.\n");
 }
 
 void socket_send(enum CliMsg type, const void* msg, size_t size)
@@ -77,12 +78,12 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 		FATAL_ERR("sendn()");
 	};
 
-	printf("Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
+	pDebug("[BOT] Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_connect()
 {
-	printf("Connecting to the server...\n");
+	pDebug("[BOT] Connecting to the server...\n");
 
 	// Création du socket.
 	cliSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -110,7 +111,7 @@ void socket_connect()
 
 	isOpened = true;
 
-	printf("Connected to the server.\n");
+	pDebug("[BOT] Connected to the server.\n");
 
 	// Avertir le serveur de la connexion.
 	socket_send(CLI_MSG_BOT_CONNECT, NULL, 0);
@@ -126,5 +127,5 @@ void socket_disconnect()
 	isOpened = false;
 	close(cliSocket);
 
-	printf("Disconnected from the server.\n");
+	pDebug("[BOT] Disconnected from the server.\n");
 }

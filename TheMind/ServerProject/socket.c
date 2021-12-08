@@ -65,7 +65,7 @@ void* listenMessages(void* ptrClientId)
 			FATAL_ERR("recvn()");
 		};
 
-		printf("Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
+		printfc(TERM_BLUE, "Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
 
 		// [SECTION CRITIQUE] TODO : mieux documenter.
 		pthread_mutex_lock(&mutex);
@@ -115,71 +115,6 @@ void listenConnections()
 		}
 
 		printf("Connection from %s accepted.\n", inet_ntoa(cliAddress.sin_addr));
-
-		/*sleep(1);
-
-		socket_send(clientId, SRV_MSG_NONE, NULL, 0);
-		socket_send(clientId, SRV_MSG_MAX, NULL, 0);
-
-		struct SrvMsg_InfoLobby smil = { 5, 6, 7 };
-		socket_send(clientId, SRV_MSG_INFO_LOBBY, &smil, sizeof smil);
-
-		struct SrvMsg_PlayerConnected smpc = { 2, "Ducon" };
-		socket_send(clientId, SRV_MSG_PLAYER_CONNECTED, &smpc, sizeof smpc);
-
-		struct SrvMsg_CardPlayed smcp = { 2, 256 };
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &smcp, sizeof smcp);
-
-		struct SrvMsg_NextRound smnr = { 2, 3, 1, {22, 33, 44} };
-		socket_send(clientId, SRV_MSG_NEXT_ROUND, &smnr, sizeof smnr);
-
-		struct SrvMsg_GameEnd smge = { 1 };
-		socket_send(clientId, SRV_MSG_GAME_END, &smge, sizeof smge);*/
-
-		// TEST BOT //
-		// round 1
-		/*sleep(1);
-		struct SrvMsg_NextRound msgData = { 3, 3, 1, {21, 5, 36} };
-		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
-
-		sleep(3);
-		struct SrvMsg_CardPlayed msgData2 = { .cardNumber = 5, .playerId = 1 };
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		// round 2
-		//sleep(3);
-		struct SrvMsg_NextRound msgData3 = { 4, 3, 1, {1, 4, 8, 9} };
-		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData3, sizeof(msgData3));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		// round 3
-		//sleep(3);
-		struct SrvMsg_NextRound msgData4 = { 1, 3, 1, {2} };
-		socket_send(clientId, SRV_MSG_NEXT_ROUND, &msgData4, sizeof(msgData4));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));
-
-		sleep(3);
-		socket_send(clientId, SRV_MSG_CARD_PLAYED, &msgData2, sizeof(msgData2));*/
-
-		/*sleep(1);
-		struct SrvMsg_PlayerInfo msgData = { .playerId = 1 };
-		socket_send(clientId, SRV_MSG_PLAYER_INFO, &msgData, sizeof(msgData));*/
 	}
 
 	printf("Stopped listening client connections. Total of clients connected: %i.\n", nbConnections);
@@ -210,7 +145,7 @@ void socket_broadcast(enum SrvMsg type, const void* msg, size_t size)
 		}
 	}
 
-	printf("Broadcasted message (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
+	printfc(TERM_GREEN, "Broadcasted message (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_t size)
@@ -241,7 +176,7 @@ void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_
 		FATAL_ERR("socket_send - sendn()");
 	}
 
-	printf("Sent message to client id %i (type %i) (%lu bytes).\n", clientId, header.msgType, header.dataLen + sizeof(header));
+	printfc(TERM_GREEN, "Sent message to client id %i (type %i) (%lu bytes).\n", clientId, header.msgType, header.dataLen + sizeof(header));
 }
 
 void socket_bots(unsigned int nb)
