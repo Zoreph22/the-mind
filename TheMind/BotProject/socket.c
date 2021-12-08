@@ -112,9 +112,10 @@ void socket_connect()
 
 	printf("Connected to the server.\n");
 
-	struct CliMsg_SetName msgData = { .name = "Bot" };
-	socket_send(CLI_MSG_SET_NAME, &msgData, sizeof(msgData));
+	// Avertir le serveur de la connexion.
+	socket_send(CLI_MSG_BOT_CONNECT, NULL, 0);
 
+	// Écouter les messages.
 	listenMessages();
 
 	while (isOpened);

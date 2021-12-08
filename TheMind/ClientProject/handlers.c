@@ -48,8 +48,8 @@ void SrvMsg_NextRoundHandler(void* data)
 {
 	struct SrvMsg_NextRound* msg = (struct SrvMsg_NextRound*)data;
 
-	pDebug("Message Handler: SRV_MSG_NEXT_ROUND - Round number: %i - Remaining life: %i - Is the last round won: %i - Player cards: ", msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
-	for (unsigned int i = 0; i < msg->roundNumber; i++) pDebug("[%i] = %i, ", i, msg->playerCards[i]);
+	pDebug("Message Handler: SRV_MSG_NEXT_ROUND - Round number: %i - Remaining life: %i - Is the last round won: %i - Player cards:", msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
+	for (unsigned int i = 0; i < msg->roundNumber; i++) pDebug(" [%i] = %i", i, msg->playerCards[i]);
 	pDebug(".\n");
 
 	l.inLobby = false;

@@ -6,6 +6,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <errno.h>
+#include "utils.h"
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "socket/utils_io.h"
@@ -43,6 +44,8 @@ bool isSocketOpened = false;
 */
 void* listenMessages(void* ptrClientId)
 {
+	static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 	unsigned int clientId = *(unsigned int*)ptrClientId;
 
 	while (cliSockets[clientId].isOpened)
@@ -64,8 +67,13 @@ void* listenMessages(void* ptrClientId)
 
 		printf("Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
 
-		// Appel du gestionnaire correspondant au type du message.
-		cliMsgHandler[header.msgType](clientId, data);
+		// [SECTION CRITIQUE] TODO : mieux documenter.
+		pthread_mutex_lock(&mutex);
+		{
+			// Appel du gestionnaire correspondant au type du message.
+			cliMsgHandler[header.msgType](clientId, data);
+		}
+		pthread_mutex_unlock(&mutex);
 	}
 
 	printf("Stopped communication with client id %i.\n", clientId);
@@ -234,6 +242,37 @@ void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_
 	}
 
 	printf("Sent message to client id %i (type %i) (%lu bytes).\n", clientId, header.msgType, header.dataLen + sizeof(header));
+}
+
+void socket_bots(unsigned int nb)
+{
+	for (unsigned int i = 0; i < nb; i++)
+	{
+		int pidBot = fork();
+
+		if (pidBot == -1)
+		{
+			FATAL_ERR("socket_bot - fork()");
+		}
+
+		// Fils : processus robot.
+		if (pidBot == 0)
+		{
+			// Fermer tous les descripteurs de fichier non-standard ouverts (sockets).
+			for (long i = 3; i < sysconf(_SC_OPEN_MAX); i++)
+			{
+				close(i);
+			}
+
+			// Démarrer le programme robot.
+			if (execl("../BotProject/BotProject", "BotProject", "--ip", "127.0.0.1", "--port", TO_STR(SERVER_PORT), NULL) == -1)
+			{
+				FATAL_ERR("socket_bots - execl()");
+			};
+
+			break;
+		}
+	}
 }
 
 void socket_close()

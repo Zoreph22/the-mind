@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <unistd.h>
 #include <time.h>
 #include "socket.h"
 #include "main.h"
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
 {
 	parseArgs(argc, argv);
 
-	srand(time(NULL));
+	srand(getpid());
 	signal(SIGINT, &quit);
 
 	socket_connect();

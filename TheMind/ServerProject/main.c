@@ -2,7 +2,10 @@
 
 #include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <libgen.h>
 #include <time.h>
+#include <linux/limits.h>
 #include "main.h"
 #include "socket.h"
 
@@ -12,10 +15,20 @@ void quit()
 	exit(EXIT_SUCCESS);
 }
 
-int main(int argc, char* argv[])
+void init()
 {
 	srand(time(NULL));
 	signal(SIGINT, &quit);
+
+	// Changer le répertoire courant vers le répertoire où se trouve l'exécutable.
+	char path[PATH_MAX] = "";
+	readlink("/proc/self/exe", path, sizeof(path));
+	chdir(dirname(path));
+}
+
+int main(int argc, char* argv[])
+{
+	init();
 	socket_open();
 
 	return EXIT_SUCCESS;

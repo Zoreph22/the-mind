@@ -42,6 +42,7 @@ struct SrvMsg_InfoLobby
 struct SrvMsg_PlayerConnected
 {
 	unsigned int playerId;
+	unsigned int isBot;
 	char name[20];
 };
 

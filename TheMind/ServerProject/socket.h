@@ -35,3 +35,9 @@ void socket_broadcast(enum SrvMsg type, const void* msg, size_t size);
  * @param size Taille du message.
 */
 void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_t size);
+
+/**
+ * @brief Démarrer et connecter des robots au serveur.
+ * @param nb Nombre de robots à connecter. 
+*/
+void socket_bots(unsigned int nb);

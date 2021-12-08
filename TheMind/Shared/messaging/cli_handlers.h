@@ -9,6 +9,7 @@ void CliMsg_SetReadyHandler(unsigned int senderId, void* data);
 void CliMsg_SetNumBotHandler(unsigned int senderId, void* data);
 void CliMsg_PlayCardHandler(unsigned int senderId, void* data);
 void CliMsg_ReplayGameHandler(unsigned int senderId, void* data);
+void CliMsg_BotConnectHandler(unsigned int senderId, void* data);
 void CliMsg_MaxHandler(unsigned int senderId, void* data);
 
 /**
@@ -24,5 +25,6 @@ __attribute__((unused)) static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned i
 	[2] = &CliMsg_SetReadyHandler,
 	[3] = &CliMsg_SetNumBotHandler,
 	[4] = &CliMsg_PlayCardHandler,
-	[5] = &CliMsg_ReplayGameHandler
+	[5] = &CliMsg_ReplayGameHandler,
+	[6] = &CliMsg_BotConnectHandler
 };

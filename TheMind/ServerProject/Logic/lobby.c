@@ -10,9 +10,7 @@ lobby l;
 
 void startGame()
 {
-	if (l.nbPrets == l.nbJoueurs) {
-		initPartie(l.joueurs, l.nbJoueurs);
-	}
+	initPartie(l.joueurs, l.nbJoueurs);
 }
 
 void initLobby()
@@ -33,8 +31,6 @@ void setReady(int id)
 {
 	l.joueurs[id].ready = true;
 	l.nbPrets++;
-
-	startGame();
 }
 
 void setNumBot(int nb)
