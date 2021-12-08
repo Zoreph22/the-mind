@@ -122,7 +122,7 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 	}
 
 	// Lancer la partie si tous les robots sont connectés.
-	if (nbConnectedBots == (unsigned int) l.nbBots)
+	if (nbConnectedBots == (unsigned int)l.nbBots)
 	{
 		startGame();
 	}

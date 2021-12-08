@@ -67,7 +67,7 @@ void gestionInputLobby()
 
 	if (strcmp(str, "P") == 0 || strcmp(str, "p") == 0)
 	{
-		if (l.nbBots > 0 && !j.ready)
+		if ((l.nbBots > 0 || l.nbJoueurs > 1) && !j.ready)
 		{
 			j.ready = true;
 			socket_send(CLI_MSG_SET_READY, NULL, 0);

@@ -269,5 +269,5 @@ void socket_open()
 
 	listenConnections();
 
-	while (isSocketOpened);
+	while (isSocketOpened) usleep(5000);
 }
