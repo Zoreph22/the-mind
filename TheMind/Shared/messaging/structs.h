@@ -1,44 +1,49 @@
+/**
+ * @file structs.h
+ * @brief Structures repr√©sentant les donn√©es de chaque type de message.
+ */
+
 #pragma once
 
-/// Structure de l'en-tÍte d'un message.
+/// Structure de l'en-t√™te d'un message.
 struct MsgHeader
 {
 	/// Longueur du contenu du message.
 	unsigned int dataLen;
-	/// Type du message (cf. les ÈnumÈrations TODO).
+	/// Type du message (cf. √©num√©rations @link CliMsg @endlink ou @link SrvMsg @endlink).
 	unsigned int msgType;
 };
 
-/// Message d'affectation du nom du client.
+/// Donn√©es du type de message @link CLI_MSG_SET_NAME @endlink.
 struct CliMsg_SetName
 {
 	char name[20];
 };
 
-/// Message d'affectation du nombre de robots dans la partie.
+/// Donn√©es du type de message @link CLI_MSG_SET_NUM_BOT @endlink.
 struct CliMsg_SetNumBot
 {
 	unsigned int botCount;
 };
 
-/// Message lorsqu'un client veut jouer une carte.
+/// Donn√©es du type de message @link CLI_MSG_PLAY_CARD @endlink.
 struct CliMsg_PlayCard
 {
 	unsigned int cardIndex;
 };
 
-/// Message d'information du lobby.
+/// Donn√©es du type de message @link SRV_MSG_INFO_LOBBY @endlink.
 struct SrvMsg_InfoLobby
 {
 	/// Nombre de manches au total.
 	unsigned int roundCount;
 	/// Nombre de robots dans la partie.
 	unsigned int botCount;
-	/// Nombre de clients prÍts ‡ jouer.
+	/// Nombre de clients pr√™ts √† jouer.
 	unsigned int readyCount;
 };
 
-/// Message d'information d'un client qui vient de se connecter.
+/// Donn√©es du type de message @link SRV_MSG_PLAYER_CONNECTED @endlink.
 struct SrvMsg_PlayerConnected
 {
 	unsigned int playerId;
@@ -46,33 +51,33 @@ struct SrvMsg_PlayerConnected
 	char name[20];
 };
 
-/// Message d'information qu'une carte a ÈtÈ jouÈe par un autre client.
+/// Donn√©es du type de message @link SRV_MSG_CARD_PLAYED @endlink.
 struct SrvMsg_CardPlayed
 {
 	unsigned int playerId;
 	unsigned int cardNumber;
 };
 
-/// Message d'information du commencement d'une nouvelle manche.
+/// Donn√©es du type de message @link SRV_MSG_NEXT_ROUND @endlink.
 struct SrvMsg_NextRound
 {
-	/// NumÈro de la nouvelle manche.
+	/// Num√©ro de la nouvelle manche.
 	unsigned int roundNumber;
 	/// Nombre restant de vie.
 	unsigned int lifeRemaining;
-	/// La derniËre manche a ÈtÈ gagnÈe ?
+	/// La derni√®re manche a √©t√© gagn√©e ?
 	unsigned int isLastRoundWon;
 	/// Ensemble des cartes du client destinataire du message.
-	unsigned int playerCards[50]; // TODO : vÈrifier si la taille est suffisante.
+	unsigned int playerCards[50]; // TODO : v√©rifier si la taille est suffisante.
 };
 
-/// Message d'information de fin de partie.
+/// Donn√©es du type de message @link SRV_MSG_GAME_END @endlink.
 struct SrvMsg_GameEnd
 {
 	unsigned int isGameWon;
 };
 
-/// Message d'information ‡ destination du joueur qui vient de se connecter.
+/// Donn√©es du type de message @link SRV_MSG_PLAYER_INFO @endlink.
 struct SrvMsg_PlayerInfo
 {
 	unsigned int playerId;

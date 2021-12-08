@@ -1,3 +1,11 @@
+/**
+ * @file srv_handlers.h
+ * @brief Définitions des gestionnaires des types de message envoyé par le serveur.
+ * 
+ * Les gestionnaires doivent être implémentés au niveau du client.
+ * Les gestionnaires sont automatiquement appelés à la réception d'un message.
+ */
+
 #pragma once
 
 #include "enums.h"
@@ -13,11 +21,11 @@ void SrvMsg_MaxHandler(void* data);
 void SrvMsg_PlayerInfo(void* data);
 
 /**
- * @brief Tableau associatif (type du message serveur => fonction qui g�re le message).
- * Les fonctions gestionnaires ont un param�tre : pointeur vers la structure correspondant au type du message.
- * TODO : see les enums.
+ * @brief Tableau associatif (type du message serveur => fonction qui gère le message).
+ * Les fonctions gestionnaires ont un paramètre : pointeur vers la structure correspondant au type du message (cf. @link messaging/structs.h @endlink).
+ * @see Voir l'énumération @link SrvMsg @endlink pour les types de message client.
 */
-__attribute__((unused)) static void (*srvMsgHandler[SRV_MSG_MAX + 1])(void* data) = {
+static void (*srvMsgHandler[SRV_MSG_MAX + 1])(void* data) = {
 	[0] = &SrvMsg_NoneHandler,[SRV_MSG_MAX] = &SrvMsg_MaxHandler,
 	[1] = &SrvMsg_InfoLobbyHandler,
 	[2] = &SrvMsg_PlayerConnectedHandler,
@@ -26,3 +34,5 @@ __attribute__((unused)) static void (*srvMsgHandler[SRV_MSG_MAX + 1])(void* data
 	[5] = &SrvMsg_GameEndHandler,
 	[6] = &SrvMsg_PlayerInfo
 };
+
+// __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen

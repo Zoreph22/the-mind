@@ -1,3 +1,11 @@
+/**
+ * @file cli_handlers.h
+ * @brief Définitions des gestionnaires des types de message envoyé par le client.
+ * 
+ * Les gestionnaires doivent être implémentés au niveau du serveur.
+ * Les gestionnaires sont automatiquement appelés à la réception d'un message.
+ */
+
 #pragma once
 
 #include "enums.h"
@@ -13,13 +21,13 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data);
 void CliMsg_MaxHandler(unsigned int senderId, void* data);
 
 /**
- * @brief Tableau associatif (type du message client => fonction qui g�re le message).
- * Les fonctions gestionnaires ont 2 param�tres :
- * - identifiant du client �metteur ;
- * - pointeur vers la structure correspondant au type du message.
- * TODO : see les enums.
+ * @brief Tableau associatif (type du message client => fonction qui gère le message).
+ * Les fonctions gestionnaires ont 2 paramètres :
+ * - identifiant du client émetteur ;
+ * - pointeur vers la structure correspondant au type du message (cf. @link messaging/structs.h @endlink).
+ * @see Voir l'énumération @link CliMsg @endlink pour les types de message client.
 */
-__attribute__((unused)) static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned int, void*) = {
+static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned int, void*) = {
 	[0] = &CliMsg_NoneHandler,[CLI_MSG_MAX] = &CliMsg_MaxHandler,
 	[1] = &CliMsg_SetNameHandler,
 	[2] = &CliMsg_SetReadyHandler,
@@ -28,3 +36,5 @@ __attribute__((unused)) static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned i
 	[5] = &CliMsg_ReplayGameHandler,
 	[6] = &CliMsg_BotConnectHandler
 };
+
+// __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen
