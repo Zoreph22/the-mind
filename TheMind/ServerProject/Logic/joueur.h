@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <sds/sds.h>
+#include "stats.h"
 
 typedef struct {
 	bool ready;

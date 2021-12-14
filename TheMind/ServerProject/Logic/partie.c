@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
+#include "stats.h"
 #include "messaging/structs.h"
 #include "messaging/enums.h"
 #include "../socket.h"
@@ -17,6 +18,7 @@ void initPartie(joueur tab[], int n)
 	p.manche = 0;
 	p.currentIDTerrain = 0;
 	p.vie = 3;
+
 	for (int i = 0; i < n; i++) {
 		p.joueurs[i] = tab[i];
 	}
@@ -44,8 +46,15 @@ void distribuerCartes()
 
 bool gestionCarteJouer(int idJoueur, int idCarte)
 {
-	int numCarte = p.joueurs[idJoueur].cartes[idCarte];
+	// Mettre à jour les statistiques.
+	unsigned int reactionTime = stats_elapsedSecs(false);
+	stats_updatePlayerReactionTimes(idJoueur, reactionTime);
+	stats_updateReactionTimes(reactionTime);
+	stats_elapsedSecs(true);
 
+	// Gérer la carte.
+	int numCarte = p.joueurs[idJoueur].cartes[idCarte];
+	
 	p.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
 
 	// La carte posée fait gagner la manche et toutes les cartes ont été posées.
@@ -56,6 +65,7 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 
 	// La carte posée fait perdre la manche.
 	if (!isCardWinner(numCarte)) {
+		stats_updatePlayerFailCount(idJoueur);
 		manchePerdu();
 		return false;
 	}
@@ -67,12 +77,16 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 
 bool partiePerdu()
 {
+	stats_updateGameStats();
+
 	struct SrvMsg_GameEnd msgData = { .isGameWon = false };
 	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
 }
 
 bool partieGagner()
 {
+	stats_updateGameStats();
+
 	struct SrvMsg_GameEnd msgData = { .isGameWon = true };
 	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
 }

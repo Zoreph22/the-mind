@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include "messaging/enums.h"
 
 /// Port du serveur.

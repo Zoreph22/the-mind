@@ -10,6 +10,7 @@ lobby l;
 
 void startGame()
 {
+	stats_elapsedSecs(true);
 	initPartie(l.joueurs, l.nbJoueurs);
 }
 

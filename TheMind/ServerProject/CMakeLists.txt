@@ -10,7 +10,7 @@ add_executable (ServerProject
 	"Logic/lobby.c" "Logic/lobby.h"
 	"Logic/mind.c" "Logic/mind.h"
 	"Logic/partie.c" "Logic/partie.h"
-	"handlers.c" )
+	"handlers.c"  "Logic/stats.c" "Logic/stats.h")
 
 # Link libraries to this project.
 target_link_libraries (ServerProject PRIVATE sds)
