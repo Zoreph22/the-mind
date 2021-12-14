@@ -74,6 +74,7 @@ void finPartie()
 	printf("\n\n");
 
 	printfc(TERM_PURPLE, "Saisir la touche R pour recommencer une partie.\n");
+	printfc(TERM_PURPLE, "Saisir la touche Q pour arrêter le jeu.\n");
 }
 
 void printManche()
@@ -176,5 +177,9 @@ void gestionInputFinPartie()
 	if (strcmp(input, "R") == 0 || strcmp(input, "r") == 0)
 	{
 		socket_send(CLI_MSG_REPLAY_GAME, NULL, 0);
+	}
+	else if (strcmp(input, "Q") == 0 || strcmp(input, "q") == 0)
+	{
+		socket_send(CLI_MSG_STOP_GAME, NULL, 0);
 	}
 }

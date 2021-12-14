@@ -183,6 +183,8 @@ void socket_bots(unsigned int nb)
 {
 	for (unsigned int i = 0; i < nb; i++)
 	{
+		usleep(50000);
+
 		int pidBot = fork();
 
 		if (pidBot == -1)
@@ -214,6 +216,8 @@ void socket_close()
 {
 	printf("Closing server...\n");
 
+	socket_broadcast(SRV_MSG_DISCONNECT_ALL, NULL, 0);
+
 	for (unsigned int i = 0; i < nbConnections; i++)
 	{
 		cliSockets[i].isOpened = false;
@@ -225,7 +229,10 @@ void socket_close()
 	}
 
 	isSocketOpened = false;
-	close(srvSocket);
+	if (close(srvSocket) == -1)
+	{
+		perror("close");
+	}
 
 	printf("Server closed.\n");
 }

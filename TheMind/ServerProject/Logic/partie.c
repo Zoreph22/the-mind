@@ -95,7 +95,7 @@ void manchePerdu()
 {
 	p.vie = p.vie - 1;
 
-	if (p.vie == 0) {
+	if (p.vie <= 0) {
 		partiePerdu();
 		return;
 	}

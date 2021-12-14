@@ -9,6 +9,9 @@
 #include "main.h"
 #include "socket.h"
 
+#include <stdio.h>
+#include "Logic/stats.h"
+
 void quit()
 {
 	socket_close();
@@ -30,6 +33,8 @@ int main(int argc, char* argv[])
 {
 	init();
 	socket_open();
+
+	//stats_generatePDF();
 
 	return EXIT_SUCCESS;
 }

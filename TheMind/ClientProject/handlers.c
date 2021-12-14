@@ -80,6 +80,13 @@ void SrvMsg_PlayerInfo(void* data)
 	printLobby();
 }
 
+void SrvMsg_DisconnectAll(void* data)
+{
+	pDebug("Message Handler: SRV_MSG_DISCONNECT_ALL - Disconnected from the server.\n");
+
+	socket_disconnect();
+}
+
 void SrvMsg_MaxHandler(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_MAX - Unhandled message.\n");

@@ -22,6 +22,8 @@ enum CliMsg
 	CLI_MSG_REPLAY_GAME = 5,
 	/// Confirmer la connexion d'un robot.
 	CLI_MSG_BOT_CONNECT = 6,
+	/// Arrêter le jeu.
+	CLI_MSG_STOP_GAME = 7,
 	/// Inutilisé.
 	CLI_MSG_MAX
 };
@@ -43,6 +45,8 @@ enum SrvMsg
 	SRV_MSG_GAME_END = 5,
 	/// Envoi de l'identifiant du client au joueur qui vient de se connecté.
 	SRV_MSG_PLAYER_INFO = 6,
+	/// Déconnexion de tous les clients.
+	SRV_MSG_DISCONNECT_ALL = 7,
 	/// Inutilisé.
 	SRV_MSG_MAX
 };

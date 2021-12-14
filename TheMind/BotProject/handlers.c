@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "logic.h"
 #include "utils.h"
+#include "socket.h"
 #include "messaging/srv_handlers.h"
 
 void SrvMsg_NoneHandler(void* data)
@@ -53,6 +54,13 @@ void SrvMsg_PlayerInfo(void* data)
 	pDebug("[BOT] Message Handler: SRV_MSG_PLAYER_INFO - Player id: %i.\n", msg->playerId);
 
 	logic_initPlayer(msg->playerId);
+}
+
+void SrvMsg_DisconnectAll(void* data)
+{
+	pDebug("Message Handler: SRV_MSG_DISCONNECT_ALL - Disconnected from the server.\n");
+
+	socket_disconnect();
 }
 
 void SrvMsg_MaxHandler(void* data)

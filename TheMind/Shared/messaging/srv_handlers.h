@@ -17,8 +17,9 @@ void SrvMsg_PlayerConnectedHandler(void* data);
 void SrvMsg_CardPlayedHandler(void* data);
 void SrvMsg_NextRoundHandler(void* data);
 void SrvMsg_GameEndHandler(void* data);
-void SrvMsg_MaxHandler(void* data);
 void SrvMsg_PlayerInfo(void* data);
+void SrvMsg_DisconnectAll(void* data);
+void SrvMsg_MaxHandler(void* data);
 
 /**
  * @brief Tableau associatif (type du message serveur => fonction qui gère le message).
@@ -32,7 +33,8 @@ static void (*srvMsgHandler[SRV_MSG_MAX + 1])(void* data) = {
 	[3] = &SrvMsg_CardPlayedHandler,
 	[4] = &SrvMsg_NextRoundHandler,
 	[5] = &SrvMsg_GameEndHandler,
-	[6] = &SrvMsg_PlayerInfo
+	[6] = &SrvMsg_PlayerInfo,
+	[7] = &SrvMsg_DisconnectAll
 };
 
 // __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen

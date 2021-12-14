@@ -1,7 +1,7 @@
 # CMakeList.txt : Common source files between all subprojects.
 
 # Include shared libraries.
-add_library (shared_socket STATIC "socket/utils_io.c" "socket/utils_io.h")
+add_library (shared_socket STATIC "socket/utils_io.c" "socket/utils_io.h" "utils.c")
 add_library (shared_messaging INTERFACE)
 
 # Add include search paths.

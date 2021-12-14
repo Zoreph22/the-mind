@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef struct {
 	unsigned int gameCount;
 	unsigned int minReactionTime;
@@ -18,6 +20,8 @@ typedef struct {
 	float avgReactionTime;
 	unsigned int failCount;
 } PlayerStats;
+
+void stats_generatePDF();
 
 // Statistiques globales.
 

@@ -18,6 +18,7 @@ void CliMsg_SetNumBotHandler(unsigned int senderId, void* data);
 void CliMsg_PlayCardHandler(unsigned int senderId, void* data);
 void CliMsg_ReplayGameHandler(unsigned int senderId, void* data);
 void CliMsg_BotConnectHandler(unsigned int senderId, void* data);
+void CliMsg_StopGameHandler(unsigned int senderId, void* data);
 void CliMsg_MaxHandler(unsigned int senderId, void* data);
 
 /**
@@ -34,7 +35,8 @@ static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned int, void*) = {
 	[3] = &CliMsg_SetNumBotHandler,
 	[4] = &CliMsg_PlayCardHandler,
 	[5] = &CliMsg_ReplayGameHandler,
-	[6] = &CliMsg_BotConnectHandler
+	[6] = &CliMsg_BotConnectHandler,
+	[7] = &CliMsg_StopGameHandler
 };
 
 // __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen

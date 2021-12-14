@@ -88,7 +88,7 @@ void CliMsg_PlayCardHandler(unsigned int senderId, void* data)
 
 void CliMsg_ReplayGameHandler(unsigned int senderId, void* data)
 {
-	printf("Message Handler: CLI_MSG_REPLAY_GAME - Client: %i - Want to replay a game.\n", senderId);
+	printf("Message Handler: CLI_MSG_REPLAY_GAME - Client: %i - Starting a new game.\n", senderId);
 
 	startGame();
 }
@@ -126,6 +126,14 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 	{
 		startGame();
 	}
+}
+
+void CliMsg_StopGameHandler(unsigned int senderId, void* data)
+{
+	printf("Message Handler: CLI_MSG_STOP_GAME - Client: %i - Stopping the game.\n", senderId);
+
+	stats_generatePDF();
+	socket_close(); // TODO : main thread ?
 }
 
 void CliMsg_MaxHandler(unsigned int senderId, void* data)

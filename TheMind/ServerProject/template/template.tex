@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array,multirow,makecell}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[french]{babel}
+
+\setlength{\parindent}{0pt}
+
+\title{The Mind \\ Statistiques pour la session de jeu}
+
+\begin{document}
+\maketitle
+
+%PLAYER_COUNT Nombre de joueurs : %d
+
+\section{Statistiques globales}
+
+%REACTION_MIN Temps de réaction min. : %d secondes \\
+%REACTION_MAX Temps de réaction max. : %d secondes \\
+%REACTION_AVG Temps de réaction moy. : %.2f secondes \\
+
+%ROUND_WON_AVG Nombre de manches gagnées par partie moy. : %.2f \\
+
+%WORST_PLAYER Joueur qui a fait perdre le plus de manches : %s \\
+
+\textbf{Graphique du nombre de manches gagnées par partie :}\\
+
+\begin{tikzpicture}
+	\begin{axis}
+		[xlabel={Numéro de la partie}, ylabel={Nombre de manches gagnées}]
+%ROUND_WON_PER_GAME		\addplot coordinates {%s};
+	\end{axis}
+\end{tikzpicture}
+
+\section{Statistiques des joueurs}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline Joueur & Temps min. & Temps max. & Temps moy. & Nombre d'échecs \\
+%PLAYER_STATS
+\hline
+\end{tabular}
+
+\end{document}

@@ -51,3 +51,5 @@
  */
 #define TO_STR_INDIR(x) #x
 #define TO_STR(x) TO_STR_INDIR(x)
+
+void strReplaceChar(char* string, char toFind, char toReplace, size_t size);

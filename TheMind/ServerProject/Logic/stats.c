@@ -1,12 +1,93 @@
 #include <time.h>
 #include <stdbool.h>
+#include <sds/sds.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include "../socket.h"
 #include "utils.h"
 #include "partie.h"
 #include "stats.h"
 
+#include <string.h>
+
 GlobalStats globalStats = { 0 };
 PlayerStats playerStats[MAX_CONNECTIONS] = { 0 };
+
+void stats_generatePDF()
+{
+	// Remplacer les espaces par des _ sinon la commande ne s'exécute pas.
+	for (unsigned int i = 0; i < (unsigned int) p.nbJoueurs; i++)
+	{
+		strReplaceChar(p.joueurs[i].nom, ' ', '-', sizeof(p.joueurs[i].nom));
+	}
+
+	// ---- Création des paramètres d'exécution de Awk. ----
+
+	sds args = sdsnew("");
+
+	// Statistiques globales.
+	args = sdscatprintf(args,
+		" -v PLAYER_COUNT=%i"\
+		" -v REACTION_MIN=%i"\
+		" -v REACTION_MAX=%i"\
+		" -v REACTION_AVG=%.2f"\
+		" -v ROUND_WON_AVG=%.2f"\
+		" -v WORST_PLAYER=%s",
+		p.nbJoueurs,
+		globalStats.minReactionTime,
+		globalStats.maxReactionTime,
+		globalStats.avgReactionTime,
+		globalStats.avgRoundWon,
+		p.joueurs[globalStats.worsePlayerId].nom
+	);
+
+	// Nombre de manches gagnées pour chaque partie.
+	args = sdscat(args, " -v ROUND_WON_PER_GAME=");
+	for (unsigned int i = 0; i < globalStats.gameCount; i++)
+	{
+		args = sdscatprintf(args, "(%i,%i)", i, globalStats.roundWonPerGame[i]);
+	}
+
+	// Statistiques de chaque joueur.
+	args = sdscat(args, " -v PLAYERS_ARRAY=");
+	for (unsigned int i = 0; i < (unsigned int) p.nbJoueurs; i++)
+	{
+		args = sdscatprintf(args, "%s:%i:%i:%.2f:%i|",
+			p.joueurs[i].nom,
+			playerStats[i].minReactionTime,
+			playerStats[i].maxReactionTime,
+			playerStats[i].avgReactionTime,
+			playerStats[i].failCount
+		);
+	}
+
+	// ---- Exécuter le script shell générant le fichier PDF et lui passer les paramètres. ----
+	int scriptPid;
+
+	if ((scriptPid = fork()) == 0)
+	{
+		if (execlp("./template/generate_pdf.sh", "./template/generate_pdf.sh", args, NULL) == -1)
+		{
+			perror("stats_generatePDF - execlp()");
+		}
+
+		return;
+	}
+
+	if (scriptPid == -1)
+	{
+		perror("stats_generatePDF - fork()");
+	}
+
+	// Attendre la fin du script shell.
+	if (waitpid(scriptPid, NULL, 0) == -1)
+	{
+		perror("stats_generatePDF - waitpid()");
+	}
+
+	sdsfree(args);
+}
 
 // Statistiques globales.
 
