@@ -128,8 +128,6 @@ void stats_updateReactionTimes(unsigned int reactionTime)
 	currentSum += reactionTime;
 
 	globalStats.avgReactionTime = currentSum / currentN;
-
-	printfc(TERM_RED, "[STATS REACTTIME] min : %i, max : %i, avg : %f\n", globalStats.minReactionTime, globalStats.maxReactionTime, globalStats.avgReactionTime);
 }
 
 void stats_updateAvgRoundWon()
@@ -164,13 +162,6 @@ void stats_updateGameStats()
 	globalStats.roundWonPerGame[globalStats.gameCount++] = p.manche - 1;
 	stats_updateAvgRoundWon();
 	stats_updateWorsePlayer();
-
-	printfc(TERM_RED, "[STATS] avgRoundWon : %f, worsePlayer : %s\n", globalStats.avgRoundWon, p.joueurs[globalStats.worsePlayerId].nom);
-
-	for (unsigned int i = 0; i < globalStats.gameCount; i++)
-	{
-		printfc(TERM_RED, "[STATS] game num %i round won : %i\n", i, globalStats.roundWonPerGame[i]);
-	}
 }
 
 // Statistiques des joueurs.
@@ -191,13 +182,9 @@ void stats_updatePlayerReactionTimes(unsigned int id, unsigned int reactionTime)
 	currentSum[id] += reactionTime;
 
 	stats->avgReactionTime = currentSum[id] / currentN[id];
-
-	printfc(TERM_RED, "[STATS REACTTIME PLAYER %i] min : %i, max : %i, avg : %f\n", id, stats->minReactionTime, stats->maxReactionTime, stats->avgReactionTime);
 }
 
 void stats_updatePlayerFailCount(unsigned int id)
 {
 	playerStats[id].failCount++;
-
-	printfc(TERM_RED, "[STATS PLAYER %i] fail count : %i\n", id, playerStats[id].failCount);
 }
