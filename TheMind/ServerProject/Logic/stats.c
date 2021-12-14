@@ -72,6 +72,7 @@ void stats_generatePDF()
 			perror("stats_generatePDF - execlp()");
 		}
 
+		sdsfree(args);
 		return;
 	}
 

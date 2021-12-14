@@ -85,6 +85,7 @@ void SrvMsg_DisconnectAll(void* data)
 	pDebug("Message Handler: SRV_MSG_DISCONNECT_ALL - Disconnected from the server.\n");
 
 	socket_disconnect();
+	printfc(TERM_YELLOW, "Déconnecté du serveur. Vous pouvez fermer le jeu.\n");
 }
 
 void SrvMsg_MaxHandler(void* data)

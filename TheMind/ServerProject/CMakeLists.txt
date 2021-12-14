@@ -21,3 +21,10 @@ target_link_libraries(ServerProject PRIVATE shared_socket)
 
 # Compile options.
 target_compile_options (ServerProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+
+# Copy template tex files to build dir.
+add_custom_command(
+	TARGET ServerProject POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${CMAKE_CURRENT_SOURCE_DIR}/template
+			${CMAKE_CURRENT_BINARY_DIR}/template)
