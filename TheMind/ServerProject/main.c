@@ -9,7 +9,6 @@
 #include <libgen.h>
 #include <time.h>
 #include <linux/limits.h>
-#include "main.h"
 #include "socket.h"
 
 /// Quitter le programme proprement en déconnectant les clients et le serveur.

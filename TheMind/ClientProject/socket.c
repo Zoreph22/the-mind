@@ -15,7 +15,7 @@
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "messaging/srv_handlers.h"
-#include "Logic/joueur.h"
+#include "logic/joueur.h"
 #include "socket.h"
 #include "utils.h"
 

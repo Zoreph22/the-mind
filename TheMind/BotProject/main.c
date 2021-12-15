@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <time.h>
 #include "socket.h"
-#include "main.h"
 
 /// Quitter le programme proprement en se déconnectant du serveur.
 void quit()

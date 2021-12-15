@@ -5,9 +5,9 @@
 
 #include <stdio.h>
 #include "messaging/srv_handlers.h"
-#include "Logic/lobby.h"
-#include "Logic/partie.h"
-#include "Logic/joueur.h"
+#include "logic/lobby.h"
+#include "logic/partie.h"
+#include "logic/joueur.h"
 #include "input.h"
 #include "utils.h"
 

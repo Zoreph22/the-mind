@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include "socket.h"
 #include <string.h>
-#include "Logic/partie.h"
-#include "Logic/lobby.h"
+#include "logic/partie.h"
+#include "logic/lobby.h"
 #include "messaging/cli_handlers.h"
 
 /// Inutilisé.

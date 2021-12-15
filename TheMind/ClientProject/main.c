@@ -10,9 +10,8 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
-#include "main.h"
 #include "socket.h"
-#include "Logic/joueur.h"
+#include "logic/joueur.h"
 #include "input.h"
 #include "utils.h"
 
