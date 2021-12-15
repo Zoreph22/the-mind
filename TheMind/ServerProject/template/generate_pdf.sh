@@ -9,7 +9,7 @@ if ! awk -f template/generate_latex.awk `echo $@` template/template.tex > templa
 fi
 
 # Génération du PDF.
-if ! : | pdflatex -halt-on-error -output-directory=template template/out.tex > /dev/null 2> /dev/null ; then
+if ! : | pdflatex -halt-on-error -no-shell-escape -output-directory=template template/out.tex > /dev/null 2> /dev/null ; then
   echo "Error occurred while generating PDF. Check logs in template/out.log."
   exit
 fi
