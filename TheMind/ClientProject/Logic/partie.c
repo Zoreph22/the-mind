@@ -69,12 +69,12 @@ void finPartie()
 
 	printf("\n");
 
-	printf("Nombre de manches gagnÈes : %i.\n", p.manche - 1);
+	printf("Nombre de manches gagn√©es : %i.\n", p.manche - 1);
 
 	printf("\n\n");
 
 	printfc(TERM_PURPLE, "Saisir la touche R pour recommencer une partie.\n");
-	printfc(TERM_PURPLE, "Saisir la touche Q pour arrÍter le jeu.\n");
+	printfc(TERM_PURPLE, "Saisir la touche Q pour arr√™ter le jeu.\n");
 }
 
 void printManche()
@@ -88,27 +88,27 @@ void printManche()
 
 	printf("-- Partie en cours --\n");
 
-	printf("NumÈro de la manche : %i.\n", p.manche);
+	printf("Num√©ro de la manche : %i.\n", p.manche);
 	printf("Nombre restant de vie(s) : %i.\n", p.vie);
 
 	if (p.lastRoundWon)
 	{
-		printfc(TERM_GREEN, "La manche prÈcÈdente a ÈtÈ gagnÈe.\n");
+		printfc(TERM_GREEN, "La manche pr√©c√©dente a √©t√© gagn√©e.\n");
 	}
 	else
 	{
-		printfc(TERM_RED, "La manche prÈcÈdente a ÈtÈ perdue.\n");
+		printfc(TERM_RED, "La manche pr√©c√©dente a √©t√© perdue.\n");
 	}
 
 	printf("\n");
 
 	if (!p.cartePose)
 	{
-		printfc(TERM_YELLOW, "-> Aucune carte n'a ÈtÈ jouÈe.\n");
+		printfc(TERM_YELLOW, "-> Aucune carte n'a √©t√© jou√©e.\n");
 	}
 	else
 	{
-		printfc(TERM_YELLOW, "-> Carte posÈe par le joueur %s : %i.\n", p.idJCartePose == j.id ? j.nom : l.joueurs[p.idJCartePose].nom, p.cartePose);
+		printfc(TERM_YELLOW, "-> Carte pos√©e par le joueur %s : %i.\n", p.idJCartePose == j.id ? j.nom : l.joueurs[p.idJCartePose].nom, p.cartePose);
 	}
 
 	printf("\n");
@@ -135,7 +135,7 @@ void printManche()
 
 	if (areAllCardsPlayed())
 	{
-		printf("Vous avez jouÈ toutes vos cartes.\n");
+		printf("Vous avez jou√© toutes vos cartes.\n");
 	}
 	else
 	{
@@ -153,7 +153,7 @@ void printManche()
 
 		printf("\n");
 
-		printfc(TERM_PURPLE, "Saisir le numÈro de la carte que vous voulez poser.\n");
+		printfc(TERM_PURPLE, "Saisir le num√©ro de la carte que vous voulez poser.\n");
 	}
 }
 

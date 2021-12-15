@@ -22,7 +22,7 @@ SOCKET cliSocket;
 bool isOpened = false;
 
 /**
- * @brief [Thread] Écouter les messages du serveur et appeler le bon gestionnaire selon le message reçu.
+ * @brief [Thread] Ã‰couter les messages du serveur et appeler le bon gestionnaire selon le message reÃ§u.
 */
 void* listenMessages(void* unused)
 {
@@ -31,7 +31,7 @@ void* listenMessages(void* unused)
 		struct MsgHeader header;
 		char data[MAX_MSG_SIZE];
 
-		// Lecture en-tête message : taille contenu du message & type du message.
+		// Lecture en-tÃªte message : taille contenu du message & type du message.
 		if (recvn(cliSocket, &header, sizeof(header)) == -1)
 		{
 			FATAL_ERR("recvn()");
@@ -56,7 +56,7 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 {
 	struct MsgHeader header = { size, type };
 
-	// Envoyer l'en-tête du message.
+	// Envoyer l'en-tÃªte du message.
 	if (sendn(cliSocket, &header, sizeof(header)) == -1)
 	{
 		FATAL_ERR("sendn()");
@@ -75,7 +75,7 @@ bool socket_connect(const char* ip, unsigned short port)
 {
 	pDebug("Connecting to the server...\n");
 
-	// Création du socket.
+	// CrÃ©ation du socket.
 	cliSocket = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (cliSocket == -1)
@@ -83,7 +83,7 @@ bool socket_connect(const char* ip, unsigned short port)
 		FATAL_ERR("socket()");
 	}
 
-	// Spécifier l'adresse IP et le port du serveur.
+	// SpÃ©cifier l'adresse IP et le port du serveur.
 	struct sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
@@ -96,7 +96,7 @@ bool socket_connect(const char* ip, unsigned short port)
 	// Connexion au serveur.
 	if (connect(cliSocket, (struct sockaddr*)&sin, sizeof sin) == -1)
 	{
-		fprintf(stderr, "Erreur de connexion au serveur : %s.\nRéessayez dans 5 secondes...\n", strerror(errno));
+		fprintf(stderr, "Erreur de connexion au serveur : %s.\nRÃ©essayez dans 5 secondes...\n", strerror(errno));
 		sleep(5);
 		return false;
 	}
@@ -105,7 +105,7 @@ bool socket_connect(const char* ip, unsigned short port)
 
 	pDebug("Connected to the server.\n");
 
-	// Démarrer l'écoute des messages reçus.
+	// DÃ©marrer l'Ã©coute des messages reÃ§us.
 	pthread_t threadId;
 	if (pthread_create(&threadId, NULL, &listenMessages, NULL) == -1)
 	{

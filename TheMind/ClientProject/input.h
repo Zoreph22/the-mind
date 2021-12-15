@@ -1,19 +1,19 @@
 #pragma once
 
 /**
- * @brief Définir la fonction de rappel lorsqu'une saisie a été faite par l'utilisateur dans l'entrée standard.
+ * @brief DÃ©finir la fonction de rappel lorsqu'une saisie a Ã©tÃ© faite par l'utilisateur dans l'entrÃ©e standard.
  * @param newPtrCallback Fonction de rappel (ou @c NULL si aucune fonction de rappel).
 */
 void setInputCallback(void (*newPtrCallback)());
 
 /**
- * @brief Retourner la dernière saisie de l'utilisateur dans l'entrée standard.
- * @return Chaîne de caractère saisie.
+ * @brief Retourner la derniÃ¨re saisie de l'utilisateur dans l'entrÃ©e standard.
+ * @return ChaÃ®ne de caractÃ¨re saisie.
 */
 char* getUserInput();
 
 /**
- * @brief Démarrer la boucle capturant les saisies utilisateur dans l'entrée standard.
- * À chaque saisie, une fonction de rappel est appelée.
+ * @brief DÃ©marrer la boucle capturant les saisies utilisateur dans l'entrÃ©e standard.
+ * Ã€ chaque saisie, une fonction de rappel est appelÃ©e.
 */
 void beginInputLoop();

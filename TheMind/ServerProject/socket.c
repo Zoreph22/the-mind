@@ -24,13 +24,13 @@ struct ClientCon
 	bool isOpened;
 	/// Adresse IP et port.
 	struct sockaddr_in address;
-	/// Thread associé à la connexion et gérant la communication de ce client.
+	/// Thread associÃ© Ã  la connexion et gÃ©rant la communication de ce client.
 	pthread_t threadId;
 };
 
 /// Liste des connexions ouvertes (identifiant d'un client = index dans la liste).
 struct ClientCon cliSockets[MAX_CONNECTIONS];
-/// Nombre de clients connectés.
+/// Nombre de clients connectÃ©s.
 unsigned int nbConnections = 0;
 
 /// Descripteur de socket du serveur.
@@ -39,7 +39,7 @@ SOCKET srvSocket;
 bool isSocketOpened = false;
 
 /**
- * @brief [Thread] Écouter les messages d'un client et appeler le bon gestionnaire selon le message reçu.
+ * @brief [Thread] Ã‰couter les messages d'un client et appeler le bon gestionnaire selon le message reÃ§u.
  * @param ptrClientId Identifiant client.
 */
 void* listenMessages(void* ptrClientId)
@@ -53,7 +53,7 @@ void* listenMessages(void* ptrClientId)
 		struct MsgHeader header;
 		char data[MAX_MSG_SIZE];
 
-		// Lecture en-tête message : taille contenu du message & type du message.
+		// Lecture en-tÃªte message : taille contenu du message & type du message.
 		if (recvn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 		{
 			FATAL_ERR("recvn()");
@@ -80,7 +80,7 @@ void* listenMessages(void* ptrClientId)
 }
 
 /**
- * @brief Écouter les demandes de connexion et les accepter si possible.
+ * @brief Ã‰couter les demandes de connexion et les accepter si possible.
 */
 void listenConnections()
 {
@@ -92,7 +92,7 @@ void listenConnections()
 		struct sockaddr_in cliAddress;
 		unsigned int cliAddressSize = sizeof cliAddress;
 
-		/// Écouter et accepter une demande de connexion.
+		/// Ã‰couter et accepter une demande de connexion.
 		cliSocket = accept(srvSocket, (struct sockaddr*)&cliAddress, &cliAddressSize);
 
 		if (cliSocket == -1)
@@ -108,7 +108,7 @@ void listenConnections()
 		cliSockets[clientId].address = cliAddress;
 		cliSockets[clientId].isOpened = true;
 
-		// Création du thread gérant la communication de ce client.
+		// CrÃ©ation du thread gÃ©rant la communication de ce client.
 		if (pthread_create(&cliSockets[clientId].threadId, NULL, &listenMessages, &clientId) == -1)
 		{
 			FATAL_ERR("listenMessages - thread_create()");
@@ -132,7 +132,7 @@ void socket_broadcast(enum SrvMsg type, const void* msg, size_t size)
 
 	for (unsigned int i = 0; i < nbConnections; i++)
 	{
-		// Envoyer l'en-tête du message.
+		// Envoyer l'en-tÃªte du message.
 		if (sendn(cliSockets[i].fd, &header, sizeof(header)) == -1)
 		{
 			FATAL_ERR("socket_broadcast - sendn()");
@@ -164,7 +164,7 @@ void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_
 
 	struct MsgHeader header = { size, type };
 
-	// Envoyer l'en-tête du message.
+	// Envoyer l'en-tÃªte du message.
 	if (sendn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 	{
 		FATAL_ERR("socket_send - sendn()");
@@ -201,7 +201,7 @@ void socket_bots(unsigned int nb)
 				close(i);
 			}
 
-			// Démarrer le programme robot.
+			// DÃ©marrer le programme robot.
 			if (execl("../BotProject/BotProject", "BotProject", "--ip", "127.0.0.1", "--port", TO_STR(SERVER_PORT), NULL) == -1)
 			{
 				FATAL_ERR("socket_bots - execl()");
@@ -222,7 +222,7 @@ void socket_close()
 	{
 		cliSockets[i].isOpened = false;
 
-		pthread_cancel(cliSockets[i].threadId); // TODO : attention, il faut que cette fonction soit appelée dans le main thread.
+		pthread_cancel(cliSockets[i].threadId); // TODO : attention, il faut que cette fonction soit appelÃ©e dans le main thread.
 		pthread_join(cliSockets[i].threadId, NULL);
 
 		close(cliSockets[i].fd);
@@ -241,7 +241,7 @@ void socket_open()
 {
 	printf("Starting server...\n");
 
-	// Création du socket.
+	// CrÃ©ation du socket.
 	srvSocket = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (srvSocket == -1)
@@ -249,13 +249,13 @@ void socket_open()
 		FATAL_ERR("socket()");
 	}
 
-	// Autoriser la réutilisation du port pour pouvoir immédiatement réouvrir un serveur,
-	// quand un vient d'être fermé.
+	// Autoriser la rÃ©utilisation du port pour pouvoir immÃ©diatement rÃ©ouvrir un serveur,
+	// quand un vient d'Ãªtre fermÃ©.
 	int reuseAddr = 1;
 	setsockopt(srvSocket, SOL_SOCKET, SO_REUSEADDR, &reuseAddr, sizeof(int));
 
-	// Création de l'interface
-	// et attribution de celle-ci au socket créé.
+	// CrÃ©ation de l'interface
+	// et attribution de celle-ci au socket crÃ©Ã©.
 	struct sockaddr_in address;
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = htonl(INADDR_ANY);

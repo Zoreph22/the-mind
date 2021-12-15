@@ -31,7 +31,7 @@ void logic_printCards()
 	{
 		unsigned int cardNumber = player.cards[i];
 
-		// N'afficher que les cartes non jouÈes.
+		// N'afficher que les cartes non jou√©es.
 		if (cardNumber > 0)
 		{
 			printfc(TERM_PURPLE, " %i", cardNumber);
@@ -57,7 +57,7 @@ void logic_removePlayerCard(unsigned int cardIndex)
 	player.cards[cardIndex] = 0;
 	player.nbPlayedCards++;
 
-	// Si le joueur a jouÈ toutes ses cartes, il ne peut plus jouer.
+	// Si le joueur a jou√© toutes ses cartes, il ne peut plus jouer.
 	if (player.nbPlayedCards == player.nbCards)
 	{
 		player.canPlay = false;
@@ -91,7 +91,7 @@ unsigned int logic_getLowestCardIndex()
 	{
 		unsigned int cardNumber = player.cards[i];
 
-		if (!cardNumber) continue; // Carte dÈj‡ jouÈe, on passe.
+		if (!cardNumber) continue; // Carte d√©j√† jou√©e, on passe.
 
 		if (!lowestCardNumber || cardNumber < lowestCardNumber)
 		{

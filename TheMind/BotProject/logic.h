@@ -10,23 +10,23 @@
 
 /// Structure stockant les informations du joueur.
 typedef struct {
-	/// Identifiant du joueur attribuÈ par le serveur.
+	/// Identifiant du joueur attribu√© par le serveur.
 	unsigned int playerId;
 	/// Nom du robot.
 	char playerName[8];
 	/// Nombre de cartes dans la main du joueur.
 	unsigned int nbCards;
-	/// Nombre de cartes jouÈes par le joueur dans la manche.
+	/// Nombre de cartes jou√©es par le joueur dans la manche.
 	unsigned int nbPlayedCards;
-	/// Liste des cartes de la main du joueur. La valeur d'une carte est 0 si dÈj‡ jouÈe.
+	/// Liste des cartes de la main du joueur. La valeur d'une carte est 0 si d√©j√† jou√©e.
 	unsigned int* cards;
-	/// Le joueur peut jouer ? Il peut s'il lui reste des cartes ‡ jouer.
+	/// Le joueur peut jouer ? Il peut s'il lui reste des cartes √† jouer.
 	bool canPlay;
 } Player;
 
 /**
  * @brief Initialiser la structure du joueur.
- * @param playerId Identifiant du joueur attribuÈ par le serveur.
+ * @param playerId Identifiant du joueur attribu√© par le serveur.
 */
 void logic_initPlayer(unsigned int playerId);
 
@@ -36,13 +36,13 @@ void logic_initPlayer(unsigned int playerId);
 void logic_endGame();
 
 /**
- * @brief Passer ‡ la manche suivante. Le joueur peut rejouer s'il ne pouvait plus.
+ * @brief Passer √† la manche suivante. Le joueur peut rejouer s'il ne pouvait plus.
 */
 void logic_nextRound();
 
 /**
  * @brief Supprimer une carte de la main du joueur.
- * La carte reste prÈsente dans la liste mais sa valeur est affectÈe ‡ 0.
+ * La carte reste pr√©sente dans la liste mais sa valeur est affect√©e √† 0.
  * @param cardIndex Index de la carte.
 */
 void logic_removePlayerCard(unsigned int cardIndex);
@@ -61,6 +61,6 @@ void logic_playCard();
 
 /**
  * @brief Planifier le jouage de la carte.
- * La fonction dÈclenche @link logic_playCard() @endlink au bout d'un dÈlai entre @link MIN_PLAYING_INTERVAL @endlink et @link MAX_PLAYING_INTERVAL @endlink secondes.
+ * La fonction d√©clenche @link logic_playCard() @endlink au bout d'un d√©lai entre @link MIN_PLAYING_INTERVAL @endlink et @link MAX_PLAYING_INTERVAL @endlink secondes.
 */
 void logic_schedulePlayCard();

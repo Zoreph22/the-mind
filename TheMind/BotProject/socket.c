@@ -33,7 +33,7 @@ void socket_setPort(unsigned short port)
 	serverPort = port;
 }
 
-/// Écouter les messages du serveur et appeler le bon gestionnaire selon le message reçu.
+/// Ã‰couter les messages du serveur et appeler le bon gestionnaire selon le message reÃ§u.
 void listenMessages()
 {
 	while (isOpened)
@@ -41,7 +41,7 @@ void listenMessages()
 		struct MsgHeader header;
 		char data[MAX_MSG_SIZE];
 
-		// Lecture en-tête message : taille contenu du message & type du message.
+		// Lecture en-tÃªte message : taille contenu du message & type du message.
 		if (recvn(cliSocket, &header, sizeof(header)) == -1)
 		{
 			FATAL_ERR("recvn()");
@@ -66,7 +66,7 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 {
 	struct MsgHeader header = { size, type };
 
-	// Envoyer l'en-tête du message.
+	// Envoyer l'en-tÃªte du message.
 	if (sendn(cliSocket, &header, sizeof(header)) == -1)
 	{
 		FATAL_ERR("sendn()");
@@ -85,7 +85,7 @@ void socket_connect()
 {
 	pDebug("[BOT] Connecting to the server...\n");
 
-	// Création du socket.
+	// CrÃ©ation du socket.
 	cliSocket = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (cliSocket == -1)
@@ -93,7 +93,7 @@ void socket_connect()
 		FATAL_ERR("socket()");
 	}
 
-	// Spécifier l'adresse IP et le port du serveur.
+	// SpÃ©cifier l'adresse IP et le port du serveur.
 	struct sockaddr_in sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(serverPort);
@@ -116,7 +116,7 @@ void socket_connect()
 	// Avertir le serveur de la connexion.
 	socket_send(CLI_MSG_BOT_CONNECT, NULL, 0);
 
-	// Écouter les messages.
+	// Ã‰couter les messages.
 	listenMessages();
 
 	while (isOpened);

@@ -23,7 +23,7 @@ void initPartie(joueur tab[], int n)
 		p.joueurs[i] = tab[i];
 	}
 
-	mancheGagner(); // Débuter le 1ère manche.
+	mancheGagner(); // DÃ©buter le 1Ã¨re manche.
 }
 
 void distribuerCartes()
@@ -46,24 +46,24 @@ void distribuerCartes()
 
 bool gestionCarteJouer(int idJoueur, int idCarte)
 {
-	// Mettre à jour les statistiques.
+	// Mettre Ã  jour les statistiques.
 	unsigned int reactionTime = stats_elapsedSecs(false);
 	stats_updatePlayerReactionTimes(idJoueur, reactionTime);
 	stats_updateReactionTimes(reactionTime);
 	stats_elapsedSecs(true);
 
-	// Gérer la carte.
+	// GÃ©rer la carte.
 	int numCarte = p.joueurs[idJoueur].cartes[idCarte];
 	
 	p.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
 
-	// La carte posée fait gagner la manche et toutes les cartes ont été posées.
+	// La carte posÃ©e fait gagner la manche et toutes les cartes ont Ã©tÃ© posÃ©es.
 	if (isCardWinner(numCarte) && areAllCardsPlayed()) {
 		mancheGagner();
 		return false;
 	}
 
-	// La carte posée fait perdre la manche.
+	// La carte posÃ©e fait perdre la manche.
 	if (!isCardWinner(numCarte)) {
 		stats_updatePlayerFailCount(idJoueur);
 		manchePerdu();
@@ -123,7 +123,7 @@ void mancheGagner()
 	}
 }
 
-/// Vérifier si la carte posée fait perdre ou continuer/gagner la manche.
+/// VÃ©rifier si la carte posÃ©e fait perdre ou continuer/gagner la manche.
 bool isCardWinner(int numCarte)
 {
 	if (p.terrainJeu[p.currentIDTerrain] < numCarte) {
@@ -132,7 +132,7 @@ bool isCardWinner(int numCarte)
 	return false;
 }
 
-/// Vérifier si tous les joueurs ont joués toutes leurs cartes.
+/// VÃ©rifier si tous les joueurs ont jouÃ©s toutes leurs cartes.
 bool areAllCardsPlayed()
 {
 	bool allCardsPlayed = true;

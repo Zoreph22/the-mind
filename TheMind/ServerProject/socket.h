@@ -9,8 +9,8 @@
 #define MAX_CONNECTIONS 20
 
 /**
- * @brief Démarrer le serveur.
- * Démarrer le socket, écouter les demandes de connexion, et gérer la communication avec les clients.
+ * @brief DÃ©marrer le serveur.
+ * DÃ©marrer le socket, Ã©couter les demandes de connexion, et gÃ©rer la communication avec les clients.
 */
 void socket_open();
 
@@ -21,24 +21,24 @@ void socket_open();
 void socket_close();
 
 /**
- * @brief Diffuser un message à tous les clients connectés au serveur.
+ * @brief Diffuser un message Ã  tous les clients connectÃ©s au serveur.
  * @param type Type du message.
- * @param msg Message à envoyer. Structure correspondant au type du message envoyé. // TODO : mettre référence vers fichier où il y a les structures.
+ * @param msg Message Ã  envoyer. Structure correspondant au type du message envoyÃ©. // TODO : mettre rÃ©fÃ©rence vers fichier oÃ¹ il y a les structures.
  * @param size Taille du message.
 */
 void socket_broadcast(enum SrvMsg type, const void* msg, size_t size);
 
 /**
- * @brief Envoyer un message à un client.
+ * @brief Envoyer un message Ã  un client.
  * @param clientId Identifiant du client.
  * @param type Type du message.
- * @param msg Message à envoyer. Structure correspondant au type du message envoyé. // TODO : mettre référence vers fichier où il y a les structures.
+ * @param msg Message Ã  envoyer. Structure correspondant au type du message envoyÃ©. // TODO : mettre rÃ©fÃ©rence vers fichier oÃ¹ il y a les structures.
  * @param size Taille du message.
 */
 void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_t size);
 
 /**
- * @brief Démarrer et connecter des robots au serveur.
- * @param nb Nombre de robots à connecter. 
+ * @brief DÃ©marrer et connecter des robots au serveur.
+ * @param nb Nombre de robots Ã  connecter. 
 */
 void socket_bots(unsigned int nb);

@@ -1,4 +1,4 @@
-﻿// main.c : Defines the entry point for the application.
+// main.c : Defines the entry point for the application.
 
 #include <signal.h>
 #include <stdlib.h>

@@ -39,7 +39,7 @@ void printLobby()
 	clear();
 	printf("-- Lobby : en attente des autres joueurs --\n");
 
-	printf("Nombre de joueurs prêts : %i / %i.\n", l.nbPrets, l.nbJoueurs);
+	printf("Nombre de joueurs prÃªts : %i / %i.\n", l.nbPrets, l.nbJoueurs);
 	printf("Nombre de bots : %i.\n", l.nbBots);
 	printf("\n");
 	printf("Votre pseudo : %s.\n", j.nom);
@@ -51,11 +51,11 @@ void printLobby()
 	printf("\n");
 	if (j.ready)
 	{
-		printf("Vous êtes prêt.\n");
+		printf("Vous Ãªtes prÃªt.\n");
 	}
 	else
 	{
-		printfc(TERM_PURPLE, "Appuyer sur P pour devenir prêt.\n");
+		printfc(TERM_PURPLE, "Appuyer sur P pour devenir prÃªt.\n");
 	}
 	printfc(TERM_PURPLE, "Saisir un nombre pour changer le nombre de bots dans la partie.\n");
 }

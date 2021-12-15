@@ -1,4 +1,4 @@
-﻿// main.c : Defines the entry point for the application.
+// main.c : Defines the entry point for the application.
 
 #include <sds/sds.h>
 #include <stdlib.h>

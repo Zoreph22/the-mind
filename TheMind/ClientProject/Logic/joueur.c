@@ -17,14 +17,14 @@ void jouerCarte(int carte)
 {
 	int carteIndex = -1;
 
-	// Récupérer l'index de la carte à partir de son numéro.
+	// RÃ©cupÃ©rer l'index de la carte Ã  partir de son numÃ©ro.
 	for (int i = 0; i < j.nbCartes; i++) {
 		if (j.cartes[i] == carte) {
 			carteIndex = i;
 		}
 	}
 
-	// Carte non présente dans la main, ou déjà jouée.
+	// Carte non prÃ©sente dans la main, ou dÃ©jÃ  jouÃ©e.
 	if (carteIndex == -1)
 	{
 		return;

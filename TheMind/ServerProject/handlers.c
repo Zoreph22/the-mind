@@ -48,13 +48,13 @@ void CliMsg_SetReadyHandler(unsigned int senderId, void* data)
 
 	setReady(senderId);
 
-	// Avertir les autres clients qu'un joueur est prêt.
+	// Avertir les autres clients qu'un joueur est prÃªt.
 	{
 		struct SrvMsg_InfoLobby msgData = { .botCount = l.nbBots, .roundCount = l.nbManches, .readyCount = l.nbPrets };
 		socket_broadcast(SRV_MSG_INFO_LOBBY, &msgData, sizeof(msgData));
 	}
 
-	// Si tout le monde est prêt, connecter les robots et lancer la partie.
+	// Si tout le monde est prÃªt, connecter les robots et lancer la partie.
 	if (l.nbPrets == l.nbJoueurs)
 	{
 		l.nbBots == 0 ? startGame() : socket_bots(l.nbBots);
@@ -102,12 +102,12 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 	// Nom du robot.
 	char name[20] = ""; sprintf(name, "Robot %c", 'A' + senderId);
 
-	// Ajouter le bot à la liste des joueurs.
+	// Ajouter le bot Ã  la liste des joueurs.
 	addPlayerToLobby(senderId);
 	setPlayerName(senderId, name);
 	nbConnectedBots++;
 
-	// Envoyer à l'émetteur ses informations client.
+	// Envoyer Ã  l'Ã©metteur ses informations client.
 	{
 		struct SrvMsg_PlayerInfo msgData = { .playerId = senderId };
 		socket_send(senderId, SRV_MSG_PLAYER_INFO, &msgData, sizeof(msgData));
@@ -121,7 +121,7 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 		socket_broadcast(SRV_MSG_PLAYER_CONNECTED, &msgData, sizeof(msgData));
 	}
 
-	// Lancer la partie si tous les robots sont connectés.
+	// Lancer la partie si tous les robots sont connectÃ©s.
 	if (nbConnectedBots == (unsigned int)l.nbBots)
 	{
 		startGame();

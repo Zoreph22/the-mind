@@ -3,9 +3,9 @@
 #include <string.h>
 #include "input.h"
 
-/// Fonction de rappel appelée après une saisie.
+/// Fonction de rappel appelÃ©e aprÃ¨s une saisie.
 void (*ptrCallback)() = NULL;
-/// Buffer stockant la dernière saisie.
+/// Buffer stockant la derniÃ¨re saisie.
 char buffer[1024];
 
 void setInputCallback(void (*newPtrCallback)())
