@@ -1,3 +1,8 @@
+/**
+ * @file handlers.c
+ * @brief Implémentation des gestionnaires de messages reçus des clients du fichier @link messaging/cli_handlers.h @endlink.
+ */
+
 #include <stdio.h>
 #include "socket.h"
 #include <string.h>
@@ -5,11 +10,13 @@
 #include "Logic/lobby.h"
 #include "messaging/cli_handlers.h"
 
+/// Inutilisé.
 void CliMsg_NoneHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_NONE - Client: %i - Unhandled message.\n", senderId);
 }
 
+/// Définir le nom du joueur.
 void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 {
 	struct CliMsg_SetName* msg = (struct CliMsg_SetName*)data;
@@ -39,6 +46,7 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 	}
 }
 
+/// Incrémenter le nombre de joueurs prêts et démarrer la partie si tous les joueurs sont prêts.
 void CliMsg_SetReadyHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_SET_READY - Client: %i - Is now ready to play.\n", senderId);
@@ -61,6 +69,7 @@ void CliMsg_SetReadyHandler(unsigned int senderId, void* data)
 	}
 }
 
+/// Définir le nouveau nombre de robots dans la partie.
 void CliMsg_SetNumBotHandler(unsigned int senderId, void* data)
 {
 	struct CliMsg_SetNumBot* msg = (struct CliMsg_SetNumBot*)data;
@@ -72,6 +81,7 @@ void CliMsg_SetNumBotHandler(unsigned int senderId, void* data)
 	socket_broadcast(SRV_MSG_INFO_LOBBY, &msgData, sizeof(msgData));
 }
 
+/// Vérifier si la carte fait gagner, perdre, ou continuer la manche. Effectuer l'action d'un de ses trois cas.
 void CliMsg_PlayCardHandler(unsigned int senderId, void* data)
 {
 	struct CliMsg_PlayCard* msg = (struct CliMsg_PlayCard*)data;
@@ -86,6 +96,7 @@ void CliMsg_PlayCardHandler(unsigned int senderId, void* data)
 	}
 }
 
+/// Relancer une partie.
 void CliMsg_ReplayGameHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_REPLAY_GAME - Client: %i - Starting a new game.\n", senderId);
@@ -93,6 +104,7 @@ void CliMsg_ReplayGameHandler(unsigned int senderId, void* data)
 	startGame();
 }
 
+/// Ajouter le robot aux joueurs et démarrer la partie lorsque tous les robots sont connectés.
 void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_BOT_CONNECT - Bot: %i - Connected to the server.\n", senderId);
@@ -128,6 +140,7 @@ void CliMsg_BotConnectHandler(unsigned int senderId, void* data)
 	}
 }
 
+/// Générer le PDF des statistiques et fermer les sockets.
 void CliMsg_StopGameHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_STOP_GAME - Client: %i - Stopping the game.\n", senderId);
@@ -136,6 +149,7 @@ void CliMsg_StopGameHandler(unsigned int senderId, void* data)
 	socket_close(); // TODO : main thread ?
 }
 
+/// Inutilisé.
 void CliMsg_MaxHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_MAX - Client: %i - Unhandled message.\n", senderId);

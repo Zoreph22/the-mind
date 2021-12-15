@@ -1,3 +1,8 @@
+/**
+ * @file stats.c
+ * @brief Impl√©mentation de la gestion des statistiques du jeu et des joueurs.
+ */
+
 #include <time.h>
 #include <stdbool.h>
 #include <sds/sds.h>
@@ -9,20 +14,20 @@
 #include "partie.h"
 #include "stats.h"
 
-#include <string.h>
-
+/// Instance des statistiques globales.
 GlobalStats globalStats = { 0 };
+/// Tableau des instances des statistiques de chaque joueur.
 PlayerStats playerStats[MAX_CONNECTIONS] = { 0 };
 
 void stats_generatePDF()
 {
-	// Remplacer les espaces par des _ sinon la commande ne s'exÈcute pas.
+	// Remplacer les espaces par des - sinon la commande ne s'ex√©cute pas.
 	for (unsigned int i = 0; i < (unsigned int) p.nbJoueurs; i++)
 	{
 		strReplaceChar(p.joueurs[i].nom, ' ', '-', sizeof(p.joueurs[i].nom));
 	}
 
-	// ---- CrÈation des paramËtres d'exÈcution de Awk. ----
+	// ---- Cr√©ation des param√®tres d'ex√©cution de Awk. ----
 
 	sds args = sdsnew("");
 
@@ -39,10 +44,10 @@ void stats_generatePDF()
 		globalStats.maxReactionTime,
 		globalStats.avgReactionTime,
 		globalStats.avgRoundWon,
-		p.joueurs[globalStats.worsePlayerId].nom
+		p.joueurs[globalStats.worstPlayerId].nom
 	);
 
-	// Nombre de manches gagnÈes pour chaque partie.
+	// Nombre de manches gagn√©es pour chaque partie.
 	args = sdscat(args, " -v ROUND_WON_PER_GAME=");
 	for (unsigned int i = 0; i < globalStats.gameCount; i++)
 	{
@@ -62,7 +67,7 @@ void stats_generatePDF()
 		);
 	}
 
-	// ---- ExÈcuter le script shell gÈnÈrant le fichier PDF et lui passer les paramËtres. ----
+	// ---- Ex√©cuter le script shell g√©n√©rant le fichier PDF et lui passer les param√®tres. ----
 	int scriptPid;
 
 	if ((scriptPid = fork()) == 0)
@@ -90,8 +95,6 @@ void stats_generatePDF()
 	sdsfree(args);
 }
 
-// Statistiques globales.
-
 unsigned int stats_elapsedSecs(bool resetTimer)
 {
 	static bool isFirst = true;
@@ -114,13 +117,44 @@ unsigned int stats_elapsedSecs(bool resetTimer)
 	return (end - start);
 }
 
+/* -------------------------- Statistiques globales ------------------------- */
+
+/// Mettre √† jour le nombre moyen de manches gagn√©es par partie.
+void stats_updateAvgRoundWon()
+{
+	static unsigned int currentSum = 0;
+	currentSum += p.manche - 1;
+
+	globalStats.avgRoundWon = (float)currentSum / globalStats.gameCount;
+}
+
+/// Mettre √† jour le pire joueur.
+void stats_updateWorstPlayer()
+{
+	unsigned int worstPlayerId = 0;
+	unsigned int highestFailCount = 0;
+
+	for (int i = 0; i < p.nbJoueurs; i++)
+	{
+		unsigned int lostCount = playerStats[i].failCount;
+
+		if (lostCount > highestFailCount)
+		{
+			worstPlayerId = i;
+			highestFailCount = lostCount;
+		}
+	}
+
+	globalStats.worstPlayerId = worstPlayerId;
+}
+
 void stats_updateReactionTimes(unsigned int reactionTime)
 {
 	if (globalStats.minReactionTime == 0) globalStats.minReactionTime = reactionTime;
 	if (reactionTime < globalStats.minReactionTime) globalStats.minReactionTime = reactionTime;
 	if (reactionTime > globalStats.maxReactionTime) globalStats.maxReactionTime = reactionTime;
 
-	// Calcul du temps de rÈaction moyen.
+	// Calcul du temps de r√©action moyen.
 	static unsigned int currentN = 0;
 	static float currentSum = 0;
 
@@ -130,41 +164,14 @@ void stats_updateReactionTimes(unsigned int reactionTime)
 	globalStats.avgReactionTime = currentSum / currentN;
 }
 
-void stats_updateAvgRoundWon()
-{
-	static unsigned int currentSum = 0;
-	currentSum += p.manche - 1;
-
-	globalStats.avgRoundWon = (float)currentSum / globalStats.gameCount;
-}
-
-void stats_updateWorsePlayer()
-{
-	unsigned int worsePlayerId = 0;
-	unsigned int highestFailCount = 0;
-
-	for (int i = 0; i < p.nbJoueurs; i++)
-	{
-		unsigned int lostCount = playerStats[i].failCount;
-
-		if (lostCount > highestFailCount)
-		{
-			worsePlayerId = i;
-			highestFailCount = lostCount;
-		}
-	}
-
-	globalStats.worsePlayerId = worsePlayerId;
-}
-
 void stats_updateGameStats()
 {
 	globalStats.roundWonPerGame[globalStats.gameCount++] = p.manche - 1;
 	stats_updateAvgRoundWon();
-	stats_updateWorsePlayer();
+	stats_updateWorstPlayer();
 }
 
-// Statistiques des joueurs.
+/* ------------------------ Statistiques des joueurs ------------------------ */
 
 void stats_updatePlayerReactionTimes(unsigned int id, unsigned int reactionTime)
 {
@@ -174,7 +181,7 @@ void stats_updatePlayerReactionTimes(unsigned int id, unsigned int reactionTime)
 	if (reactionTime < stats->minReactionTime) stats->minReactionTime = reactionTime;
 	if (reactionTime > stats->maxReactionTime) stats->maxReactionTime = reactionTime;
 
-	// Calcul du temps de rÈaction moyen.
+	// Calcul du temps de r√©action moyen.
 	static unsigned int currentN[MAX_CONNECTIONS];
 	static float currentSum[MAX_CONNECTIONS];
 

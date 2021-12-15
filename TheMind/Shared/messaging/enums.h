@@ -1,6 +1,13 @@
 /**
  * @file enums.h
  * @brief Énumérations des types de message client et serveur.
+ * Ces types permettent d'identifier le message envoyé ou reçu pour effectuer l'action appropriée au type de message.
+ * 
+ * Certains types de message peuvent posséder une structure associée, permettant de contenir les données du message,
+ * ces structures sont définies dans @link structs.h @endlink.
+ * 
+ * Tous les types de message possèdent un gestionnaire devant être implémenté par le destinataire lors de la réception du message,
+ * ces fonctions sont définies dans @link cli_handlers.h @endlink et @link srv_handlers.h @endlink.
  */
 
 #pragma once

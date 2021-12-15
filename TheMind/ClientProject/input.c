@@ -1,3 +1,8 @@
+/**
+ * @file input.c
+ * @brief Implémentation de la gestion de la saisie de l'utilisateur dans le terminal.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

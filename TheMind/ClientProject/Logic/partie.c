@@ -1,3 +1,8 @@
+/**
+ * @file lobby.c
+ * @brief Implémentation de la gestion de la partie et des manches.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

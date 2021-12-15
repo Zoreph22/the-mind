@@ -1,3 +1,8 @@
+/**
+ * @file socket.c
+ * @brief Implémentation de la gestion de la connexion socket avec les clients.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,6 +18,7 @@
 #include "messaging/cli_handlers.h"
 #include "socket.h"
 
+/// Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
 #define FATAL_ERR(msg) perror(msg); socket_close(); exit(errno);
 
 /// Structure stockant les informations de la connexion d'un client.

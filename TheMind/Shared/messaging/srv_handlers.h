@@ -36,5 +36,3 @@ static void (*srvMsgHandler[SRV_MSG_MAX + 1])(void* data) = {
 	[6] = &SrvMsg_PlayerInfo,
 	[7] = &SrvMsg_DisconnectAll
 };
-
-// __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen

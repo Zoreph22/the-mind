@@ -1,3 +1,8 @@
+/**
+ * @file socket.h
+ * @brief Interface permettant de gérer la connexion socket avec les clients.
+ */
+
 #pragma once
 
 #include <stddef.h>
@@ -5,8 +10,6 @@
 
 /// Port du serveur.
 #define SERVER_PORT 25565
-/// Nombre maximal de connexions au socket.
-#define MAX_CONNECTIONS 20
 
 /**
  * @brief Démarrer le serveur.
@@ -23,8 +26,8 @@ void socket_close();
 /**
  * @brief Diffuser un message à tous les clients connectés au serveur.
  * @param type Type du message.
- * @param msg Message à envoyer. Structure correspondant au type du message envoyé. // TODO : mettre référence vers fichier où il y a les structures.
- * @param size Taille du message.
+ * @param msg Données utiles du message. Pointeur vers une structure de @link messaging/structs.h @endlink. @a NULL si aucune donnée utile.
+ * @param size Taille du message. En général, taille de la structure passée en @p msg. @a 0 si aucune donnée utile.
 */
 void socket_broadcast(enum SrvMsg type, const void* msg, size_t size);
 
@@ -32,8 +35,8 @@ void socket_broadcast(enum SrvMsg type, const void* msg, size_t size);
  * @brief Envoyer un message à un client.
  * @param clientId Identifiant du client.
  * @param type Type du message.
- * @param msg Message à envoyer. Structure correspondant au type du message envoyé. // TODO : mettre référence vers fichier où il y a les structures.
- * @param size Taille du message.
+ * @param msg Données utiles du message. Pointeur vers une structure de @link messaging/structs.h @endlink. @a NULL si aucune donnée utile.
+ * @param size Taille du message. En général, taille de la structure passée en @p msg. @a 0 si aucune donnée utile.
 */
 void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_t size);
 

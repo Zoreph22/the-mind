@@ -1,30 +1,50 @@
+/**
+ * @file partie.h
+ * @brief Interface permettant de gérer une partie et les manches.
+ */
+
 #pragma once
 
 #include <stdio.h>
-#include "joueur.h"
 #include <stdbool.h>
+#include "socket/consts.h"
+#include "joueur.h"
 
-typedef struct {
+/// Structure stockant les données de la partie.
+typedef struct S_Partie {
+	/// Numéro de la manche actuelle.
 	int manche;
-	int currentIDTerrain;
+	int currentIDTerrain; // TODo : a delete
+	/// Nombre de joueurs.
 	int nbJoueurs;
+	/// Nombre de vies restantes.
 	int vie;
-	int terrainJeu[100];
-	joueur joueurs[50];
+	/// Carte posée sur le plateau. @a 0 si aucune.
+	int terrainJeu[100]; /// todo : a remplacer par une simple variable
+	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
+	joueur joueurs[MAX_CONNECTIONS];
 }partie;
 
-extern partie p;
+/// Instance de la partie.
+extern partie p; // TODO : a rename
 
+/**
+ * @brief Initialiser la partie et démarrer la première manche.
+ * @param tab Tableau des joueurs provenant du lobby.
+ * @param n Nombre de joueurs.
+ */
 void initPartie(joueur tab[], int n);
-void distribuerCartes();
+
+/**
+ * @brief Gérer une carte qu'un joueur vient de jouer.
+ * 
+ * Effectuer les vérifications nécessaires, à savoir :
+ * 	- La carte fait-elle gagnée la manche ? Si oui, passer à la manche suivante.
+ * 	- La carte fait-elle perdre la manche ? Si oui, faire perdre une vie, ou game over.
+ * 	- La carte fait-elle continuer la manche ? Si oui, poser la carte sur le plateau.
+ * 
+ * @param idJoueur Identifiant du joueur jouant la carte.
+ * @param idCarte Index de la carte.
+ * @return @a true si la manche continue.
+ */
 bool gestionCarteJouer(int idJoueur, int idCarte);
-
-bool partiePerdu();
-bool partieGagner();
-void manchePerdu();
-void mancheGagner();
-bool isCardWinner(int numCarte);
-bool areAllCardsPlayed();
-
-void ResetPartie();
-

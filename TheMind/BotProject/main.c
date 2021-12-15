@@ -1,3 +1,8 @@
+/**
+ * @file main.c
+ * @brief Fichier de démarrage du programme.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -7,7 +12,7 @@
 #include "socket.h"
 #include "main.h"
 
-/// Quitter le programme proprement.
+/// Quitter le programme proprement en se déconnectant du serveur.
 void quit()
 {
 	socket_disconnect();
@@ -28,7 +33,7 @@ void printHelp()
 	exit(EXIT_SUCCESS);
 }
 
-/// Parser les arguments et définir l'IP et le port du serveur.
+/// Parser les arguments de lancement et en définir l'IP et le port du serveur.
 void parseArgs(int argc, char* argv[])
 {
 	// Aucun argument renseigné.
@@ -45,12 +50,12 @@ void parseArgs(int argc, char* argv[])
 	{
 		char* arg = argv[i];
 
-		// Adresse IP.
+		// On récupère l'adresse IP.
 		if (strcmp(arg, "--ip") == 0)
 		{
 			if (i + 1 < argc) ip = argv[i + 1];
 		}
-		// Port.
+		// On récupère le port.
 		else if (strcmp(arg, "--port") == 0)
 		{
 			if (i + 1 < argc) port = argv[i + 1];

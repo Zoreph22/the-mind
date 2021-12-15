@@ -1,4 +1,7 @@
-// main.c : Defines the entry point for the application.
+/**
+ * @file main.c
+ * @brief Fichier de démarrage du programme.
+ */
 
 #include <sds/sds.h>
 #include <stdlib.h>
@@ -13,12 +16,14 @@
 #include "input.h"
 #include "utils.h"
 
+/// Quitter le programme proprement en se déconnectant du serveur.
 void quit()
 {
 	socket_disconnect();
 	exit(EXIT_SUCCESS);
 }
 
+/// Afficher le menu de connexion au serveur puis s'y connecter.
 void connectMenu()
 {
 	char ip[15];

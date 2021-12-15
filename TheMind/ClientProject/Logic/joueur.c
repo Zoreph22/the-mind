@@ -1,3 +1,8 @@
+/**
+ * @file joueur.c
+ * @brief Implémentation de la gestion du joueur.
+ */
+
 #include <stdbool.h>
 #include <string.h>
 #include "partie.h"
@@ -39,8 +44,4 @@ void jouerCarte(int carte)
 void setId(int id)
 {
 	j.id = id;
-}
-
-int changeNbBot(int nbBot) {
-	return nbBot;
 }

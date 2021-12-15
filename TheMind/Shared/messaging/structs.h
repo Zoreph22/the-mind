@@ -1,6 +1,8 @@
 /**
  * @file structs.h
  * @brief Structures représentant les données de chaque type de message.
+ * 
+ * Un message possède une en-tête @link MsgHeader @endlink et certains types de message, un corps contenant les données utiles @link CliMsg_<...> @endlink et @link SrvMsg_<...> @endlink.
  */
 
 #pragma once
@@ -68,7 +70,7 @@ struct SrvMsg_NextRound
 	/// La dernière manche a été gagnée ?
 	unsigned int isLastRoundWon;
 	/// Ensemble des cartes du client destinataire du message.
-	unsigned int playerCards[50]; // TODO : vérifier si la taille est suffisante.
+	unsigned int playerCards[50];
 };
 
 /// Données du type de message @link SRV_MSG_GAME_END @endlink.

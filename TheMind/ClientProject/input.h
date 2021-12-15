@@ -1,3 +1,11 @@
+/**
+ * @file input.h
+ * @brief Interface permettant la gestion de la saisie de l'utilisateur dans le terminal.
+ * 
+ * Le programme est constamment en attente d'une saisie.
+ * Après une saisie de l'utilisateur, une fonction de rappel est appelée pour effectuer une action.
+ */
+
 #pragma once
 
 /**

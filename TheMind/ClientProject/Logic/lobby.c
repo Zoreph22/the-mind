@@ -1,3 +1,8 @@
+/**
+ * @file lobby.c
+ * @brief Implémentation de la gestion du lobby.
+ */
+
 #include "lobby.h"
 #include "partie.h"
 #include "joueur.h"

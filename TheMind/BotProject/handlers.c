@@ -1,24 +1,33 @@
+/**
+ * @file handlers.c
+ * @brief Implémentation des gestionnaires de messages reçus du serveur du fichier @link messaging/srv_handlers.h @endlink.
+ */
+
 #include <stdio.h>
 #include "logic.h"
 #include "utils.h"
 #include "socket.h"
 #include "messaging/srv_handlers.h"
 
+/// Inutilisé.
 void SrvMsg_NoneHandler(void* data)
 {
 	// pDebug("[BOT] Message Handler: SRV_MSG_NONE - Unhandled message.\n");
 }
 
+/// Inutilisé.
 void SrvMsg_InfoLobbyHandler(void* data)
 {
 	// pDebug("[BOT] Message Handler: SRV_INFO_LOBBY - Unhandled message.\n");
 }
 
+/// Inutilisé.
 void SrvMsg_PlayerConnectedHandler(void* data)
 {
 	// pDebug("[BOT] Message Handler: SRV_PLAYER_CONNECTED - Unhandled message.\n");
 }
 
+/// Planifier le jouage du robot.
 void SrvMsg_CardPlayedHandler(void* data)
 {
 	struct SrvMsg_CardPlayed* msg = (struct SrvMsg_CardPlayed*)data;
@@ -27,6 +36,7 @@ void SrvMsg_CardPlayedHandler(void* data)
 	logic_schedulePlayCard();
 }
 
+/// Définir les nouvelles cartes du joueur robot et planifier le jouage du robot.
 void SrvMsg_NextRoundHandler(void* data)
 {
 	struct SrvMsg_NextRound* msg = (struct SrvMsg_NextRound*)data;
@@ -40,6 +50,7 @@ void SrvMsg_NextRoundHandler(void* data)
 	logic_schedulePlayCard();
 }
 
+/// Remise à zéro du joueur robot.
 void SrvMsg_GameEndHandler(void* data)
 {
 	struct SrvMsg_GameEnd* msg = (struct SrvMsg_GameEnd*)data;
@@ -48,6 +59,7 @@ void SrvMsg_GameEndHandler(void* data)
 	logic_endGame();
 }
 
+/// Initialiser le joueur robot.
 void SrvMsg_PlayerInfo(void* data)
 {
 	struct SrvMsg_PlayerInfo* msg = (struct SrvMsg_PlayerInfo*)data;
@@ -56,6 +68,7 @@ void SrvMsg_PlayerInfo(void* data)
 	logic_initPlayer(msg->playerId);
 }
 
+/// Se déconnecter du serveur.
 void SrvMsg_DisconnectAll(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_DISCONNECT_ALL - Disconnected from the server.\n");
@@ -63,6 +76,7 @@ void SrvMsg_DisconnectAll(void* data)
 	socket_disconnect();
 }
 
+/// Inutilisé.
 void SrvMsg_MaxHandler(void* data)
 {
 	// pDebug("[BOT] Message Handler: SRV_MSG_MAX - Unhandled message.\n");

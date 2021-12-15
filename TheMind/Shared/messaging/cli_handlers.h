@@ -38,5 +38,3 @@ static void (*cliMsgHandler[CLI_MSG_MAX + 1])(unsigned int, void*) = {
 	[6] = &CliMsg_BotConnectHandler,
 	[7] = &CliMsg_StopGameHandler
 };
-
-// __attribute__((unused)) // TODO : rajouter ce truc sans foirer la doc doxygen

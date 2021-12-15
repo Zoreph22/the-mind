@@ -1,3 +1,8 @@
+/**
+ * @file handlers.c
+ * @brief Implémentation des gestionnaires de messages reçus du serveur du fichier @link messaging/srv_handlers.h @endlink.
+ */
+
 #include <stdio.h>
 #include "messaging/srv_handlers.h"
 #include "Logic/lobby.h"
@@ -6,11 +11,13 @@
 #include "input.h"
 #include "utils.h"
 
+/// Inutilisé.
 void SrvMsg_NoneHandler(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_NONE - Unhandled message.\n");
 }
 
+/// Actualiser l'affichage des informations du lobby.
 void SrvMsg_InfoLobbyHandler(void* data)
 {
 	struct SrvMsg_InfoLobby* msg = (struct SrvMsg_InfoLobby*)data;
@@ -20,6 +27,7 @@ void SrvMsg_InfoLobbyHandler(void* data)
 	printLobby();
 }
 
+/// Ajouter le joueur au lobby et actualiser l'affichage.
 void SrvMsg_PlayerConnectedHandler(void* data)
 {
 	struct SrvMsg_PlayerConnected* msg = (struct SrvMsg_PlayerConnected*)data;
@@ -34,6 +42,7 @@ void SrvMsg_PlayerConnectedHandler(void* data)
 	printLobby();
 }
 
+/// Afficher la carte posée et permettre au joueur de jouer une carte.
 void SrvMsg_CardPlayedHandler(void* data)
 {
 	struct SrvMsg_CardPlayed* msg = (struct SrvMsg_CardPlayed*)data;
@@ -44,6 +53,7 @@ void SrvMsg_CardPlayedHandler(void* data)
 	setInputCallback(&gestionInputCarteJouer);
 }
 
+/// Définir les nouvelles cartes du joueur, et lui permettre de jouer une carte.
 void SrvMsg_NextRoundHandler(void* data)
 {
 	struct SrvMsg_NextRound* msg = (struct SrvMsg_NextRound*)data;
@@ -59,6 +69,7 @@ void SrvMsg_NextRoundHandler(void* data)
 	setInputCallback(&gestionInputCarteJouer);
 }
 
+/// Ne plus permettre au joueur de jouer, et afficher l'écran de fin.
 void SrvMsg_GameEndHandler(void* data)
 {
 	struct SrvMsg_GameEnd* msg = (struct SrvMsg_GameEnd*)data;
@@ -68,6 +79,7 @@ void SrvMsg_GameEndHandler(void* data)
 	finPartie();
 }
 
+/// Définir les informations du joueur, et lui permettre de configurer le lobby.
 void SrvMsg_PlayerInfo(void* data)
 {
 	struct SrvMsg_PlayerInfo* msg = (struct SrvMsg_PlayerInfo*)data;
@@ -80,6 +92,7 @@ void SrvMsg_PlayerInfo(void* data)
 	printLobby();
 }
 
+/// Se déconnecter du serveur.
 void SrvMsg_DisconnectAll(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_DISCONNECT_ALL - Disconnected from the server.\n");
@@ -88,6 +101,7 @@ void SrvMsg_DisconnectAll(void* data)
 	printfc(TERM_YELLOW, "Déconnecté du serveur. Vous pouvez fermer le jeu.\n");
 }
 
+/// Inutilisé.
 void SrvMsg_MaxHandler(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_MAX - Unhandled message.\n");

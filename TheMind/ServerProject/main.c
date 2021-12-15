@@ -1,4 +1,7 @@
-// main.c : Defines the entry point for the application.
+/**
+ * @file main.c
+ * @brief Fichier de démarrage du programme.
+ */
 
 #include <signal.h>
 #include <stdlib.h>
@@ -9,15 +12,14 @@
 #include "main.h"
 #include "socket.h"
 
-#include <stdio.h>
-#include "Logic/stats.h"
-
+/// Quitter le programme proprement en déconnectant les clients et le serveur.
 void quit()
 {
 	socket_close();
 	exit(EXIT_SUCCESS);
 }
 
+/// Initialiser l'état du programme.
 void init()
 {
 	srand(time(NULL));
@@ -33,8 +35,6 @@ int main(int argc, char* argv[])
 {
 	init();
 	socket_open();
-
-	//stats_generatePDF();
 
 	return EXIT_SUCCESS;
 }

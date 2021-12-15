@@ -1,15 +1,23 @@
+/**
+ * @file logic.h
+ * @brief Interface permettant de gérer le jeu en lui-même et la partie.
+ */
+
 #pragma once
 
 #include <stdbool.h>
 #include <errno.h>
 
+/// Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
 #define FATAL_ERR(msg) { perror(msg); exit(errno); }
 
+/// Temps en secondes minimum avant que le robot joue une carte.
 #define MIN_PLAYING_INTERVAL 1
+/// Temps en secondes maximum avant que le robot joue une carte.
 #define MAX_PLAYING_INTERVAL 3
 
-/// Structure stockant les informations du joueur.
-typedef struct {
+/// Structure stockant les informations du joueur robot.
+typedef struct S_Player {
 	/// Identifiant du joueur attribué par le serveur.
 	unsigned int playerId;
 	/// Nom du robot.

@@ -1,3 +1,8 @@
+/**
+ * @file partie.c
+ * @brief Implémentation de la gestion d'une partie et des manches.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -12,20 +17,9 @@
 
 partie p = {0};
 
-void initPartie(joueur tab[], int n)
-{
-	p.nbJoueurs = n;
-	p.manche = 0;
-	p.currentIDTerrain = 0;
-	p.vie = 3;
-
-	for (int i = 0; i < n; i++) {
-		p.joueurs[i] = tab[i];
-	}
-
-	mancheGagner(); // Débuter le 1ère manche.
-}
-
+/**
+ * @brief Générer les cartes et les distribuer aux joueurs.
+ */
 void distribuerCartes()
 {
 	bool tmp[100] = { 0 };
@@ -41,6 +35,97 @@ void distribuerCartes()
 				}
 			} while (tmp[carte]);
 		}
+	}
+}
+
+bool partiePerdu()
+{
+	stats_updateGameStats();
+
+	struct SrvMsg_GameEnd msgData = { .isGameWon = false };
+	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
+}
+
+/**
+ * @brief Arrêter la partie et faire game over. // TODO : remplace par une seule fonction finPartie et return void
+ */
+bool partieGagner()
+{
+	stats_updateGameStats();
+
+	struct SrvMsg_GameEnd msgData = { .isGameWon = true };
+	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
+}
+
+/**
+ * @brief Vérifier si la carte posée fait perdre ou continuer/gagner la manche.
+ * @param numCarte Numéro de la carte (pas l'index).
+ */
+bool isCardWinner(int numCarte)
+{
+	if (p.terrainJeu[p.currentIDTerrain] < numCarte) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Vérifier si tous les joueurs ont joués toutes leurs cartes.
+ */
+bool areAllCardsPlayed()
+{
+	bool allCardsPlayed = true;
+
+	for (int i = 0; i < p.nbJoueurs; i++)
+	{
+		for (int j = 0; j < p.manche; j++)
+		{
+			if (p.joueurs[i].cartes[j] != 0)
+			{
+				allCardsPlayed = false;
+				break;
+			}
+		}
+	}
+
+	return allCardsPlayed;
+}
+
+/**
+ * @brief Faire perdre la manche et passer à la prochaine si possible. Retirer une vie, ou game over.
+ */
+void manchePerdu()
+{
+	p.vie = p.vie - 1;
+
+	if (p.vie <= 0) {
+		partiePerdu();
+		return;
+	}
+
+	p.terrainJeu[p.currentIDTerrain] = 0;
+	distribuerCartes();
+
+	for (int i = 0; i < p.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = false };
+		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
+	}
+}
+
+/**
+ * @brief Passer à la prochaine manche.
+ */
+void mancheGagner()
+{
+	p.manche = p.manche + 1;
+	p.terrainJeu[p.currentIDTerrain] = 0;
+	distribuerCartes();
+
+	for (int i = 0; i < p.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = true };
+		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
 	}
 }
 
@@ -75,87 +160,16 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 	return true;
 }
 
-bool partiePerdu()
+void initPartie(joueur tab[], int n)
 {
-	stats_updateGameStats();
+	p.nbJoueurs = n;
+	p.manche = 0;
+	p.currentIDTerrain = 0;
+	p.vie = 3;
 
-	struct SrvMsg_GameEnd msgData = { .isGameWon = false };
-	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
-}
-
-bool partieGagner()
-{
-	stats_updateGameStats();
-
-	struct SrvMsg_GameEnd msgData = { .isGameWon = true };
-	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
-}
-
-void manchePerdu()
-{
-	p.vie = p.vie - 1;
-
-	if (p.vie <= 0) {
-		partiePerdu();
-		return;
+	for (int i = 0; i < n; i++) {
+		p.joueurs[i] = tab[i];
 	}
 
-	p.terrainJeu[p.currentIDTerrain] = 0;
-	distribuerCartes();
-
-	for (int i = 0; i < p.nbJoueurs; i++) {
-		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = false };
-		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
-		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
-	}
-}
-
-void mancheGagner()
-{
-	p.manche = p.manche + 1;
-	p.terrainJeu[p.currentIDTerrain] = 0;
-	distribuerCartes();
-
-	for (int i = 0; i < p.nbJoueurs; i++) {
-		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = true };
-		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
-		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
-	}
-}
-
-/// Vérifier si la carte posée fait perdre ou continuer/gagner la manche.
-bool isCardWinner(int numCarte)
-{
-	if (p.terrainJeu[p.currentIDTerrain] < numCarte) {
-		return true;
-	}
-	return false;
-}
-
-/// Vérifier si tous les joueurs ont joués toutes leurs cartes.
-bool areAllCardsPlayed()
-{
-	bool allCardsPlayed = true;
-
-	for (int i = 0; i < p.nbJoueurs; i++)
-	{
-		for (int j = 0; j < p.manche; j++)
-		{
-			if (p.joueurs[i].cartes[j] != 0)
-			{
-				allCardsPlayed = false;
-				break;
-			}
-		}
-	}
-
-	return allCardsPlayed;
-}
-
-void setCartePose(int carte, int idJCarte)
-{
-}
-
-void ResetPartie()
-{
+	mancheGagner(); // Débuter le 1ère manche.
 }

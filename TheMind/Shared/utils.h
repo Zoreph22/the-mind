@@ -1,7 +1,6 @@
 /**
  * @file utils.h
  * @brief Bibliothèque de fonctions, macros, et constantes utilitaires.
- * Contient surtout des utilitaires pour l'affichage dans le terminal.
  */
 
 #pragma once
@@ -47,9 +46,11 @@
 
 /**
  * @def TO_STR(x)
+ * @def TO_STR_INDIR(x)
  * @brief Convertir un entier littéral en string.
  */
 #define TO_STR_INDIR(x) #x
 #define TO_STR(x) TO_STR_INDIR(x)
 
+/// Remplacer tous les caractères @p toFind par @p toReplace dans un @p string de taille @p size caractères.
 void strReplaceChar(char* string, char toFind, char toReplace, size_t size);
