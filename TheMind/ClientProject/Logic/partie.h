@@ -16,7 +16,7 @@ typedef struct S_Partie{
 	int manche;
 	/// Nombre de vies restantes.
 	int vie;
-	/// Carte posée sur le plateau. @a 0 si aucune.
+	/// Carte posée sur le plateau. @c 0 si aucune.
 	int cartePose;
 	/// Identifiant du joueur ayant posé la carte.
 	int idJCartePose;

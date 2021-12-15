@@ -26,21 +26,21 @@
 /**
  * @def printfc(color, msg, ...)
  * @brief Imprimer un message formaté dans une couleur spécifique dans la sortie standard.
- * @param color Séquence d'échappement ANSI. Voir les constantes @a TERM_<COULEUR> pour les couleurs prédéfinies.
+ * @param color Séquence d'échappement ANSI. Voir les constantes @c TERM_<COULEUR> pour les couleurs prédéfinies.
  */
 #define printfc(color, format, ...) { printf(color format TERM_DEFAULT, ##__VA_ARGS__); }
 
 /**
  * @def pDebug(msg, ...)
  * @brief Imprimer un message formaté jaune dans la sortie standard uniquement en mode débogage.
- * La constante @link DEBUG_MODE @endlink doit être à @a 1.
+ * La constante @link DEBUG_MODE @endlink doit être à @c 1.
  */
 #define pDebug(format, ...) { if (DEBUG_MODE) printf(TERM_YELLOW format TERM_DEFAULT, ##__VA_ARGS__); }
 
 /**
  * @def clear()
  * @brief Effacer le terminal uniquement en mode non-débogage.
- * La constante @link DEBUG_MODE @endlink doit être à @a 0.
+ * La constante @link DEBUG_MODE @endlink doit être à @c 0.
  */
 #define clear() { if (!DEBUG_MODE) system("clear"); }
 

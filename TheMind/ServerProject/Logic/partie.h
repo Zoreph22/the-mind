@@ -19,7 +19,7 @@ typedef struct S_Partie {
 	int nbJoueurs;
 	/// Nombre de vies restantes.
 	int vie;
-	/// Carte posée sur le plateau. @a 0 si aucune.
+	/// Carte posée sur le plateau. @c 0 si aucune.
 	int terrainJeu[100]; /// todo : a remplacer par une simple variable
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
 	joueur joueurs[MAX_CONNECTIONS];
@@ -45,6 +45,6 @@ void initPartie(joueur tab[], int n);
  * 
  * @param idJoueur Identifiant du joueur jouant la carte.
  * @param idCarte Index de la carte.
- * @return @a true si la manche continue.
+ * @return @c true si la manche continue.
  */
 bool gestionCarteJouer(int idJoueur, int idCarte);

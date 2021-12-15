@@ -17,6 +17,6 @@ typedef struct S_Joueur {
 	char nom[20];
 	/// Identifiant du joueur.
 	int id;
-	/// Liste des cartes du joueur. La valeur de la carte vaut @a 0 si celle-ci a été jouée.
+	/// Liste des cartes du joueur. La valeur de la carte vaut @c 0 si celle-ci a été jouée.
 	int cartes[50];
 }joueur;
