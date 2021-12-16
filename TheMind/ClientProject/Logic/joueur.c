@@ -11,11 +11,11 @@
 #include "messaging/enums.h"
 #include "../socket.h"
 
-joueur j = {0};
+Joueur joueur = {0};
 
 void setName(const char * nom)
 {
-	strcpy(j.nom, nom);
+	strcpy(joueur.nom, nom);
 }
 
 void jouerCarte(int carte)
@@ -23,8 +23,8 @@ void jouerCarte(int carte)
 	int carteIndex = -1;
 
 	// Récupérer l'index de la carte à partir de son numéro.
-	for (int i = 0; i < j.nbCartes; i++) {
-		if (j.cartes[i] == carte) {
+	for (int i = 0; i < joueur.nbCartes; i++) {
+		if (joueur.cartes[i] == carte) {
 			carteIndex = i;
 		}
 	}
@@ -35,7 +35,7 @@ void jouerCarte(int carte)
 		return;
 	}
 
-	j.cartes[carteIndex] = 0;
+	joueur.cartes[carteIndex] = 0;
 
 	struct CliMsg_PlayCard msgData = { .cardIndex = carteIndex };
 	socket_send(CLI_MSG_PLAY_CARD, &msgData, sizeof(msgData));
@@ -43,5 +43,5 @@ void jouerCarte(int carte)
 
 void setId(int id)
 {
-	j.id = id;
+	joueur.id = id;
 }

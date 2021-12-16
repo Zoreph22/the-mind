@@ -23,11 +23,8 @@ typedef struct S_Partie{
 	/// La dernière manche a-t-elle été gagnée ?
 	bool lastRoundWon;
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
-	joueur joueurs[MAX_CONNECTIONS];
-}partie;
-
-/// Instance de la partie.
-extern partie p; // TODO : vérif si p.joueurs est utilisé ou si c'est l.joueurs
+	Joueur joueurs[MAX_CONNECTIONS];
+}Partie;
 
 /**
  * @brief Définir les nouvelles cartes du joueur.

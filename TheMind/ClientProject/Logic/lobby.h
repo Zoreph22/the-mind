@@ -22,11 +22,11 @@ typedef struct S_Lobby {
 	/// Nombre de joueurs.
 	int nbJoueurs;
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
-	joueur joueurs[MAX_CONNECTIONS];
-}lobby;
+	Joueur joueurs[MAX_CONNECTIONS];
+}Lobby;
 
 /// Instance du lobby.
-extern lobby l;
+extern Lobby lobby;
 
 /**
  * @brief Initialiser le lobby.

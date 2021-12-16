@@ -120,7 +120,7 @@ bool socket_connect(const char* ip, unsigned short port)
 
 	// Envoyer le nom du joueur au serveur.
 	struct CliMsg_SetName msgData = { 0 };
-	strcpy(msgData.name, j.nom);
+	strcpy(msgData.name, joueur.nom);
 	socket_send(CLI_MSG_SET_NAME, &msgData, sizeof(msgData));
 
 	return true;

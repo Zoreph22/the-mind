@@ -15,28 +15,28 @@
 #include "../socket.h"
 #include "utils.h"
 
-lobby l;
+Lobby lobby;
 
 void initLobby()
 {
-	l.inLobby = true;
-	l.nbBots = 0;
-	l.nbJoueurs = 1;
-	l.nbManches = 0;
-	l.nbPrets = 0;
-	bzero(l.joueurs, sizeof(l.joueurs));
+	lobby.inLobby = true;
+	lobby.nbBots = 0;
+	lobby.nbJoueurs = 1;
+	lobby.nbManches = 0;
+	lobby.nbPrets = 0;
+	bzero(lobby.joueurs, sizeof(lobby.joueurs));
 }
 
 void setInfoLobby(int roundCount, int bCount, int readyCount)
 {
-	l.nbManches = roundCount;
-	l.nbBots = bCount;
-	l.nbPrets = readyCount;
+	lobby.nbManches = roundCount;
+	lobby.nbBots = bCount;
+	lobby.nbPrets = readyCount;
 }
 
 void printLobby()
 {
-	if (!l.inLobby)
+	if (!lobby.inLobby)
 	{
 		return;
 	}
@@ -44,17 +44,17 @@ void printLobby()
 	clear();
 	printf("-- Lobby : en attente des autres joueurs --\n");
 
-	printf("Nombre de joueurs prêts : %i / %i.\n", l.nbPrets, l.nbJoueurs);
-	printf("Nombre de bots : %i.\n", l.nbBots);
+	printf("Nombre de joueurs prêts : %i / %i.\n", lobby.nbPrets, lobby.nbJoueurs);
+	printf("Nombre de bots : %i.\n", lobby.nbBots);
 	printf("\n");
-	printf("Votre pseudo : %s.\n", j.nom);
+	printf("Votre pseudo : %s.\n", joueur.nom);
 	printf("Les autres joueurs :\n");
-	for (int i = 0; i < l.nbJoueurs; i++) {
-		if (i != j.id)
-			printf("\t- %s\n", l.joueurs[i].nom);
+	for (int i = 0; i < lobby.nbJoueurs; i++) {
+		if (i != joueur.id)
+			printf("\t- %s\n", lobby.joueurs[i].nom);
 	}
 	printf("\n");
-	if (j.ready)
+	if (joueur.ready)
 	{
 		printf("Vous êtes prêt.\n");
 	}
@@ -72,9 +72,9 @@ void gestionInputLobby()
 
 	if (strcmp(str, "P") == 0 || strcmp(str, "p") == 0)
 	{
-		if ((l.nbBots > 0 || l.nbJoueurs > 1) && !j.ready)
+		if ((lobby.nbBots > 0 || lobby.nbJoueurs > 1) && !joueur.ready)
 		{
-			j.ready = true;
+			joueur.ready = true;
 			socket_send(CLI_MSG_SET_READY, NULL, 0);
 		}
 	}
@@ -86,10 +86,10 @@ void gestionInputLobby()
 
 void addPlayerToLobby(int id, const char* name)
 {
-	l.joueurs[id].id = id;
-	l.joueurs[id].ready = false;
-	strcpy(l.joueurs[id].nom, name);
-	l.nbJoueurs++;
+	lobby.joueurs[id].id = id;
+	lobby.joueurs[id].ready = false;
+	strcpy(lobby.joueurs[id].nom, name);
+	lobby.nbJoueurs++;
 }
 
 

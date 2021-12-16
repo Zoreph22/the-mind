@@ -22,18 +22,18 @@ typedef struct S_Partie {
 	/// Carte posée sur le plateau. @c 0 si aucune.
 	int terrainJeu[100]; /// todo : a remplacer par une simple variable
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
-	joueur joueurs[MAX_CONNECTIONS];
-}partie;
+	Joueur joueurs[MAX_CONNECTIONS];
+}Partie;
 
 /// Instance de la partie.
-extern partie p; // TODO : a rename
+extern Partie partie; // TODO : a rename
 
 /**
  * @brief Initialiser la partie et démarrer la première manche.
  * @param tab Tableau des joueurs provenant du lobby.
  * @param n Nombre de joueurs.
  */
-void initPartie(joueur tab[], int n);
+void initPartie(Joueur tab[], int n);
 
 /**
  * @brief Gérer une carte qu'un joueur vient de jouer.

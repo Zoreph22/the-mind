@@ -20,10 +20,10 @@ typedef struct S_Joueur { // TODO : vérifi attributs utilisés
 	int nbCartes;
 	/// Liste des cartes du joueur. La valeur de la carte vaut @c 0 si celle-ci a été jouée.
 	int cartes[50];
-}joueur;
+}Joueur;
 
 /// Instance du joueur.
-extern joueur j; // TODO : rename
+extern Joueur joueur; // TODO : rename
 
 /**
  * @brief Définir le nom du joueur.

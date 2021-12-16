@@ -19,4 +19,4 @@ typedef struct S_Joueur {
 	int id;
 	/// Liste des cartes du joueur. La valeur de la carte vaut @c 0 si celle-ci a été jouée.
 	int cartes[50];
-}joueur;
+}Joueur;

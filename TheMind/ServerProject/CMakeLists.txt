@@ -4,13 +4,14 @@ cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
 add_executable (ServerProject
-	"main.c" 
+	"main.c"
 	"socket.c" "socket.h"
+	"handlers.c"
 	"logic/joueur.c" "logic/joueur.h"
 	"logic/lobby.c" "logic/lobby.h"
-	 
 	"logic/partie.c" "logic/partie.h"
-	"handlers.c"  "logic/stats.c" "logic/stats.h")
+	"logic/stats.c" "logic/stats.h"
+)
 
 # Link libraries to this project.
 target_link_libraries (ServerProject PRIVATE sds)

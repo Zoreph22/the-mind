@@ -33,7 +33,7 @@ void SrvMsg_PlayerConnectedHandler(void* data)
 	struct SrvMsg_PlayerConnected* msg = (struct SrvMsg_PlayerConnected*)data;
 	pDebug("Message Handler: SRV_MSG_PLAYER_CONNECTED - Player id: %i - Player name: %s.\n", msg->playerId, msg->name);
 
-	if (msg->playerId == (unsigned int) j.id)
+	if (msg->playerId == (unsigned int) joueur.id)
 	{
 		return;
 	}
@@ -62,7 +62,7 @@ void SrvMsg_NextRoundHandler(void* data)
 	for (unsigned int i = 0; i < msg->roundNumber; i++) pDebug(" [%i] = %i", i, msg->playerCards[i]);
 	pDebug(".\n");
 
-	l.inLobby = false;
+	lobby.inLobby = false;
 	setNextRound(msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
 	distribuerCartes((int *) msg->playerCards);
 	printManche();

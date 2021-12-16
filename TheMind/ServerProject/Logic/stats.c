@@ -22,9 +22,9 @@ PlayerStats playerStats[MAX_CONNECTIONS] = { 0 };
 void stats_generatePDF()
 {
 	// Remplacer les espaces par des - sinon la commande ne s'exécute pas.
-	for (unsigned int i = 0; i < (unsigned int) p.nbJoueurs; i++)
+	for (unsigned int i = 0; i < (unsigned int) partie.nbJoueurs; i++)
 	{
-		strReplaceChar(p.joueurs[i].nom, ' ', '-', sizeof(p.joueurs[i].nom));
+		strReplaceChar(partie.joueurs[i].nom, ' ', '-', sizeof(partie.joueurs[i].nom));
 	}
 
 	// ---- Création des paramètres d'exécution de Awk. ----
@@ -39,12 +39,12 @@ void stats_generatePDF()
 		" -v REACTION_AVG=%.2f"\
 		" -v ROUND_WON_AVG=%.2f"\
 		" -v WORST_PLAYER=%s",
-		p.nbJoueurs,
+		partie.nbJoueurs,
 		globalStats.minReactionTime,
 		globalStats.maxReactionTime,
 		globalStats.avgReactionTime,
 		globalStats.avgRoundWon,
-		p.joueurs[globalStats.worstPlayerId].nom
+		partie.joueurs[globalStats.worstPlayerId].nom
 	);
 
 	// Nombre de manches gagnées pour chaque partie.
@@ -56,10 +56,10 @@ void stats_generatePDF()
 
 	// Statistiques de chaque joueur.
 	args = sdscat(args, " -v PLAYERS_ARRAY=");
-	for (unsigned int i = 0; i < (unsigned int) p.nbJoueurs; i++)
+	for (unsigned int i = 0; i < (unsigned int) partie.nbJoueurs; i++)
 	{
 		args = sdscatprintf(args, "%s:%i:%i:%.2f:%i|",
-			p.joueurs[i].nom,
+			partie.joueurs[i].nom,
 			playerStats[i].minReactionTime,
 			playerStats[i].maxReactionTime,
 			playerStats[i].avgReactionTime,
@@ -123,7 +123,7 @@ unsigned int stats_elapsedSecs(bool resetTimer)
 void stats_updateAvgRoundWon()
 {
 	static unsigned int currentSum = 0;
-	currentSum += p.manche - 1;
+	currentSum += partie.manche - 1;
 
 	globalStats.avgRoundWon = (float)currentSum / globalStats.gameCount;
 }
@@ -134,7 +134,7 @@ void stats_updateWorstPlayer()
 	unsigned int worstPlayerId = 0;
 	unsigned int highestFailCount = 0;
 
-	for (int i = 0; i < p.nbJoueurs; i++)
+	for (int i = 0; i < partie.nbJoueurs; i++)
 	{
 		unsigned int lostCount = playerStats[i].failCount;
 
@@ -166,7 +166,7 @@ void stats_updateReactionTimes(unsigned int reactionTime)
 
 void stats_updateGameStats()
 {
-	globalStats.roundWonPerGame[globalStats.gameCount++] = p.manche - 1;
+	globalStats.roundWonPerGame[globalStats.gameCount++] = partie.manche - 1;
 	stats_updateAvgRoundWon();
 	stats_updateWorstPlayer();
 }

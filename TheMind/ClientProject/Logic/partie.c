@@ -17,34 +17,35 @@
 #include "joueur.h"
 #include "utils.h"
 
-partie p = { 0 };
+/// Instance de la partie.
+Partie partie = { 0 };
 
 void distribuerCartes(const int* playercard)
 {
-	j.nbCartes = p.manche;
-	bzero(j.cartes, (j.nbCartes - 1) * sizeof(int));
-	memcpy(j.cartes, playercard, j.nbCartes * sizeof(int));
+	joueur.nbCartes = partie.manche;
+	bzero(joueur.cartes, (joueur.nbCartes - 1) * sizeof(int));
+	memcpy(joueur.cartes, playercard, joueur.nbCartes * sizeof(int));
 }
 
 void setCartePose(int carte, int idJCarte) {
-	l.joueurs[idJCarte].nbCartes--;
-	p.cartePose = carte;
-	p.idJCartePose = idJCarte;
+	lobby.joueurs[idJCarte].nbCartes--;
+	partie.cartePose = carte;
+	partie.idJCartePose = idJCarte;
 }
 
 void setNextRound(int roundNumber, int lifeRemaining, int isLastRoundWon)
 {
-	p.manche = roundNumber;
-	p.vie = lifeRemaining;
+	partie.manche = roundNumber;
+	partie.vie = lifeRemaining;
 
-	p.cartePose = 0;
-	p.idJCartePose = 0;
+	partie.cartePose = 0;
+	partie.idJCartePose = 0;
 
-	p.lastRoundWon = isLastRoundWon;
+	partie.lastRoundWon = isLastRoundWon;
 
-	for (int i = 0; i < l.nbJoueurs; i++)
+	for (int i = 0; i < lobby.nbJoueurs; i++)
 	{
-		l.joueurs[i].nbCartes = p.manche;
+		lobby.joueurs[i].nbCartes = partie.manche;
 	}
 }
 
@@ -52,9 +53,9 @@ bool areAllCardsPlayed()
 {
 	bool areAllPlayed = true;
 
-	for (int i = 0; i < j.nbCartes; i++)
+	for (int i = 0; i < joueur.nbCartes; i++)
 	{
-		if (j.cartes[i] != 0)
+		if (joueur.cartes[i] != 0)
 		{
 			areAllPlayed = false;
 			break;
@@ -74,7 +75,7 @@ void finPartie()
 
 	printf("\n");
 
-	printf("Nombre de manches gagnées : %i.\n", p.manche - 1);
+	printf("Nombre de manches gagnées : %i.\n", partie.manche - 1);
 
 	printf("\n\n");
 
@@ -84,7 +85,7 @@ void finPartie()
 
 void printManche()
 {
-	if (l.inLobby)
+	if (lobby.inLobby)
 	{
 		return;
 	}
@@ -93,10 +94,10 @@ void printManche()
 
 	printf("-- Partie en cours --\n");
 
-	printf("Numéro de la manche : %i.\n", p.manche);
-	printf("Nombre restant de vie(s) : %i.\n", p.vie);
+	printf("Numéro de la manche : %i.\n", partie.manche);
+	printf("Nombre restant de vie(s) : %i.\n", partie.vie);
 
-	if (p.lastRoundWon)
+	if (partie.lastRoundWon)
 	{
 		printfc(TERM_GREEN, "La manche précédente a été gagnée.\n");
 	}
@@ -107,32 +108,32 @@ void printManche()
 
 	printf("\n");
 
-	if (!p.cartePose)
+	if (!partie.cartePose)
 	{
 		printfc(TERM_YELLOW, "-> Aucune carte n'a été jouée.\n");
 	}
 	else
 	{
-		printfc(TERM_YELLOW, "-> Carte posée par le joueur %s : %i.\n", p.idJCartePose == j.id ? j.nom : l.joueurs[p.idJCartePose].nom, p.cartePose);
+		printfc(TERM_YELLOW, "-> Carte posée par le joueur %s : %i.\n", partie.idJCartePose == joueur.id ? joueur.nom : lobby.joueurs[partie.idJCartePose].nom, partie.cartePose);
 	}
 
 	printf("\n");
 
 	printf("Nombre restant de cartes des autres joueurs :\n");
 
-	for (int i = 0; i < l.nbJoueurs; i++)
+	for (int i = 0; i < lobby.nbJoueurs; i++)
 	{
-		if (i == j.id) continue;
+		if (i == joueur.id) continue;
 
-		int nbCartes = l.joueurs[i].nbCartes;
+		int nbCartes = lobby.joueurs[i].nbCartes;
 
 		if (nbCartes == 0)
 		{
-			printfc(TERM_GREY, "\t- %s : %i / %i\n", l.joueurs[i].nom, nbCartes, p.manche);
+			printfc(TERM_GREY, "\t- %s : %i / %i\n", lobby.joueurs[i].nom, nbCartes, partie.manche);
 		}
 		else
 		{
-			printfc(TERM_DEFAULT, "\t- %s : %i / %i\n", l.joueurs[i].nom, nbCartes, p.manche);
+			printfc(TERM_DEFAULT, "\t- %s : %i / %i\n", lobby.joueurs[i].nom, nbCartes, partie.manche);
 		}
 	}
 
@@ -146,9 +147,9 @@ void printManche()
 	{
 		printf("Votre main :");
 
-		for (int i = 0; i < p.manche; i++)
+		for (int i = 0; i < partie.manche; i++)
 		{
-			int numCarte = j.cartes[i];
+			int numCarte = joueur.cartes[i];
 
 			if (numCarte > 0)
 			{

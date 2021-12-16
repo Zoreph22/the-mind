@@ -7,10 +7,6 @@
 
 #include <stdbool.h>
 
-/* -------------------------------------------------------------------------- */
-/*                                 Structures                                 */
-/* -------------------------------------------------------------------------- */
-
 /// Structure stockant les statistiques du jeu et de l'ensemble des parties jouées.
 typedef struct S_GlobalStats {
 	/// Nombre de parties jouées.
@@ -40,10 +36,6 @@ typedef struct S_PlayerStats {
 	/// Nombre de fois dont il a causé la perte d'une manche.
 	unsigned int failCount;
 } PlayerStats;
-
-/* -------------------------------------------------------------------------- */
-/*                                  Fonctions                                 */
-/* -------------------------------------------------------------------------- */
 
 /**
  * @brief Générer le PDF des statistiques du jeu et des joueurs.

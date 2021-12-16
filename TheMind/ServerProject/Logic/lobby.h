@@ -10,7 +10,7 @@
 #include "../socket.h"
 #include "socket/consts.h"
 
-/// Structure stockant les données du lobby.
+ /// Structure stockant les données du lobby.
 typedef struct S_Lobby {
 	int nbManches; // TODO : DELETE
 	/// Nombre de robots présents.
@@ -20,21 +20,16 @@ typedef struct S_Lobby {
 	/// Nombre de joueurs dans le lobby.
 	int nbJoueurs;
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
-	joueur joueurs[MAX_CONNECTIONS];
-}lobby;
+	Joueur joueurs[MAX_CONNECTIONS];
+}Lobby;
 
 /// Instance du lobby.
-extern lobby l;
+extern Lobby lobby;
 
 /**
  * @brief Démarrer la partie et réinitialiser les données de l'ancienne partie si ce n'est pas la première.
  */
 void startGame();
-
-/**
- * @brief Initialiser le lobby. TODO : vérifier si fonction utilisée.
- */
-void initLobby();
 
 /**
  * @brief Ajouter un joueur au lobby.

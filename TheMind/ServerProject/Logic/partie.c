@@ -15,7 +15,7 @@
 #include "partie.h"
 
 
-partie p = {0};
+Partie partie = {0};
 
 /**
  * @brief Générer les cartes et les distribuer aux joueurs.
@@ -24,12 +24,12 @@ void distribuerCartes()
 {
 	bool tmp[100] = { 0 };
 	int carte = 0;
-	for (int i = 0; i < p.nbJoueurs; i++) {
-		for (int j = 0; j < p.manche; j++) {
+	for (int i = 0; i < partie.nbJoueurs; i++) {
+		for (int j = 0; j < partie.manche; j++) {
 			do {
 				carte = rand() % (101 - 1) + 1;
 				if (!tmp[carte]) {
-					p.joueurs[i].cartes[j] = carte;
+					partie.joueurs[i].cartes[j] = carte;
 					tmp[carte] = true;
 					break;
 				}
@@ -63,7 +63,7 @@ bool partieGagner()
  */
 bool isCardWinner(int numCarte)
 {
-	if (p.terrainJeu[p.currentIDTerrain] < numCarte) {
+	if (partie.terrainJeu[partie.currentIDTerrain] < numCarte) {
 		return true;
 	}
 	return false;
@@ -76,11 +76,11 @@ bool areAllCardsPlayed()
 {
 	bool allCardsPlayed = true;
 
-	for (int i = 0; i < p.nbJoueurs; i++)
+	for (int i = 0; i < partie.nbJoueurs; i++)
 	{
-		for (int j = 0; j < p.manche; j++)
+		for (int j = 0; j < partie.manche; j++)
 		{
-			if (p.joueurs[i].cartes[j] != 0)
+			if (partie.joueurs[i].cartes[j] != 0)
 			{
 				allCardsPlayed = false;
 				break;
@@ -96,19 +96,19 @@ bool areAllCardsPlayed()
  */
 void manchePerdu()
 {
-	p.vie = p.vie - 1;
+	partie.vie = partie.vie - 1;
 
-	if (p.vie <= 0) {
+	if (partie.vie <= 0) {
 		partiePerdu();
 		return;
 	}
 
-	p.terrainJeu[p.currentIDTerrain] = 0;
+	partie.terrainJeu[partie.currentIDTerrain] = 0;
 	distribuerCartes();
 
-	for (int i = 0; i < p.nbJoueurs; i++) {
-		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = false };
-		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+	for (int i = 0; i < partie.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = partie.manche, .lifeRemaining = partie.vie, .isLastRoundWon = false };
+		memcpy(msgData.playerCards, partie.joueurs[i].cartes, partie.manche * sizeof(int));
 		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
 	}
 }
@@ -118,13 +118,13 @@ void manchePerdu()
  */
 void mancheGagner()
 {
-	p.manche = p.manche + 1;
-	p.terrainJeu[p.currentIDTerrain] = 0;
+	partie.manche = partie.manche + 1;
+	partie.terrainJeu[partie.currentIDTerrain] = 0;
 	distribuerCartes();
 
-	for (int i = 0; i < p.nbJoueurs; i++) {
-		struct SrvMsg_NextRound msgData = { .roundNumber = p.manche, .lifeRemaining = p.vie, .isLastRoundWon = true };
-		memcpy(msgData.playerCards, p.joueurs[i].cartes, p.manche * sizeof(int));
+	for (int i = 0; i < partie.nbJoueurs; i++) {
+		struct SrvMsg_NextRound msgData = { .roundNumber = partie.manche, .lifeRemaining = partie.vie, .isLastRoundWon = true };
+		memcpy(msgData.playerCards, partie.joueurs[i].cartes, partie.manche * sizeof(int));
 		socket_send(i, SRV_MSG_NEXT_ROUND, &msgData, sizeof(msgData));
 	}
 }
@@ -138,9 +138,9 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 	stats_elapsedSecs(true);
 
 	// Gérer la carte.
-	int numCarte = p.joueurs[idJoueur].cartes[idCarte];
+	int numCarte = partie.joueurs[idJoueur].cartes[idCarte];
 	
-	p.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
+	partie.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
 
 	// La carte posée fait gagner la manche et toutes les cartes ont été posées.
 	if (isCardWinner(numCarte) && areAllCardsPlayed()) {
@@ -156,19 +156,19 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 	}
 
 	// Continuer la manche.
-	p.terrainJeu[p.currentIDTerrain] = numCarte; // Poser la carte.
+	partie.terrainJeu[partie.currentIDTerrain] = numCarte; // Poser la carte.
 	return true;
 }
 
-void initPartie(joueur tab[], int n)
+void initPartie(Joueur tab[], int n)
 {
-	p.nbJoueurs = n;
-	p.manche = 0;
-	p.currentIDTerrain = 0;
-	p.vie = 3;
+	partie.nbJoueurs = n;
+	partie.manche = 0;
+	partie.currentIDTerrain = 0;
+	partie.vie = 3;
 
 	for (int i = 0; i < n; i++) {
-		p.joueurs[i] = tab[i];
+		partie.joueurs[i] = tab[i];
 	}
 
 	mancheGagner(); // Débuter le 1ère manche.

@@ -11,46 +11,37 @@
 #include "messaging/structs.h"
 #include "messaging/enums.h"
 
-lobby l;
+Lobby lobby;
 
 void startGame()
 {
 	stats_elapsedSecs(true);
-	initPartie(l.joueurs, l.nbJoueurs);
-}
-
-void initLobby()
-{
-	l.nbBots = 0;
-	l.nbJoueurs = 0;
-	l.nbManches = 0;
-	l.nbPrets = 0;
-	bzero(l.joueurs, sizeof(l.joueurs));
+	initPartie(lobby.joueurs, lobby.nbJoueurs);
 }
 
 void setPlayerName(int id, const char* name)
 {
-	strcpy(l.joueurs[id].nom, name);
+	strcpy(lobby.joueurs[id].nom, name);
 }
 
 void setReady(int id)
 {
-	l.joueurs[id].ready = true;
-	l.nbPrets++;
+	lobby.joueurs[id].ready = true;
+	lobby.nbPrets++;
 }
 
 void setNumBot(int nb)
 {
 	if (nb < 0)
 		return;
-	l.nbBots = nb;
+	lobby.nbBots = nb;
 }
 
 void addPlayerToLobby(int id)
 {
-	l.joueurs[id].id = id;
-	l.joueurs[id].ready = false;
-	l.nbJoueurs++;
+	lobby.joueurs[id].id = id;
+	lobby.joueurs[id].ready = false;
+	lobby.nbJoueurs++;
 }
 
 
