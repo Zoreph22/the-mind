@@ -15,10 +15,9 @@
 #include "input.h"
 #include "utils.h"
 
-/// Quitter le programme proprement en se déconnectant du serveur.
+/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
-	socket_disconnect();
 	exit(EXIT_SUCCESS);
 }
 
@@ -55,11 +54,23 @@ void connectMenu()
 	} while (!socket_connect(ip, port));
 }
 
+/// Initialiser l'état du programme.
+void init()
+{
+	// Se déconnecter du serveur à la fermeture du programme.
+	signal(SIGTERM, &quit);
+	signal(SIGINT, &quit);
+	atexit(&socket_disconnect);
+}
+
 int main(int argc, char* argv[])
 {
-	signal(SIGINT, &quit);
+	init();
+
+	// Afficher le menu de connexion au serveur.
 	connectMenu();
 
+	// Démarrer la boucle de saisie utilisateur.
 	beginInputLoop();
 
 	return EXIT_SUCCESS;

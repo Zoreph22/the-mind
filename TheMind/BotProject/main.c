@@ -11,10 +11,9 @@
 #include <time.h>
 #include "socket.h"
 
-/// Quitter le programme proprement en se déconnectant du serveur.
+/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
-	socket_disconnect();
 	exit(EXIT_SUCCESS);
 }
 
@@ -72,13 +71,25 @@ void parseArgs(int argc, char* argv[])
 	socket_setPort(atoi(port));
 }
 
+/// Initialiser l'état du programme.
+void init()
+{
+	srand(getpid());
+
+	// Se déconnecter du serveur à la fermeture du programme.
+	signal(SIGTERM, &quit);
+	signal(SIGINT, &quit);
+	atexit(&socket_disconnect);
+}
+
 int main(int argc, char* argv[])
 {
+	// Analyser les arguments pour y extraire l'IP et le port du serveur.
 	parseArgs(argc, argv);
 
-	srand(getpid());
-	signal(SIGINT, &quit);
-
+	init();
+	
+	// Se connecter au serveur.
 	socket_connect();
 
 	return EXIT_SUCCESS;

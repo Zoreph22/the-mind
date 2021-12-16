@@ -11,10 +11,9 @@
 #include <linux/limits.h>
 #include "socket.h"
 
-/// Quitter le programme proprement en déconnectant les clients et le serveur.
+/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
-	socket_close();
 	exit(EXIT_SUCCESS);
 }
 
@@ -22,7 +21,11 @@ void quit()
 void init()
 {
 	srand(time(NULL));
+
+	// Déconnecter les clients et le serveur à la fermeture du programme.
+	signal(SIGTERM, &quit);
 	signal(SIGINT, &quit);
+	atexit(&socket_close);
 
 	// Changer le répertoire courant vers le répertoire où se trouve l'exécutable.
 	char path[PATH_MAX] = "";

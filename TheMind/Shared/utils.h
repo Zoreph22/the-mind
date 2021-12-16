@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 /// Afficher les informations de débogage ?
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 // Couleur d'écriture dans le terminal.
 #define TERM_DEFAULT  "\033[0m"
