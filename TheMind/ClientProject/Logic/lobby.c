@@ -84,7 +84,7 @@ void gestionInputLobby()
 	}
 }
 
-void addPlayerToLobby(int id, char* name)
+void addPlayerToLobby(int id, const char* name)
 {
 	l.joueurs[id].id = id;
 	l.joueurs[id].ready = false;

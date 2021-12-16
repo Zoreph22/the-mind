@@ -13,7 +13,7 @@
 
 joueur j = {0};
 
-void setName(char * nom)
+void setName(const char * nom)
 {
 	strcpy(j.nom, nom);
 }

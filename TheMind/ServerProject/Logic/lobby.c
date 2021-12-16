@@ -28,7 +28,7 @@ void initLobby()
 	bzero(l.joueurs, sizeof(l.joueurs));
 }
 
-void setPlayerName(int id, char* name)
+void setPlayerName(int id, const char* name)
 {
 	strcpy(l.joueurs[id].nom, name);
 }

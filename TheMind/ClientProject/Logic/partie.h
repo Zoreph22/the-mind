@@ -33,7 +33,7 @@ extern partie p; // TODO : vérif si p.joueurs est utilisé ou si c'est l.joueur
  * @brief Définir les nouvelles cartes du joueur.
  * @param playercard Tableau des cartes.
  */
-void distribuerCartes(int *playercard);
+void distribuerCartes(const int *playercard);
 
 /**
  * @brief Définir la carte posée sur le plateau.

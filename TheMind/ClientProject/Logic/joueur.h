@@ -29,7 +29,7 @@ extern joueur j; // TODO : rename
  * @brief Définir le nom du joueur.
  * @param nom Nom du joueur.
  */
-void setName(char * nom);
+void setName(const char * nom);
 
 /**
  * @brief Jouer une carte et l'envoyer au serveur.

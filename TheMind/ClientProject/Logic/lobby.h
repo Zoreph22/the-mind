@@ -38,7 +38,7 @@ void initLobby();
  * @param id Identifiant du joueur.
  * @param name Nom du joueur.
  */
-void addPlayerToLobby(int id, char* name);
+void addPlayerToLobby(int id, const char* name);
 
 /**
  * @brief Définir les informations du lobby.

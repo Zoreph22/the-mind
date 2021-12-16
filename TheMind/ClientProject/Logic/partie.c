@@ -19,7 +19,7 @@
 
 partie p = { 0 };
 
-void distribuerCartes(int* playercard)
+void distribuerCartes(const int* playercard)
 {
 	j.nbCartes = p.manche;
 	bzero(j.cartes, (j.nbCartes - 1) * sizeof(int));

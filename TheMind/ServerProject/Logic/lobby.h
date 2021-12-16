@@ -47,7 +47,7 @@ void addPlayerToLobby(int id);
  * @param id Identifiant du joueur.
  * @param name Nouveau nom.
  */
-void setPlayerName(int id, char* name);
+void setPlayerName(int id, const char* name);
 
 /**
  * @brief Définir un joueur prêt. TODO : déplacer cette fonction
