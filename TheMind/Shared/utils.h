@@ -38,6 +38,12 @@
 #define pDebug(format, ...) { if (DEBUG_MODE) printf(TERM_YELLOW format TERM_DEFAULT, ##__VA_ARGS__); }
 
 /**
+ * @def FATAL_ERR(msg)
+ * @brief Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
+ */
+#define FATAL_ERR(msg) { perror(msg); exit(errno); }
+
+/**
  * @def clear()
  * @brief Effacer le terminal uniquement en mode non-débogage.
  * La constante @link DEBUG_MODE @endlink doit être à @c 0.

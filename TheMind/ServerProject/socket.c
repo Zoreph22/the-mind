@@ -18,9 +18,6 @@
 #include "messaging/cli_handlers.h"
 #include "socket.h"
 
-/// Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
-#define FATAL_ERR(msg) perror(msg); socket_close(); exit(errno);
-
 /// Structure stockant les informations de la connexion d'un client.
 struct ClientCon
 {

@@ -16,9 +16,6 @@
 #include "socket.h"
 #include "utils.h"
 
-/// Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
-#define FATAL_ERR(msg) perror(msg); socket_disconnect(); exit(errno);
-
 /// Adresse IP du serveur.
 char* serverIp;
 /// Port du serveur.
