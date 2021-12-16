@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <signal.h>
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "messaging/cli_handlers.h"
@@ -57,13 +58,13 @@ void* listenMessages(void* ptrClientId)
 		// Lecture en-tête message : taille contenu du message & type du message.
 		if (recvn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("recvn()");
+			FATAL_ERR("listenMessages - header - recvn()");
 		};
 
 		// Lecture contenu message.
 		if (recvn(cliSockets[clientId].fd, data, header.dataLen) == -1)
 		{
-			FATAL_ERR("recvn()");
+			FATAL_ERR("listenMessages - data - recvn()");
 		};
 
 		printfc(TERM_BLUE, "Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
@@ -101,7 +102,7 @@ void listenConnections()
 
 		if (cliSocket == -1)
 		{
-			FATAL_ERR("Error while listening client connections");
+			FATAL_ERR("listenConnections - accept()");
 		}
 
 		nbConnections++;
@@ -139,13 +140,13 @@ void socket_broadcast(enum SrvMsg type, const void* msg, size_t size)
 		// Envoyer l'en-tête du message.
 		if (sendn(cliSockets[i].fd, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("socket_broadcast - sendn()");
+			FATAL_ERR("socket_broadcast - header - sendn()");
 		}
 
 		// Envoyer le contenu du message.
 		if (sendn(cliSockets[i].fd, msg, size) == -1)
 		{
-			FATAL_ERR("socket_broadcast - sendn()");
+			FATAL_ERR("socket_broadcast - data - sendn()");
 		}
 	}
 
@@ -171,13 +172,13 @@ void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_
 	// Envoyer l'en-tête du message.
 	if (sendn(cliSockets[clientId].fd, &header, sizeof(header)) == -1)
 	{
-		FATAL_ERR("socket_send - sendn()");
+		FATAL_ERR("socket_send - header - sendn()");
 	}
 
 	// Envoyer le contenu du message.
 	if (sendn(cliSockets[clientId].fd, msg, size) == -1)
 	{
-		FATAL_ERR("socket_send - sendn()");
+		FATAL_ERR("socket_send - data - sendn()");
 	}
 
 	printfc(TERM_GREEN, "Sent message to client id %i (type %i) (%lu bytes).\n", clientId, header.msgType, header.dataLen + sizeof(header));
@@ -226,7 +227,7 @@ void socket_close()
 	{
 		cliSockets[i].isOpened = false;
 
-		pthread_cancel(cliSockets[i].threadId); // TODO : attention, il faut que cette fonction soit appelée dans le main thread.
+		pthread_cancel(cliSockets[i].threadId);
 		pthread_join(cliSockets[i].threadId, NULL);
 
 		close(cliSockets[i].fd);
@@ -238,7 +239,12 @@ void socket_close()
 		perror("close");
 	}
 
-	printf("Server closed.\n");
+	printfc(TERM_YELLOW, "Server closed.\n");
+}
+
+void socket_requestClose()
+{
+	kill(getpid(), SIGTERM);
 }
 
 void socket_open()
@@ -250,7 +256,7 @@ void socket_open()
 
 	if (srvSocket == -1)
 	{
-		FATAL_ERR("socket()");
+		FATAL_ERR("socket_open - socket()");
 	}
 
 	// Autoriser la réutilisation du port pour pouvoir immédiatement réouvrir un serveur,
@@ -267,7 +273,7 @@ void socket_open()
 
 	if (bind(srvSocket, (struct sockaddr*)&address, sizeof address) == -1)
 	{
-		FATAL_ERR("bind()");
+		FATAL_ERR("socket_open - bind()");
 	}
 
 	isSocketOpened = true;
@@ -275,7 +281,7 @@ void socket_open()
 	// Attendre et accepter les demandes de connexion.
 	if (listen(srvSocket, MAX_CONNECTIONS) == -1)
 	{
-		FATAL_ERR("listen()");
+		FATAL_ERR("socket_open - listen()");
 	}
 
 	listenConnections();

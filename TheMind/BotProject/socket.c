@@ -45,13 +45,13 @@ void listenMessages()
 		// Lecture en-tête message : taille contenu du message & type du message.
 		if (recvn(cliSocket, &header, sizeof(header)) == -1)
 		{
-			FATAL_ERR("recvn()");
+			FATAL_ERR("listenMessages - header - recvn()");
 		};
 
 		// Lecture contenu message.
 		if (recvn(cliSocket, data, header.dataLen) == -1)
 		{
-			FATAL_ERR("recvn()");
+			FATAL_ERR("listenMessages - data - recvn()");
 		};
 
 		pDebug("[BOT] Message received (type %i) (%lu bytes).\n", header.msgType, header.dataLen + sizeof(header));
@@ -70,13 +70,13 @@ void socket_send(enum CliMsg type, const void* msg, size_t size)
 	// Envoyer l'en-tête du message.
 	if (sendn(cliSocket, &header, sizeof(header)) == -1)
 	{
-		FATAL_ERR("sendn()");
+		FATAL_ERR("socket_send - header - sendn()");
 	};
 
 	// Envoyer le contenu du message.
 	if (sendn(cliSocket, msg, size) == -1)
 	{
-		FATAL_ERR("sendn()");
+		FATAL_ERR("socket_send - data - sendn()");
 	};
 
 	pDebug("[BOT] Sent message (type %i) (%li bytes).\n", header.msgType, header.dataLen + sizeof(header));
@@ -91,7 +91,7 @@ void socket_connect()
 
 	if (cliSocket == -1)
 	{
-		FATAL_ERR("socket()");
+		FATAL_ERR("socket_connect - socket()");
 	}
 
 	// Spécifier l'adresse IP et le port du serveur.
@@ -101,13 +101,13 @@ void socket_connect()
 
 	if (inet_aton(serverIp, &sin.sin_addr) == -1)
 	{
-		FATAL_ERR("inet_aton()");
+		FATAL_ERR("socket_connect - inet_aton()");
 	}
 
 	// Connexion au serveur.
 	if (connect(cliSocket, (struct sockaddr*)&sin, sizeof sin) == -1)
 	{
-		FATAL_ERR("connect()");
+		FATAL_ERR("socket_connect - connect()");
 	}
 
 	isOpened = true;

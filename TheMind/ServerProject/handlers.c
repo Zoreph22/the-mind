@@ -11,6 +11,8 @@
 #include "logic/stats.h"
 #include "messaging/cli_handlers.h"
 
+#include "utils.h"
+
  /// Inutilisé.
 void CliMsg_NoneHandler(unsigned int senderId, void* data)
 {
@@ -147,7 +149,7 @@ void CliMsg_StopGameHandler(unsigned int senderId, void* data)
 	printf("Message Handler: CLI_MSG_STOP_GAME - Client: %i - Stopping the game.\n", senderId);
 
 	stats_generatePDF();
-	socket_close(); // TODO : main thread ?
+	socket_requestClose(); // TODO : main thread ?
 }
 
 /// Inutilisé.

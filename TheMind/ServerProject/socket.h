@@ -21,8 +21,17 @@ void socket_open();
 /**
  * @brief Fermer le serveur.
  * Terminer la connexion des clients et du serveur.
+ * @warning Ne pas appeler cette fonction autre que dans le thread principal.
+ * Si vous voulez fermer le serveur depuis un autre thread, utilisez @link socket_requestClose() @endlink à la place.
 */
 void socket_close();
+
+/**
+ * @brief Faire une requête pour fermer le serveur.
+ * @note Cette fonction est utilisée pour fermer le serveur depuis un thread.
+ * Elle appelle @link socket_close() @endlink dans le thread principal.
+*/
+void socket_requestClose();
 
 /**
  * @brief Diffuser un message à tous les clients connectés au serveur.

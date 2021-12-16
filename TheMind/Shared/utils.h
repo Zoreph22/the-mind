@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
 #include <errno.h>
 
 /// Afficher les informations de débogage ?
@@ -42,7 +44,7 @@
  * @def FATAL_ERR(msg)
  * @brief Afficher l'erreur de la dernière fonction appelée avec un @p msg dans la sortie d'erreur et quitter le programme.
  */
-#define FATAL_ERR(msg) { perror(msg); exit(errno); }
+#define FATAL_ERR(msg) { perror(msg); kill(getpid(), SIGTERM); }
 
 /**
  * @def clear()
