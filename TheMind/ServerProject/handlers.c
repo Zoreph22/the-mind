@@ -41,7 +41,7 @@ void CliMsg_SetNameHandler(unsigned int senderId, void* data)
 		msgData3.isBot = false;
 		socket_send(senderId, SRV_MSG_PLAYER_CONNECTED, &msgData3, sizeof(msgData3));
 
-		struct SrvMsg_InfoLobby msgData4 = { .botCount = lobby.nbBots, .roundCount = lobby.nbManches, .readyCount = lobby.nbPrets };
+		struct SrvMsg_InfoLobby msgData4 = { .botCount = lobby.nbBots, .readyCount = lobby.nbPrets };
 		socket_send(senderId, SRV_MSG_INFO_LOBBY, &msgData4, sizeof(msgData4));
 	}
 }
@@ -58,7 +58,7 @@ void CliMsg_SetReadyHandler(unsigned int senderId, void* data)
 
 	// Avertir les autres clients qu'un joueur est prêt.
 	{
-		struct SrvMsg_InfoLobby msgData = { .botCount = lobby.nbBots, .roundCount = lobby.nbManches, .readyCount = lobby.nbPrets };
+		struct SrvMsg_InfoLobby msgData = { .botCount = lobby.nbBots, .readyCount = lobby.nbPrets };
 		socket_broadcast(SRV_MSG_INFO_LOBBY, &msgData, sizeof(msgData));
 	}
 
@@ -77,7 +77,7 @@ void CliMsg_SetNumBotHandler(unsigned int senderId, void* data)
 
 	setNumBot(msg->botCount);
 
-	struct SrvMsg_InfoLobby msgData = { .botCount = lobby.nbBots, .roundCount = lobby.nbManches, .readyCount = lobby.nbPrets };
+	struct SrvMsg_InfoLobby msgData = { .botCount = lobby.nbBots, .readyCount = lobby.nbPrets };
 	socket_broadcast(SRV_MSG_INFO_LOBBY, &msgData, sizeof(msgData));
 }
 

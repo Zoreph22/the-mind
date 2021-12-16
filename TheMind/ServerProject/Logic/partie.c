@@ -38,23 +38,13 @@ void distribuerCartes()
 	}
 }
 
-bool partiePerdu()
-{
-	stats_updateGameStats();
-
-	struct SrvMsg_GameEnd msgData = { .isGameWon = false };
-	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
-}
-
 /**
- * @brief Arrêter la partie et faire game over. // TODO : remplace par une seule fonction finPartie et return void
+ * @brief Arrêter la partie et faire game over.
  */
-bool partieGagner()
+void finPartie()
 {
 	stats_updateGameStats();
-
-	struct SrvMsg_GameEnd msgData = { .isGameWon = true };
-	socket_broadcast(SRV_MSG_GAME_END, &msgData, sizeof(msgData));
+	socket_broadcast(SRV_MSG_GAME_END, NULL, 0);
 }
 
 /**
@@ -99,7 +89,7 @@ void manchePerdu()
 	partie.vie = partie.vie - 1;
 
 	if (partie.vie <= 0) {
-		partiePerdu();
+		finPartie();
 		return;
 	}
 

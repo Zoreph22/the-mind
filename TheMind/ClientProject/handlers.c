@@ -21,9 +21,9 @@ void SrvMsg_NoneHandler(void* data)
 void SrvMsg_InfoLobbyHandler(void* data)
 {
 	struct SrvMsg_InfoLobby* msg = (struct SrvMsg_InfoLobby*)data;
-	pDebug("Message Handler: SRV_MSG_INFO_LOBBY - Round count: %i - Bot count: %i - Ready count: %i.\n", msg->roundCount, msg->botCount, msg->readyCount);
+	pDebug("Message Handler: SRV_MSG_INFO_LOBBY - Bot count: %i - Ready count: %i.\n", msg->botCount, msg->readyCount);
 
-	setInfoLobby(msg->roundCount, msg->botCount, msg->readyCount);
+	setInfoLobby(msg->botCount, msg->readyCount);
 	printLobby();
 }
 
@@ -72,8 +72,7 @@ void SrvMsg_NextRoundHandler(void* data)
 /// Ne plus permettre au joueur de jouer, et afficher l'écran de fin.
 void SrvMsg_GameEndHandler(void* data)
 {
-	struct SrvMsg_GameEnd* msg = (struct SrvMsg_GameEnd*)data;
-	pDebug("Message Handler: SRV_MSG_GAME_END - Is game won: %i.\n", msg->isGameWon);
+	pDebug("Message Handler: SRV_MSG_GAME_END.\n");
 
 	setInputCallback(&gestionInputFinPartie);
 	finPartie();

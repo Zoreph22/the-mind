@@ -12,7 +12,6 @@
 
  /// Structure stockant les données du lobby.
 typedef struct S_Lobby {
-	int nbManches; // TODO : DELETE
 	/// Nombre de robots présents.
 	int nbBots;
 	/// Nombre de joueurs prêts pour démarrer la partie.
@@ -36,19 +35,6 @@ void startGame();
  * @param id Identifiant du joueur.
  */
 void addPlayerToLobby(int id);
-
-/**
- * @brief Définir le nom d'un joueur. TODO : déplacer cette fonction
- * @param id Identifiant du joueur.
- * @param name Nouveau nom.
- */
-void setPlayerName(int id, const char* name);
-
-/**
- * @brief Définir un joueur prêt. TODO : déplacer cette fonction
- * @param id Identifiant du joueur.
- */
-void setReady(int id);
 
 /**
  * @brief Définir le nombre de robots.

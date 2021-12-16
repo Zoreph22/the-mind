@@ -37,8 +37,6 @@ struct CliMsg_PlayCard
 /// Données du type de message @link SRV_MSG_INFO_LOBBY @endlink.
 struct SrvMsg_InfoLobby
 {
-	/// Nombre de manches au total.
-	unsigned int roundCount;
 	/// Nombre de robots dans la partie.
 	unsigned int botCount;
 	/// Nombre de clients prêts à jouer.
@@ -71,12 +69,6 @@ struct SrvMsg_NextRound
 	unsigned int isLastRoundWon;
 	/// Ensemble des cartes du client destinataire du message.
 	unsigned int playerCards[50];
-};
-
-/// Données du type de message @link SRV_MSG_GAME_END @endlink.
-struct SrvMsg_GameEnd
-{
-	unsigned int isGameWon;
 };
 
 /// Données du type de message @link SRV_MSG_PLAYER_INFO @endlink.

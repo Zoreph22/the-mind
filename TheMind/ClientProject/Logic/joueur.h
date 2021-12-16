@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 /// Structure stockant les données du joueur.
-typedef struct S_Joueur { // TODO : vérifi attributs utilisés
+typedef struct S_Joueur {
 	/// Le joueur est-il prêt pour démarrer la partie ?
 	bool ready;
 	/// Nom du joueur.
@@ -23,7 +23,7 @@ typedef struct S_Joueur { // TODO : vérifi attributs utilisés
 }Joueur;
 
 /// Instance du joueur.
-extern Joueur joueur; // TODO : rename
+extern Joueur joueur;
 
 /**
  * @brief Définir le nom du joueur.

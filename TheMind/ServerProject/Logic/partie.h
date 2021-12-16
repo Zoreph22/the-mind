@@ -26,7 +26,7 @@ typedef struct S_Partie {
 }Partie;
 
 /// Instance de la partie.
-extern Partie partie; // TODO : a rename
+extern Partie partie;
 
 /**
  * @brief Initialiser la partie et démarrer la première manche.

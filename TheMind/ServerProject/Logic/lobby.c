@@ -19,17 +19,6 @@ void startGame()
 	initPartie(lobby.joueurs, lobby.nbJoueurs);
 }
 
-void setPlayerName(int id, const char* name)
-{
-	strcpy(lobby.joueurs[id].nom, name);
-}
-
-void setReady(int id)
-{
-	lobby.joueurs[id].ready = true;
-	lobby.nbPrets++;
-}
-
 void setNumBot(int nb)
 {
 	if (nb < 0)

@@ -73,13 +73,16 @@ void* listenMessages(void* ptrClientId)
 
 		printfc(TERM_BLUE, "Message received (type %i) from client id %i (%lu bytes).\n", header.msgType, clientId, header.dataLen + sizeof(header));
 
-		// [SECTION CRITIQUE] TODO : mieux documenter.
+		// ======= [SECTION CRITIQUE] =======
+
 		pthread_mutex_lock(&mutex);
 		{
 			// Appel du gestionnaire correspondant au type du message.
 			cliMsgHandler[header.msgType](clientId, data);
 		}
 		pthread_mutex_unlock(&mutex);
+
+		// ===== [FIN SECTION CRITIQUE] =====
 	}
 
 	printf("Stopped communication with client id %i.\n", clientId);

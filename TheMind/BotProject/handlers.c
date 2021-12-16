@@ -53,8 +53,7 @@ void SrvMsg_NextRoundHandler(void* data)
 /// Remise à zéro du joueur robot.
 void SrvMsg_GameEndHandler(void* data)
 {
-	struct SrvMsg_GameEnd* msg = (struct SrvMsg_GameEnd*)data;
-	pDebug("[BOT] Message Handler: SRV_MSG_GAME_END - Is game won: %i.\n", msg->isGameWon);
+	pDebug("[BOT] Message Handler: SRV_MSG_GAME_END.\n");
 
 	logic_endGame();
 }

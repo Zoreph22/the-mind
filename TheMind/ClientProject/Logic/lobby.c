@@ -22,15 +22,13 @@ void initLobby()
 	lobby.inLobby = true;
 	lobby.nbBots = 0;
 	lobby.nbJoueurs = 1;
-	lobby.nbManches = 0;
 	lobby.nbPrets = 0;
 	bzero(lobby.joueurs, sizeof(lobby.joueurs));
 }
 
-void setInfoLobby(int roundCount, int bCount, int readyCount)
+void setInfoLobby(int botCount, int readyCount)
 {
-	lobby.nbManches = roundCount;
-	lobby.nbBots = bCount;
+	lobby.nbBots = botCount;
 	lobby.nbPrets = readyCount;
 }
 
