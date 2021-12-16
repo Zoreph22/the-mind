@@ -9,9 +9,9 @@
 #include "utils.h"
 
  /// Temps en secondes minimum avant que le robot joue une carte.
-#define MIN_PLAYING_INTERVAL 15
+#define MIN_PLAYING_INTERVAL 8
 /// Temps en secondes maximum avant que le robot joue une carte.
-#define MAX_PLAYING_INTERVAL 25
+#define MAX_PLAYING_INTERVAL 18
 
 /// Structure stockant les informations du joueur robot.
 typedef struct S_Player {
