@@ -14,13 +14,12 @@
 typedef struct S_Partie {
 	/// Numéro de la manche actuelle.
 	int manche;
-	int currentIDTerrain; // TODo : a delete
 	/// Nombre de joueurs.
 	int nbJoueurs;
 	/// Nombre de vies restantes.
 	int vie;
 	/// Carte posée sur le plateau. @c 0 si aucune.
-	int terrainJeu[100]; /// todo : a remplacer par une simple variable
+	int terrainJeu;
 	/// Tableau contenant les joueurs (index du tableau = identifiant du joueur).
 	Joueur joueurs[MAX_CONNECTIONS];
 }Partie;

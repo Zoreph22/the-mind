@@ -53,7 +53,7 @@ void finPartie()
  */
 bool isCardWinner(int numCarte)
 {
-	if (partie.terrainJeu[partie.currentIDTerrain] < numCarte) {
+	if (partie.terrainJeu < numCarte) {
 		return true;
 	}
 	return false;
@@ -93,7 +93,7 @@ void manchePerdu()
 		return;
 	}
 
-	partie.terrainJeu[partie.currentIDTerrain] = 0;
+	partie.terrainJeu = 0;
 	distribuerCartes();
 
 	for (int i = 0; i < partie.nbJoueurs; i++) {
@@ -109,7 +109,7 @@ void manchePerdu()
 void mancheGagner()
 {
 	partie.manche = partie.manche + 1;
-	partie.terrainJeu[partie.currentIDTerrain] = 0;
+	partie.terrainJeu = 0;
 	distribuerCartes();
 
 	for (int i = 0; i < partie.nbJoueurs; i++) {
@@ -146,7 +146,7 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 	}
 
 	// Continuer la manche.
-	partie.terrainJeu[partie.currentIDTerrain] = numCarte; // Poser la carte.
+	partie.terrainJeu = numCarte; // Poser la carte.
 	return true;
 }
 
@@ -154,7 +154,6 @@ void initPartie(Joueur tab[], int n)
 {
 	partie.nbJoueurs = n;
 	partie.manche = 0;
-	partie.currentIDTerrain = 0;
 	partie.vie = 3;
 
 	for (int i = 0; i < n; i++) {
