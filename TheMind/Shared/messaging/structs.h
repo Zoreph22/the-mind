@@ -1,13 +1,13 @@
 /**
  * @file structs.h
  * @brief Structures représentant les données de chaque type de message.
- * 
+ *
  * Un message possède une en-tête @link MsgHeader @endlink et certains types de message, un corps contenant les données utiles @link CliMsg_<...> @endlink et @link SrvMsg_<...> @endlink.
  */
 
 #pragma once
 
-/// Structure de l'en-tête d'un message.
+ /// Structure de l'en-tête d'un message.
 struct MsgHeader
 {
 	/// Longueur du contenu du message.

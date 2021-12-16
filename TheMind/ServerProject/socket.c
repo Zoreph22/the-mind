@@ -10,15 +10,13 @@
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <string.h>
-#include <errno.h>
-#include "utils.h"
 #include "socket/consts.h"
 #include "socket/utils_io.h"
-#include "socket/utils_io.h"
 #include "messaging/cli_handlers.h"
+#include "utils.h"
 #include "socket.h"
 
-/// Structure stockant les informations de la connexion d'un client.
+ /// Structure stockant les informations de la connexion d'un client.
 struct ClientCon
 {
 	/// Descripteur du socket.

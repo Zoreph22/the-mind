@@ -10,11 +10,11 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "../socket.h"
-#include "utils.h"
 #include "partie.h"
+#include "utils.h"
 #include "stats.h"
 
-/// Instance des statistiques globales.
+ /// Instance des statistiques globales.
 GlobalStats globalStats = { 0 };
 /// Tableau des instances des statistiques de chaque joueur.
 PlayerStats playerStats[MAX_CONNECTIONS] = { 0 };
@@ -22,7 +22,7 @@ PlayerStats playerStats[MAX_CONNECTIONS] = { 0 };
 void stats_generatePDF()
 {
 	// Remplacer les espaces par des - sinon la commande ne s'exécute pas.
-	for (unsigned int i = 0; i < (unsigned int) partie.nbJoueurs; i++)
+	for (unsigned int i = 0; i < (unsigned int)partie.nbJoueurs; i++)
 	{
 		strReplaceChar(partie.joueurs[i].nom, ' ', '-', sizeof(partie.joueurs[i].nom));
 	}
@@ -56,7 +56,7 @@ void stats_generatePDF()
 
 	// Statistiques de chaque joueur.
 	args = sdscat(args, " -v PLAYERS_ARRAY=");
-	for (unsigned int i = 0; i < (unsigned int) partie.nbJoueurs; i++)
+	for (unsigned int i = 0; i < (unsigned int)partie.nbJoueurs; i++)
 	{
 		args = sdscatprintf(args, "%s:%i:%i:%.2f:%i|",
 			partie.joueurs[i].nom,

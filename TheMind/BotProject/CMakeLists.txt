@@ -17,4 +17,4 @@ target_link_libraries(BotProject PRIVATE sds)
 target_link_libraries(BotProject PRIVATE shared_socket)
 
 # Compile options.
-target_compile_options (BotProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+target_compile_options (BotProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type -Wno-unused-variable)

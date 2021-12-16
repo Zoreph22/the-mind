@@ -1,7 +1,7 @@
 /**
  * @file srv_handlers.h
  * @brief Définitions des gestionnaires des types de message envoyé par le serveur.
- * 
+ *
  * Les gestionnaires doivent être implémentés au niveau du client.
  * Les gestionnaires sont automatiquement appelés à la réception d'un message.
  */

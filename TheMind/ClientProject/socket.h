@@ -6,6 +6,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include "messaging/structs.h"
 #include "messaging/enums.h"
 
 /**

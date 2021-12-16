@@ -1,7 +1,7 @@
 /**
  * @file cli_handlers.h
  * @brief Définitions des gestionnaires des types de message envoyé par le client.
- * 
+ *
  * Les gestionnaires doivent être implémentés au niveau du serveur.
  * Les gestionnaires sont automatiquement appelés à la réception d'un message.
  */

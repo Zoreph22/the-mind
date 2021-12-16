@@ -6,9 +6,10 @@
 #pragma once
 
 #include <stddef.h>
+#include "messaging/structs.h"
 #include "messaging/enums.h"
 
-/// Port du serveur.
+ /// Port du serveur.
 #define SERVER_PORT 25565
 
 /**
@@ -42,6 +43,6 @@ void socket_send(unsigned int clientId, enum SrvMsg type, const void* msg, size_
 
 /**
  * @brief Démarrer et connecter des robots au serveur.
- * @param nb Nombre de robots à connecter. 
+ * @param nb Nombre de robots à connecter.
 */
 void socket_bots(unsigned int nb);

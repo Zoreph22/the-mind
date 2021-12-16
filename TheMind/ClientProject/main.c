@@ -3,19 +3,16 @@
  * @brief Fichier de démarrage du programme.
  */
 
-#include <sds/sds.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
-#include <unistd.h>
-#include <pthread.h>
 #include <string.h>
 #include "socket.h"
 #include "logic/joueur.h"
 #include "input.h"
 #include "utils.h"
 
-/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
+ /// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
 	exit(EXIT_SUCCESS);
@@ -44,7 +41,7 @@ void connectMenu()
 
 		printf("Tapez votre pseudo : ");
 		fgets(name, sizeof(name), stdin);
-		
+
 		printf("\nConnexion au serveur...\n");
 
 		ip[strcspn(ip, "\n")] = 0;

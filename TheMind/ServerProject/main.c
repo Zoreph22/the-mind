@@ -3,15 +3,15 @@
  * @brief Fichier de démarrage du programme.
  */
 
-#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <libgen.h>
 #include <time.h>
 #include <linux/limits.h>
 #include "socket.h"
 
-/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
+ /// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
 	exit(EXIT_SUCCESS);

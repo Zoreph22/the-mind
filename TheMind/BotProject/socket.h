@@ -6,6 +6,7 @@
 #pragma once
 
 #include "messaging/enums.h"
+#include "messaging/structs.h"
 
 /**
  * @brief Définir l'adresse IP du serveur

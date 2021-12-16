@@ -8,10 +8,9 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include "socket.h"
 
-/// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
+ /// Quitter le programme proprement à la réception des signaux SIGTERM et SIGINT.
 void quit()
 {
 	exit(EXIT_SUCCESS);
@@ -88,7 +87,7 @@ int main(int argc, char* argv[])
 	parseArgs(argc, argv);
 
 	init();
-	
+
 	// Se connecter au serveur.
 	socket_connect();
 

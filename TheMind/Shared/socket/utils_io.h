@@ -15,7 +15,7 @@
  * @param n Nombre d'octets à lire.
  * @return -1 si erreur, sinon 0.
 */
-int recvn(int fd, void *ptrBuffer, size_t n);
+int recvn(int fd, void* ptrBuffer, size_t n);
 
 /**
  * @brief Écrire des données dans flux d'octets.
@@ -25,4 +25,4 @@ int recvn(int fd, void *ptrBuffer, size_t n);
  * @param n Nombre d'octets à écrire.
  * @return -1 si erreur, sinon 0.
 */
-int sendn(int fd, const void *ptrBuffer, size_t n);
+int sendn(int fd, const void* ptrBuffer, size_t n);

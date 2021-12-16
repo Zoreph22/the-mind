@@ -5,19 +5,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <stdbool.h>
 #include <string.h>
 #include "../input.h"
-#include "messaging/structs.h"
-#include "messaging/enums.h"
 #include "../socket.h"
-#include "partie.h"
 #include "lobby.h"
 #include "joueur.h"
 #include "utils.h"
+#include "partie.h"
 
-/// Instance de la partie.
+ /// Instance de la partie.
 Partie partie = { 0 };
 
 void distribuerCartes(const int* playercard)

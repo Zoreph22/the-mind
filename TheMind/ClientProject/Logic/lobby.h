@@ -5,12 +5,11 @@
 
 #pragma once
 
-#include <stdio.h>
 #include "joueur.h"
 #include "../socket.h"
 #include "socket/consts.h"
 
-/// Structure stockant les données du lobby.
+ /// Structure stockant les données du lobby.
 typedef struct S_Lobby {
 	/// Est-on dans le lobby ?
 	bool inLobby;

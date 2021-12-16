@@ -3,17 +3,13 @@
  * @brief Implémentation de la gestion du joueur.
  */
 
-#include <stdbool.h>
 #include <string.h>
-#include "partie.h"
-#include "joueur.h"
-#include "messaging/structs.h"
-#include "messaging/enums.h"
 #include "../socket.h"
+#include "joueur.h"
 
-Joueur joueur = {0};
+Joueur joueur = { 0 };
 
-void setName(const char * nom)
+void setName(const char* nom)
 {
 	strcpy(joueur.nom, nom);
 }

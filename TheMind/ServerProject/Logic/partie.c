@@ -5,17 +5,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <stdbool.h>
 #include <string.h>
-#include "stats.h"
-#include "messaging/structs.h"
-#include "messaging/enums.h"
 #include "../socket.h"
+#include "stats.h"
 #include "partie.h"
 
-
-Partie partie = {0};
+Partie partie = { 0 };
 
 /**
  * @brief Générer les cartes et les distribuer aux joueurs.
@@ -129,7 +125,7 @@ bool gestionCarteJouer(int idJoueur, int idCarte)
 
 	// Gérer la carte.
 	int numCarte = partie.joueurs[idJoueur].cartes[idCarte];
-	
+
 	partie.joueurs[idJoueur].cartes[idCarte] = 0; // Retirer la carte de la main du joueur.
 
 	// La carte posée fait gagner la manche et toutes les cartes ont été posées.

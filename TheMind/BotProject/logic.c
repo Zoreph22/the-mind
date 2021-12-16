@@ -8,13 +8,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
-#include "messaging/enums.h"
-#include "messaging/structs.h"
 #include "socket.h"
 #include "utils.h"
 #include "logic.h"
 
-/// Instance du joueur robot.
+ /// Instance du joueur robot.
 Player player = { 0 };
 
 /// Afficher les cartes non jouées du robot.

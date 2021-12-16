@@ -5,13 +5,12 @@
 
 #pragma once
 
-#include <stdio.h>
-#include "joueur.h"
-#include "socket/consts.h"
 #include <stdbool.h>
+#include "socket/consts.h"
+#include "joueur.h"
 
-/// Structure stockant les données de la partie.
-typedef struct S_Partie{
+ /// Structure stockant les données de la partie.
+typedef struct S_Partie {
 	/// Numéro de la manche actuelle.
 	int manche;
 	/// Nombre de vies restantes.
@@ -30,7 +29,7 @@ typedef struct S_Partie{
  * @brief Définir les nouvelles cartes du joueur.
  * @param playercard Tableau des cartes.
  */
-void distribuerCartes(const int *playercard);
+void distribuerCartes(const int* playercard);
 
 /**
  * @brief Définir la carte posée sur le plateau.

@@ -6,10 +6,9 @@
 #pragma once
 
 #include <stdbool.h>
-#include <errno.h>
 #include "utils.h"
 
-/// Temps en secondes minimum avant que le robot joue une carte.
+ /// Temps en secondes minimum avant que le robot joue une carte.
 #define MIN_PLAYING_INTERVAL 15
 /// Temps en secondes maximum avant que le robot joue une carte.
 #define MAX_PLAYING_INTERVAL 25

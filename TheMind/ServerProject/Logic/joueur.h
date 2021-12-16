@@ -5,11 +5,9 @@
 
 #pragma once
 
-#include <stdio.h>
 #include <stdbool.h>
-#include "stats.h"
 
-/// Structure stockant les données d'un joueur.
+ /// Structure stockant les données d'un joueur.
 typedef struct S_Joueur {
 	/// Le joueur est-il prêt pour démarrer la partie ?
 	bool ready;

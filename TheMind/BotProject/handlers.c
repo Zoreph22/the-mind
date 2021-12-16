@@ -4,12 +4,12 @@
  */
 
 #include <stdio.h>
+#include "socket.h"
 #include "logic.h"
 #include "utils.h"
-#include "socket.h"
 #include "messaging/srv_handlers.h"
 
-/// Inutilisé.
+ /// Inutilisé.
 void SrvMsg_NoneHandler(void* data)
 {
 	// pDebug("[BOT] Message Handler: SRV_MSG_NONE - Unhandled message.\n");

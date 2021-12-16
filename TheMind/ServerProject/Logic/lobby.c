@@ -3,15 +3,12 @@
  * @brief Implémentation de la gestion du lobby.
  */
 
-#include "lobby.h"
-#include "partie.h"
 #include <stdlib.h>
-#include <strings.h>
-#include <string.h>
-#include "messaging/structs.h"
-#include "messaging/enums.h"
+#include "partie.h"
+#include "stats.h"
+#include "lobby.h"
 
-Lobby lobby;
+Lobby lobby = { 0 };
 
 void startGame()
 {

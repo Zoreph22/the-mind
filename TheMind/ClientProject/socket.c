@@ -9,17 +9,15 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <arpa/inet.h>
-#include <strings.h>
 #include <string.h>
-#include <errno.h>
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "messaging/srv_handlers.h"
 #include "logic/joueur.h"
-#include "socket.h"
 #include "utils.h"
+#include "socket.h"
 
-/// Descripteur du socket.
+ /// Descripteur du socket.
 SOCKET cliSocket;
 /// Socket est-il ouvert ?
 bool isOpened = false;

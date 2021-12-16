@@ -21,4 +21,4 @@ target_link_libraries (ClientProject PRIVATE pthread)
 target_link_libraries(ClientProject PRIVATE shared_socket)
 
 # Compile options.
-target_compile_options (ClientProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+target_compile_options (ClientProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type -Wno-unused-variable)

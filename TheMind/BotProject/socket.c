@@ -8,15 +8,13 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <arpa/inet.h>
-#include <string.h>
-#include <errno.h>
 #include "socket/consts.h"
 #include "socket/utils_io.h"
 #include "messaging/srv_handlers.h"
-#include "socket.h"
 #include "utils.h"
+#include "socket.h"
 
-/// Adresse IP du serveur.
+ /// Adresse IP du serveur.
 char* serverIp;
 /// Port du serveur.
 unsigned short serverPort;

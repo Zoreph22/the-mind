@@ -21,7 +21,7 @@ target_link_libraries (ServerProject PRIVATE pthread)
 target_link_libraries(ServerProject PRIVATE shared_socket)
 
 # Compile options.
-target_compile_options (ServerProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type)
+target_compile_options (ServerProject PRIVATE -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-return-type -Wno-unused-variable)
 
 # Copy template tex files to build dir.
 add_custom_command(

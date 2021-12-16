@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include "lobby.h"
+#include "stats.h"
 #include "joueur.h"
 
 void setPlayerName(int id, const char* name)

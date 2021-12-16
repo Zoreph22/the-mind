@@ -4,13 +4,14 @@
  */
 
 #include <stdio.h>
-#include "socket.h"
 #include <string.h>
+#include "socket.h"
 #include "logic/partie.h"
 #include "logic/lobby.h"
+#include "logic/stats.h"
 #include "messaging/cli_handlers.h"
 
-/// Inutilisé.
+ /// Inutilisé.
 void CliMsg_NoneHandler(unsigned int senderId, void* data)
 {
 	printf("Message Handler: CLI_MSG_NONE - Client: %i - Unhandled message.\n", senderId);

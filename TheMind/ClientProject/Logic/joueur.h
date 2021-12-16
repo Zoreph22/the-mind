@@ -5,10 +5,9 @@
 
 #pragma once
 
-#include <stdio.h>
 #include <stdbool.h>
 
-/// Structure stockant les données du joueur.
+ /// Structure stockant les données du joueur.
 typedef struct S_Joueur {
 	/// Le joueur est-il prêt pour démarrer la partie ?
 	bool ready;
@@ -29,7 +28,7 @@ extern Joueur joueur;
  * @brief Définir le nom du joueur.
  * @param nom Nom du joueur.
  */
-void setName(const char * nom);
+void setName(const char* nom);
 
 /**
  * @brief Jouer une carte et l'envoyer au serveur.

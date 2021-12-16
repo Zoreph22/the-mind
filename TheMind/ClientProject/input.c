@@ -8,7 +8,7 @@
 #include <string.h>
 #include "input.h"
 
-/// Fonction de rappel appelée après une saisie.
+ /// Fonction de rappel appelée après une saisie.
 void (*ptrCallback)() = NULL;
 /// Buffer stockant la dernière saisie.
 char buffer[1024];

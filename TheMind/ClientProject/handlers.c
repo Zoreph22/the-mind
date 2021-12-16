@@ -4,14 +4,14 @@
  */
 
 #include <stdio.h>
-#include "messaging/srv_handlers.h"
 #include "logic/lobby.h"
 #include "logic/partie.h"
 #include "logic/joueur.h"
 #include "input.h"
 #include "utils.h"
+#include "messaging/srv_handlers.h"
 
-/// Inutilisé.
+ /// Inutilisé.
 void SrvMsg_NoneHandler(void* data)
 {
 	pDebug("Message Handler: SRV_MSG_NONE - Unhandled message.\n");
@@ -33,7 +33,7 @@ void SrvMsg_PlayerConnectedHandler(void* data)
 	struct SrvMsg_PlayerConnected* msg = (struct SrvMsg_PlayerConnected*)data;
 	pDebug("Message Handler: SRV_MSG_PLAYER_CONNECTED - Player id: %i - Player name: %s.\n", msg->playerId, msg->name);
 
-	if (msg->playerId == (unsigned int) joueur.id)
+	if (msg->playerId == (unsigned int)joueur.id)
 	{
 		return;
 	}
@@ -64,7 +64,7 @@ void SrvMsg_NextRoundHandler(void* data)
 
 	lobby.inLobby = false;
 	setNextRound(msg->roundNumber, msg->lifeRemaining, msg->isLastRoundWon);
-	distribuerCartes((int *) msg->playerCards);
+	distribuerCartes((int*)msg->playerCards);
 	printManche();
 	setInputCallback(&gestionInputCarteJouer);
 }
