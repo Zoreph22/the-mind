@@ -1,3 +1,5 @@
+*.txt   text  eol=lf
+
 # Use LF encoding for these files,
 # otherwise PDF of the game stats will not be generated properly.
 *.sh    text  eol=lf
