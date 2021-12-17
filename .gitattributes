@@ -1,0 +1,5 @@
+# Use LF encoding for these files,
+# otherwise PDF of the game stats will not be generated properly.
+*.sh    text  eol=lf
+*.awk   text  eol=lf
+*.tex   text  eol=lf
