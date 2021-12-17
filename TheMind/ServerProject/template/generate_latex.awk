@@ -26,6 +26,6 @@ $1 == "%PLAYER_STATS" {
 		avgReactionTime = playerStats[4]
 		failCount = playerStats[5]
 
-		printf("\hline %s & %d secondes & %d secondes & %.2f secondes & %d \\\\", playerName, minReactionTime, maxReactionTime, avgReactionTime, failCount)
+		printf("\\hline %s & %d secondes & %d secondes & %.2f secondes & %d \\\\", playerName, minReactionTime, maxReactionTime, avgReactionTime, failCount)
 	}
 }
